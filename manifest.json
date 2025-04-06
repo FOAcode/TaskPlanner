@@ -24,5 +24,12 @@
         "type": "x-icon"
       }
     ],
-    "categories": ["productivity", "utilities"]
+    "categories": ["productivity", "utilities"],
+    "display_override": ["standalone", "window-controls-overlay"],
+    "handle_links": "preferred",
+    "launch_handler": {
+        "client_mode": "auto"
+    },
+    "id": "/TaskPlanner/",
+    "dir": "ltr"
 }
