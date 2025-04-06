@@ -2,13 +2,13 @@
 
 const CACHE_NAME = 'TaskPlanner_cache_mem';
 const FILES_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/script.js',
-    '/styles.css',
-    '/manifest.json',
-    '/192x192.png',
-    '/192x192.ico'
+    '/TaskPlanner/',
+    '/TaskPlanner/index.html',
+    '/TaskPlanner/script.js',
+    '/TaskPlanner/styles.css',
+    '/TaskPlanner/manifest.json',
+    '/TaskPlanner/192x192.png',
+    '/TaskPlanner/192x192.ico'
 ];
 
 
@@ -64,7 +64,7 @@ self.addEventListener('fetch', event => {
                     }
                     // Fallback to index.html for navigation requests
                     if (event.request.mode === 'navigate') {
-                        return caches.match('/index.html');
+                        return caches.match('/TaskPlanner/index.html');
                     }
                 });
             })
