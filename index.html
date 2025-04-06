@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Planner</title>
+    <link rel="icon" sizes="192x192" type="image/png" href="192x192.png">
+    <link rel="icon" type="image/x-icon" href="192x192.ico">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <style>
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+        75% { transform: translateX(-5px); }
+    }
+
+    #entry-page {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    }
+
+    #entry-container {
+        background: #d3d3d3; /* Light grey background */
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        width: 300px;
+    }
+
+    .dark-mode #entry-container {
+        background: #333; /* Darker grey background in dark mode */
+    }
+
+    #entry-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .lock-icon {
+        font-size: 3em;
+        color: #007BFF;
+        margin-bottom: 10px;
+    }
+
+    .lock-icon.shake {
+        animation: shake 0.5s ease-in-out;
+    }
+
+    #entry-title {
+        margin: 10px 0;
+        font-size: 1.5em;
+    }
+
+    #entry-message {
+        font-size: 0.9em;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    #entry-password {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+    }
+
+    #entry-confirm-password {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+        display: none;
+    }
+
+    #entry-button {
+        background: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+    }
+
+    #entry-button:hover {
+        background: #0056b3;
+    }
+    </style>
+</head>
+<body>
+    <div id="entry-page">
+        <div id="entry-container">
+            <div id="entry-content">
+                <select id="entry-language-select" onchange="updateEntryPopupLanguage()">
+                    <option value="en">EN</option>
+                    <option value="zh">ZH</option>
+                    <option value="es">ES</option>
+                    <option value="de">DE</option>
+                    <option value="it">IT</option>
+                    <option value="ro">RO</option>
+                    <option value="pt">PT</option>
+                </select>
+                <span class="material-icons lock-icon">lock</span>
+                <h3 id="entry-title">Password</h3>
+                <p id="entry-message"></p>
+                <div>
+                    <input type="password" id="entry-password" placeholder="Enter your password" autocomplete="off" oninput="showConfirmPasswordField()">
+                    <span id="toggle-password-visibility" class="material-icons" onclick="togglePasswordVisibility()">visibility_off</span>
+                </div>
+                <div id="confirm-password-container" style="display: none;">
+                    <input type="password" id="entry-confirm-password" placeholder="Confirm your password" autocomplete="off">
+                    <span id="toggle-confirm-password-visibility" class="material-icons" onclick="togglePasswordVisibility(true)" style="display: none;">visibility_off</span>
+                </div>
+                <button id="entry-button" onclick="handleEntry()">Submit</button>
+            </div>
+        </div>
+    </div>
+    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+    <div class="popup" id="popup">
+        <span class="close-popup" onclick="closePopup()">&#10006;</span>
+        <h3 style="text-align: center;">Add / Edit Task</h3>
+        <div style="display: flex; align-items: center; justify-content: flex-start; margin-top: 10px;">
+            <label class="switch">
+            <input type="checkbox" id="taskPriority" onchange="togglePriorityLabel()">
+            <span class="slider"></span>
+            </label>
+            <label for="taskPriority" id="priorityLabel" style="margin-left: 10px;">Assign Priority</label>
+        </div>
+        <script>
+            function togglePriorityLabel() {
+                const checkbox = document.getElementById('taskPriority');
+                const label = document.getElementById('priorityLabel');
+                const language = localStorage.getItem('language') || 'en';
+                label.textContent = checkbox.checked 
+                    ? translations[language].removePriority 
+                    : translations[language].assignPriority;
+            }
+        </script>
+        <textarea id="taskDescription" placeholder="Description" autocomplete="off"></textarea>
+        <input type="date" id="taskDate" autocomplete="off">
+        <input list="assignedToList" id="taskAssignedTo" placeholder="Assigned To" autocomplete="off" onfocus="showAllOptions()" onclick="showAllOptions()">
+        <datalist id="assignedToList" style="display: none; position: absolute; max-height: 150px; overflow-y: auto;"></datalist>
+        <div class="button-container">
+            <button onclick="deleteTask()" class="popup-button">Delete</button>
+            <button onclick="saveTask()" class="popup-button">Save</button>
+        </div>
+    </div>
+
+    <div class="column" id="todo-column">
+        <div class="row">
+            <div class="button-container">
+                <span class="material-icons add-task-icon" onclick="openPopup('todo-column')">add_circle</span>
+                <span class="material-icons copy-icon" onclick="copyTasksToClipboard('todo-column')" translate="no">content_copy</span>
+            </div>
+            <h2>To Do</h2>
+        </div>
+        <hr>
+    </div>
+    <div class="column" id="in-progress-column">
+        <div class="row">
+            <div class="button-container">
+                <span class="material-icons add-task-icon" onclick="openPopup('in-progress-column')">add_circle</span>
+                <span class="material-icons copy-icon" onclick="copyTasksToClipboard('in-progress-column')" translate="no">content_copy</span>
+            </div>
+            <h2>In Progress</h2>
+        </div>
+        <hr>
+    </div>
+    <div class="column" id="done-column">
+        <div class="row">
+            <div class="button-container">
+                <span class="material-icons delete-icon" onclick="confirmDeleteDoneTasks()">delete</span>
+                <span class="material-icons copy-icon" onclick="copyTasksToClipboard('done-column')" translate="no">content_copy</span>
+            </div>
+            <h2>Done</h2>
+        </div>
+        <hr>
+    </div>
+
+    <div class="filter-popup" id="filter-popup">
+        <span class="close-popup" onclick="closeFilterPopup()">&#10006;</span>
+        <div id="filterSelect" class="filter-tiles"></div>
+    </div>
+    <div class="settings-popup" id="settings-popup">
+        <span class="close-popup" onclick="closeSettings()">&#10006;</span>
+        <h2>Menu</h2>
+        <hr>
+        <h3 style="margin-bottom: 3px;">File</h3>
+        <div class="button-container">
+            <button onclick="document.getElementById('loadFile').click()">Load</button>
+            <button onclick="exportTasks()">Export</button>
+        </div>
+        <input type="file" id="loadFile" accept=".json" onchange="loadFile(event)">
+        <hr>
+        <h3 style="margin-bottom: 3px;">Settings</h3>
+        <div class="options-container">
+            <label for="darkModeToggle">Dark Mode</label>
+            <label class="switch">
+                <input type="checkbox" id="darkModeToggle" onclick="toggleDarkMode()">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="options-container">
+            <label for="taskStyleToggle">One Color</label>
+            <label class="switch">
+                <input type="checkbox" id="taskStyleToggle" onclick="toggleTaskStyle()">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div class="options-container">
+            <label for="fontStyle">Font Style</label>
+            <select id="fontStyle" onchange="changeFontStyle()">
+                <option value="normal">Normal</option>
+                <option value="bold">Bold</option>
+                <option value="italic">Italic</option>
+            </select>
+        </div>
+        <div class="options-container">
+            <label for="fontFamily">Font Family</label>
+            <select id="fontFamily" onchange="changeFontFamily()">
+                <option value="Arial">Arial</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Roboto">Roboto</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+            </select>
+        </div>
+        <div class="options-container">
+            <label for="languageSelect">Language</label>
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="zh">Chinese</option>
+                <option value="es">Spanish</option>
+                <option value="de">German</option>
+                <option value="it">Italian</option>
+                <option value="ro">Romanian</option>
+                <option value="pt">Portuguese</option>
+            </select>
+        </div>
+        <hr>
+        <h3 style="margin-bottom: 3px;">About</h3>
+        <p></p> <!-- Placeholder for dynamically set version -->
+        <footer style="font-size: smaller;"></footer> <!-- Placeholder for dynamically set footer -->
+        <hr>
+    </div>
+        
+    <button class="floating-button" onclick="toggleFloatingPopup()">
+        <span class="material-icons">menu</span>
+    </button>
+    <div class="floating-popup" id="floating-popup">
+        <ul>
+            <li onclick="reorderTasks()">
+                <span class="material-icons">reorder</span>
+                <span id="reorderTasksLabel"></span>
+            </li>
+            <li onclick="openFilterPopup()">
+                <span class="material-icons">filter_list</span>
+                <span id="filterTasksLabel"></span>
+            </li>
+            <li onclick="openSettings()">
+                <span class="material-icons">settings</span>
+                <span id="settingsLabel"></span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="blinking-circle" id="blinking-circle" style="display: none;"></div>
+    <script src="script.js"></script>
+</body>
+</html>
