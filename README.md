@@ -5,7 +5,7 @@ Application is in beta phase. Bugs and instability be present.
 A simple and fast way to organise activities locally. Assign a task, due date, person responsible and reorder tasks based on date and importance. 
 
 ## Launch 
-To launch the application visit the TaskPlanner github page. On chromium based browsers you can install the website as application (PWA).
+To launch the application, visit the [TaskPlanner GitHub Page](https://foacode.github.io/TaskPlanner/). On Chromium-based browsers, you can install the website as an application (PWA).
 
 ### Set password
 Set a password that will be used for encrypt and unlock the data at every access.
