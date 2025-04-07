@@ -1,50 +1,80 @@
-# TaskPlanner
-v 0.8.0 
-Application is in beta phase. Bugs and instability be present.
+# Task Planner v0.8.0 (Beta)
 
-A simple and fast way to organise activities locally. Assign a task, due date, person responsible and reorder tasks based on date and importance. 
+**Task Planner** is a lightweight and fast local task management tool designed to help you organize activities efficiently.  
+This is a **beta release** — bugs and instability may be present.
 
-## Launch 
-To launch the application, visit the [TaskPlanner GitHub Page](https://foacode.github.io/TaskPlanner/). On Chromium-based browsers, you can install the website as an application (PWA).
+---
 
-### Set password
-Set a password that will be used for encrypt and unlock the data at every access.
+## 🔹 Features
+- Organize tasks by due date and importance  
+- Assign responsibilities and manage deadlines  
+- Store data locally and securely using a password  
+- Import/export task lists  
+- Toggle Dark Mode and One Color Mode  
+- Customize font style and language
 
-<img src="./media/example_task_planner_setpassword1.png" alt="SetPassword1" style="width: 50%;" />
+---
 
-Start typing a password and confirm it in the new field. Remember that your password will be the only way to unlock your data. Write it down and don't lose it.
+## 🚀 Launch
 
-<img src="./media/example_task_planner_setpassword2.png" alt="SetPassword2" style="width: 50%;" />
+To use the application, visit the [Task Planner GitHub Page](https://foacode.github.io/TaskPlanner/).  
+On Chromium-based browsers, you can install it as a Progressive Web App (PWA) for a native app experience.
 
-### Login
-At each access provide the previously chosen password to unlock the data from the memory. After 5 wrong tries there will be 5s hold before a new password can be sent.
+---
 
-<img src="./media/example_task_planner_password.png" alt="Login" style="width: 50%;" />
+## 🔐 Set Password
 
-### Main Screen
-<img src="./media/example_tasks_list.png" alt="MainView" style="width: 100%;" />
+The application requires a password to encrypt and unlock your data.  
+Start by entering and confirming your password. This is the only way to access your stored information.  
+**Keep it safe — forgotten passwords cannot be recovered.**
 
-### Menu
+![SetPassword1](./media/example_task_planner_setpassword1.png)
+![SetPassword2](./media/example_task_planner_setpassword2.png)
 
-• Import and Export tasks list
-• Toggle ON/OFF Dark Mode
-• Toggle ON/OFF One Color mode for tasks
-• Choose a Font Style and Family
-• Change application language
+---
 
-<img src="./media/example_task_planner_menu.png" alt="Menu" style="width: 50%;" />
+## 🔓 Login
 
-### Menu (Dark Mode toggle ON)
+At each access, enter your chosen password to decrypt and load your data.  
+After **5 incorrect attempts**, the app will introduce a 5-second delay before allowing another try.
 
-Click on the floating button positioned in the bottom right corner and click on Dark Mode toggle to turn it on.
+![Login](./media/example_task_planner_password.png)
 
-<img src="./media/example_task_planner_menu_dark.png" alt="MenuDark" style="width: 50%;" />
+---
 
-The entire application will now be converted in Dark Mode variant.
+## 📋 Main Screen
 
-<img src="./media/example_tasks_list_dark.png" alt="MainView" style="width: 100%;" />
+The main interface displays the task list ordered by date and importance.
 
-## Storage
-Data is stored within browser cache memory. Therefore make sure to backup your data anytime you wish to clean your browser cache memory.
+![MainView](./media/example_tasks_list.png)
 
-Don't use Task Planner to store sensible data. If the browser gets compromised your data might not be safe. Also bugs within the application itself might lead to permanent data loss. 
+---
+
+## ☰ Menu Options
+
+- Import/Export task list  
+- Toggle **Dark Mode**  
+- Toggle **One Color Mode** for tasks  
+- Choose a **Font Style & Family**  
+- Change application **language**
+
+![Menu](./media/example_task_planner_menu.png)
+
+---
+
+### 🌙 Dark Mode Example
+
+Enable Dark Mode via the floating action button in the bottom-right corner of the screen.
+
+![MenuDark](./media/example_task_planner_menu_dark.png)
+![MainViewDark](./media/example_tasks_list_dark.png)
+
+---
+
+## 💾 Storage
+
+All data is stored in the browser's local cache.  
+Please **back up your task list** before clearing your browser cache or data.
+
+> **Warning:**  
+> Do not store sensitive information. Although the app encrypts data, if your browser is compromised or the app malfunctions, data may be lost permanently.
