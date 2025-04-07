@@ -421,6 +421,7 @@ function applyTranslations(language) {
     }
     updateTodayDate(); // Update the initial column date
     // Update other UI elements as needed
+    updateFloatingPopupLabels(); // Add this line to ensure floating labels are updated
 }
 
 function changeLanguage() {
@@ -872,8 +873,18 @@ async function handleEntry() {
         setTimeout(() => {
             entryPage.style.display = "none";
             document.body.classList.add("unlocked");
-            document.getElementById('languageSelect').value = language; // Sync language selector
-            applyTranslations(language); // Apply translations immediately
+            document.getElementById('languageSelect').value = language;
+            
+            // Update all translations including floating popup labels
+            const reorderLabel = document.getElementById('reorderTasksLabel');
+            const filterLabel = document.getElementById('filterTasksLabel');
+            const settingsLabel = document.getElementById('settingsLabel');
+            
+            if (reorderLabel) reorderLabel.textContent = translations[language].reorderTasks;
+            if (filterLabel) filterLabel.textContent = translations[language].filterTasks;
+            if (settingsLabel) settingsLabel.textContent = translations[language].settings;
+            
+            applyTranslations(language);
         }, 500);
 
         // Create the first task in the "In Progress" column
@@ -895,8 +906,9 @@ async function handleEntry() {
                 entryPage.style.display = "none";
                 document.body.classList.add("unlocked");
                 const savedLanguage = localStorage.getItem('language') || 'en';
-                document.getElementById('languageSelect').value = savedLanguage; // Sync language selector
-                applyTranslations(savedLanguage); // Apply translations
+                document.getElementById('languageSelect').value = savedLanguage;
+                applyTranslations(savedLanguage);
+                updateFloatingPopupLabels(); // Add this line
             }, 500);
         } catch (error) {
             if (error.message === "No tasks to decrypt") {
