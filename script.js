@@ -359,7 +359,7 @@ function applyTranslations(language) {
     document.querySelector('label[for="languageSelect"]').innerText = translations[language].language;
     document.querySelector('#settings-popup h3:nth-of-type(3)').innerText = translations[language].about;
     const aboutSection = document.querySelector('#settings-popup p');
-    aboutSection.innerHTML = `Task Planner v0.8.0 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank">Github Task Planner repository</a>`;
+    aboutSection.innerHTML = `Task Planner v0.8.0 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
     document.querySelector('#settings-popup footer').innerText = `©2025 FOAcode`;
     document.querySelector('label[for="taskStyleToggle"]').innerText = translations[language].oneColor;
     const priorityLabel = document.getElementById('priorityLabel');
