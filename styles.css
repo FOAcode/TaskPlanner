@@ -108,7 +108,7 @@ body.unlocked > *:not(#entry-page) {
 }
 
 .dark-mode .task.grey {
-    background: #8f8f8f27;
+    background: #8f8f8f25;
 }
 
 .dark-mode #entry-message {
@@ -161,20 +161,20 @@ body.unlocked > *:not(#entry-page) {
 }
 
 .task.grey {
-    background: #e9e9e934;
+    background: #e9e9e97a;
 }
 
 /* Task Priority Colors */
 .task.red-1 {
-    background: rgb(250, 50, 50, 0.8);
+    background: rgb(250, 50, 50, 0.4);
 }
 
 .task.red-2 {
-    background: rgb(233, 50, 50, 0.6);
+    background: rgb(233, 50, 50, 0.4);
 }
 
 .task.red-3 {
-    background: rgb(233, 80, 80, 0.5);
+    background: rgb(233, 80, 80, 0.4);
 }
 
 .task.red-4 {
@@ -182,31 +182,31 @@ body.unlocked > *:not(#entry-page) {
 }
 
 .task.red-5 {
-    background: rgb(233, 140, 140, 0.3);
+    background: rgb(233, 140, 140, 0.4);
 }
 
 .task.red-6 {
-    background: rgb(233, 170, 170, 0.2);
+    background: rgb(233, 170, 170, 0.4);
 }
 
 .task.red-7 {
-    background: rgb(233, 200, 200, 0.2);
+    background: rgb(233, 200, 200, 0.4);
 }
 
 .dark-mode .task.red-1 {
-    background: rgb(250, 85, 85, 0.8);
+    background: rgb(250, 85, 85, 0.4);
 }
 
 .dark-mode .task.red-2 {
-    background: rgb(225, 85, 85, 0.7);
+    background: rgb(225, 85, 85, 0.4);
 }
 
 .dark-mode .task.red-3 {
-    background: rgb(200, 85, 85, 0.6);
+    background: rgb(200, 85, 85, 0.4);
 }
 
 .dark-mode .task.red-4 {
-    background: rgb(180, 85, 85, 0.5);
+    background: rgb(180, 85, 85, 0.4);
 }
 
 .dark-mode .task.red-5 {
@@ -214,19 +214,19 @@ body.unlocked > *:not(#entry-page) {
 }
 
 .dark-mode .task.red-6 {
-    background: rgb(140, 85, 85, 0.3);
+    background: rgb(140, 85, 85, 0.4);
 }
 
 .dark-mode .task.red-7 {
-    background: rgb(120, 85, 85, 0.2);
+    background: rgb(120, 85, 85, 0.4);
 }
 
 .task.green {
-    background: #3bb83fa8; 
+    background: #3bb83f57; 
 }
 
 .dark-mode .task.green {
-    background: #3bb83f4b; 
+    background: #3bb83f44; 
 }
 
 /* Task Date Styles */
