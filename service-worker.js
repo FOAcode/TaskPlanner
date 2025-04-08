@@ -1,4 +1,4 @@
-// Service Worker Script
+// Service Worker Script: stale-while-revalidate
 
 const CACHE_NAME = 'TaskPlanner_cache_mem';
 const FILES_TO_CACHE = [
@@ -11,62 +11,41 @@ const FILES_TO_CACHE = [
     '/TaskPlanner/192x192.ico'
 ];
 
-
-// Install event: cache files
+// Install: cache static files
 self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then(cache => {
-                console.log('Caching files');
-                return cache.addAll(FILES_TO_CACHE);
-            })
+            .then(cache => cache.addAll(FILES_TO_CACHE))
     );
     self.skipWaiting();
 });
 
-// Activate event: clean up old caches
+// Activate: clean old caches
 self.addEventListener('activate', event => {
     event.waitUntil(
-        caches.keys().then(cacheNames => {
-            return Promise.all(
-                cacheNames.map(cache => {
-                    if (cache !== CACHE_NAME) {
-                        console.log('Deleting old cache:', cache);
-                        return caches.delete(cache);
-                    }
-                })
-            );
-        })
+        caches.keys().then(keys => 
+            Promise.all(keys.map(key => {
+                if (key !== CACHE_NAME) return caches.delete(key);
+            }))
+        )
     );
     self.clients.claim();
 });
 
-// Fetch event: serve from network if available, otherwise fallback to cache
+// Fetch: stale-while-revalidate
 self.addEventListener('fetch', event => {
     event.respondWith(
-        fetch(event.request)
-            .then(response => {
-                // If the response is valid, clone it and store it in the cache
-                if (response && response.status === 200 && response.type === 'basic') {
-                    const responseToCache = response.clone();
-                    caches.open(CACHE_NAME)
-                        .then(cache => {
-                            cache.put(event.request, responseToCache);
-                        });
-                }
-                return response;
-            })
-            .catch(() => {
-                // If the network request fails, try to serve from cache
-                return caches.match(event.request).then(cachedResponse => {
-                    if (cachedResponse) {
-                        return cachedResponse;
+        caches.match(event.request).then(cachedResponse => {
+            const fetchPromise = fetch(event.request)
+                .then(networkResponse => {
+                    if (networkResponse.status === 200 && networkResponse.type === 'basic') {
+                        const clone = networkResponse.clone();
+                        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
                     }
-                    // Fallback to index.html for navigation requests
-                    if (event.request.mode === 'navigate') {
-                        return caches.match('/TaskPlanner/index.html');
-                    }
-                });
-            })
+                    return networkResponse;
+                }).catch(() => null); // fail silently on fetch error
+
+            return cachedResponse || fetchPromise;
+        })
     );
 });
