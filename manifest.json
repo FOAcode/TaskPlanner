@@ -7,7 +7,7 @@
     "start_url": "/TaskPlanner/index.html",
     "scope": "/TaskPlanner/",
     "display": "standalone",
-    "orientation": "any",
+    "orientation": "default",
     "background_color": "#ffffff",
     "theme_color": "#000000",
     "prefer_related_applications": false,
