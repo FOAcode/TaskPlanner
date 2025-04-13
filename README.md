@@ -44,7 +44,7 @@ After **5 incorrect attempts**, the app will introduce a 5-second delay before a
 
 ## 📋 Main Screen
 
-The main interface displays the task list ordered by date and importance.
+The main interface displays the task list ordered by date and importance. Drag and drop the task from one column to another to change their status. Copy to clipboard the currently displayed column tasks and paste them in chats or other documents. 
 
 ![MainView](./media/example_tasks_list.png)
 
