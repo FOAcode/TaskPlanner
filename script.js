@@ -21,6 +21,17 @@ window.addEventListener('resize', () => {
 
 const translations = {
     en: {
+        languageName: "English",
+        languages: {
+            en: "English",
+            it: "Italian",
+            es: "Spanish",
+            de: "German",
+            fr: "French",
+            ro: "Romanian",
+            pt: "Portuguese",
+            zh: "Chinese"
+        },
         task: "Task",
         due: "Due",
         assignedTo: "Assigned to",
@@ -65,6 +76,17 @@ const translations = {
         passwordsDoNotMatch: "Passwords do not match. Please try again."
     },
     it: {
+        languageName: "Italiano",
+        languages: {
+            en: "Inglese",
+            it: "Italiano",
+            es: "Spagnolo",
+            de: "Tedesco",
+            fr: "Francese",
+            ro: "Rumeno",
+            pt: "Portoghese",
+            zh: "Cinese"
+        },
         task: "Compito",
         due: "Scadenza",
         assignedTo: "Assegnato a",
@@ -108,6 +130,17 @@ const translations = {
         writeDownPassword: "Ricorda la tua password poiché verrà utilizzata per decrittografare i tuoi dati."
     },
     es: {
+        languageName: "Español",
+        languages: {
+            en: "Inglés",
+            it: "Italiano",
+            es: "Español",
+            de: "Alemán",
+            fr: "Francés",
+            ro: "Rumano",
+            pt: "Portugués",
+            zh: "Chino"
+        },
         task: "Tarea",
         due: "Vence",
         assignedTo: "Asignado a",
@@ -151,6 +184,17 @@ const translations = {
         writeDownPassword: "Recuerda tu contraseña ya que se utilizará para descifrar tus datos."
     },
     pt: {
+        languageName: "Português",
+        languages: {
+            en: "Inglês",
+            it: "Italiano",
+            es: "Espanhol",
+            de: "Alemão",
+            fr: "Francês",
+            ro: "Romeno",
+            pt: "Português",
+            zh: "Chinês"
+        },
         task: "Tarefa",
         due: "Vence",
         assignedTo: "Atribuído a",
@@ -194,6 +238,17 @@ const translations = {
         writeDownPassword: "Lembre-se da sua senha, pois ela será usada para descriptografar seus dados."
     },
     ro: {
+        languageName: "Română",
+        languages: {
+            en: "Engleză",
+            it: "Italiană",
+            es: "Spaniolă",
+            de: "Germană",
+            fr: "Franceză",
+            ro: "Română",
+            pt: "Portugheză",
+            zh: "Chineză"
+        },
         task: "Sarcină",
         due: "Termen",
         assignedTo: "Atribuit lui",
@@ -237,6 +292,17 @@ const translations = {
         writeDownPassword: "Ține minte parola ta, deoarece va fi folosită pentru a decripta datele tale."
     },
     de: {
+        languageName: "Deutsch",
+        languages: {
+            en: "Englisch",
+            it: "Italienisch",
+            es: "Spanisch",
+            de: "Deutsch",
+            fr: "Französisch",
+            ro: "Rumänisch",
+            pt: "Portugiesisch",
+            zh: "Chinesisch"
+        },
         task: "Aufgabe",
         due: "Fällig",
         assignedTo: "Zugewiesen an",
@@ -280,6 +346,17 @@ const translations = {
         writeDownPassword: "Merken Sie sich Ihr Passwort, da es zur Entschlüsselung Ihrer Daten verwendet wird."
     },
     zh: {
+        languageName: "中文",
+        languages: {
+            en: "英文",
+            it: "意大利文",
+            es: "西班牙文",
+            de: "德文",
+            fr: "法文",
+            ro: "罗马尼亚文",
+            pt: "葡萄牙文",
+            zh: "中文"
+        },
         task: "任务",
         due: "截止日期",
         assignedTo: "分配给",
@@ -323,6 +400,17 @@ const translations = {
         writeDownPassword: "记住您的密码，因为它将用于解密您的数据。"
     },
     fr: {
+        languageName: "Français",
+        languages: {
+            en: "Anglais",
+            it: "Italien",
+            es: "Espagnol",
+            de: "Allemand",
+            fr: "Français",
+            ro: "Roumain",
+            pt: "Portugais",
+            zh: "Chinois"
+        },
         task: "Tâche",
         due: "Échéance",
         assignedTo: "Assigné à",
@@ -374,60 +462,167 @@ function getDayOfWeek(date, language) {
 }
 
 function applyTranslations(language) {
-    document.querySelectorAll('.task .description').forEach(description => {
-        const details = description.nextElementSibling;
-        const [dueText, assignedToText] = details.innerText.split('|');
-        const dueDate = dueText.split(': ')[1].split(' ')[0];
-        const dayOfWeek = getDayOfWeek(dueDate, language);
-        const assignedTo = assignedToText.split(': ')[1];
-        details.innerText = `${translations[language].due}: ${dueDate} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}`;
-    });
+    console.log('applyTranslations() called with language:', language);
+    console.log('translations object available:', !!translations);
+    console.log('Language data available:', !!translations[language]);
+    
+    try {
+        // Update task details (due date and assigned to)
+        const taskDescriptions = document.querySelectorAll('.task .description');
+        console.log('Found task descriptions:', taskDescriptions.length);
+        taskDescriptions.forEach(description => {
+            const details = description.nextElementSibling;
+            if (details) {
+                const [dueText, assignedToText] = details.innerText.split('|');
+                const dueDate = dueText.split(': ')[1].split(' ')[0];
+                const dayOfWeek = getDayOfWeek(dueDate, language);
+                const assignedTo = assignedToText.split(': ')[1];
+                details.innerText = `${translations[language].due}: ${dueDate} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}`;
+            }
+        });
+    } catch (e) {
+        console.error('Error updating task details:', e);
+    }
 
-    document.querySelector('#popup h3').innerText = translations[language].addEditTask;
-    document.querySelector('#popup button[onclick="deleteTask()"]').innerText = translations[language].delete;
-    document.querySelector('#popup button[onclick="saveTask()"]').innerText = translations[language].save;
-    document.querySelector('#taskDescription').placeholder = translations[language].task;
-    document.querySelector('#taskAssignedTo').placeholder = translations[language].assignedTo;
-    document.querySelector('#todo-column h2').innerText = translations[language].toDo;
-    document.querySelector('#in-progress-column h2').innerText = translations[language].inProgress;
-    document.querySelector('#done-column h2').innerText = translations[language].done;
-    document.querySelector('#settings-popup h2').innerText = translations[language].menu;
-    document.querySelector('#settings-popup h3:nth-of-type(1)').innerText = translations[language].file;
-    document.querySelector('#settings-popup button[onclick="document.getElementById(\'loadFile\').click()"]').innerText = translations[language].load;
-    document.querySelector('#settings-popup button[onclick="exportTasks()"]').innerText = translations[language].export;
-    document.querySelector('#settings-popup h3:nth-of-type(2)').innerText = translations[language].settings;
-    document.querySelector('label[for="darkModeToggle"]').innerText = translations[language].darkMode;
-    document.querySelector('label[for="fontStyle"]').innerText = translations[language].fontStyle;
-    document.querySelector('label[for="fontFamily"]').innerText = translations[language].fontFamily;
-    document.querySelector('label[for="languageSelect"]').innerText = translations[language].language;
-    document.querySelector('#settings-popup h3:nth-of-type(3)').innerText = translations[language].about;
+    // Update popup titles and buttons
+    const updateElement = (selector, property, value) => {
+        try {
+            const element = document.querySelector(selector);
+            if (element) {
+                console.log('Updating element:', selector, 'with value:', value);
+                element[property] = value;
+            } else {
+                console.warn('Element not found:', selector);
+            }
+        } catch (e) {
+            console.error('Error updating element ' + selector + ':', e);
+        }
+    };
+
+    console.log('Starting to update UI elements...');
+    updateElement('#popup h3', 'innerText', translations[language].addEditTask);
+    updateElement('#popup button[onclick="deleteTask()"]', 'innerText', translations[language].delete);
+    updateElement('#popup button[onclick="saveTask()"]', 'innerText', translations[language].save);
+    updateElement('#taskDescription', 'placeholder', translations[language].task);
+    updateElement('#taskAssignedTo', 'placeholder', translations[language].assignedTo);
+    
+    // Update column headers
+    updateElement('#todo-column h2', 'innerText', translations[language].toDo);
+    updateElement('#in-progress-column h2', 'innerText', translations[language].inProgress);
+    updateElement('#done-column h2', 'innerText', translations[language].done);
+    
+    // Update settings popup
+    updateElement('#settings-popup h2', 'innerText', translations[language].menu);
+    updateElement('#settings-popup h3:nth-of-type(1)', 'innerText', translations[language].file);
+    updateElement('#settings-popup button[onclick="document.getElementById(\'loadFile\').click()"]', 'innerText', translations[language].load);
+    updateElement('#settings-popup button[onclick="exportTasks()"]', 'innerText', translations[language].export);
+    updateElement('#settings-popup h3:nth-of-type(2)', 'innerText', translations[language].settings);
+    updateElement('label[for="darkModeToggle"]', 'innerText', translations[language].darkMode);
+    updateElement('label[for="fontStyle"]', 'innerText', translations[language].fontStyle);
+    updateElement('label[for="fontFamily"]', 'innerText', translations[language].fontFamily);
+    updateElement('label[for="languageSelect"]', 'innerText', translations[language].language);
+    updateElement('#settings-popup h3:nth-of-type(3)', 'innerText', translations[language].about);
+    updateElement('label[for="taskStyleToggle"]', 'innerText', translations[language].oneColor);
+    
     const aboutSection = document.querySelector('#settings-popup p');
-    aboutSection.innerHTML = `Task Planner v0.8.0 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
-    document.querySelector('#settings-popup footer').innerText = `©2025 FOAcode`;
-    document.querySelector('label[for="taskStyleToggle"]').innerText = translations[language].oneColor;
+    if (aboutSection) {
+        aboutSection.innerHTML = `Task Planner v0.8.1 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
+    }
+    
+    const footer = document.querySelector('#settings-popup footer');
+    if (footer) {
+        footer.innerText = `©2025 FOAcode`;
+    }
+    
+    // Update priority label
     const priorityLabel = document.getElementById('priorityLabel');
     const taskPriorityCheckbox = document.getElementById('taskPriority');
-    priorityLabel.textContent = taskPriorityCheckbox.checked 
-        ? translations[language].removePriority 
-        : translations[language].assignPriority;
+    if (priorityLabel && taskPriorityCheckbox) {
+        priorityLabel.textContent = taskPriorityCheckbox.checked 
+            ? translations[language].removePriority 
+            : translations[language].assignPriority;
+    }
+    
+    // Update floating popup menu
+    const floatingPopup = document.getElementById('floating-popup');
     if (floatingPopup) {
         const reorderTaskLabel = floatingPopup.querySelector('li:nth-child(1)');
         const filterTaskLabel = floatingPopup.querySelector('li:nth-child(2)');
         const settingsLabel = floatingPopup.querySelector('li:nth-child(3)');
         
-        reorderTaskLabel.childNodes[1].nodeValue = ` ${translations[language].reorderTasks}`;
-        filterTaskLabel.childNodes[1].nodeValue = ` ${translations[language].filterTasks}`;
-        settingsLabel.childNodes[1].nodeValue = ` ${translations[language].settings}`;
+        if (reorderTaskLabel && reorderTaskLabel.childNodes[1]) {
+            reorderTaskLabel.childNodes[1].nodeValue = ` ${translations[language].reorderTasks}`;
+        }
+        if (filterTaskLabel && filterTaskLabel.childNodes[1]) {
+            filterTaskLabel.childNodes[1].nodeValue = ` ${translations[language].filterTasks}`;
+        }
+        if (settingsLabel && settingsLabel.childNodes[1]) {
+            settingsLabel.childNodes[1].nodeValue = ` ${translations[language].settings}`;
+        }
     }
+    
+    console.log('About to call updateTodayDate()...');
     updateTodayDate(); // Update the initial column date
-    // Update other UI elements as needed
-    updateFloatingPopupLabels(); // Add this line to ensure floating labels are updated
+    console.log('About to call updateFloatingPopupLabels...');
+    updateFloatingPopupLabels(language); // Update floating popup labels
+    
+    console.log('applyTranslations() completed successfully for language:', language);
 }
 
 function changeLanguage() {
     const language = document.getElementById('languageSelect').value;
+    console.log('changeLanguage() called with language:', language);
     localStorage.setItem('language', language);
-    applyTranslations(language);
+    // First update the language option labels so the dropdown shows names in the chosen language,
+    // then re-apply translations to update the rest of the UI immediately.
+    updateLanguageOptions(language); // Update language option labels
+    // Ensure the select shows the correct value after relabeling
+    const langSelect = document.getElementById('languageSelect');
+    if (langSelect) langSelect.value = language;
+    // Also update entry page language select if present
+    const entryLangSelect = document.getElementById('entry-language-select');
+    if (entryLangSelect) entryLangSelect.value = language;
+    console.log('About to apply translations for language:', language);
+    try {
+        applyTranslations(language);
+        console.log('applyTranslations completed successfully');
+    } catch (error) {
+        console.error('Error in applyTranslations:', error);
+    }
+    console.log('changeLanguage() completed');
+}
+
+function updateLanguageOptions(currentLanguage) {
+    const languageSelect = document.getElementById('languageSelect');
+    if (!languageSelect) return;
+    const options = languageSelect.querySelectorAll('option');
+    const currentLangTranslations = translations[currentLanguage] || {};
+
+    options.forEach(option => {
+        const langCode = option.value;
+        // Prefer the translated name in current language, fallback to that language's own languageName
+        const translatedName = (currentLangTranslations.languages && currentLangTranslations.languages[langCode])
+            || (translations[langCode] && translations[langCode].languageName)
+            || option.textContent;
+        option.textContent = translatedName;
+    });
+
+    // Keep the select value as the current language after relabeling
+    languageSelect.value = currentLanguage;
+
+    // Also update entry-language-select if it exists (entry popup at startup)
+    const entryLangSelect = document.getElementById('entry-language-select');
+    if (entryLangSelect) {
+        const entryOptions = entryLangSelect.querySelectorAll('option');
+        entryOptions.forEach(option => {
+            const langCode = option.value;
+            const translatedName = (currentLangTranslations.languages && currentLangTranslations.languages[langCode])
+                || (translations[langCode] && translations[langCode].languageName)
+                || option.textContent;
+            option.textContent = translatedName;
+        });
+        entryLangSelect.value = currentLanguage;
+    }
 }
 
 function createTaskElement(description, date, assignedTo, isPrioritary = false) {
@@ -441,6 +636,7 @@ function createTaskElement(description, date, assignedTo, isPrioritary = false) 
     const formattedDescription = description.replace(/\n/g, '<br>'); // Replace newline with <br>
     task.innerHTML = `
         <div class="description">${formattedDescription}</div>
+        <hr class="task-separator">
         <div class="details">${translations[language].due}: ${date} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}</div>
     `;
     task.addEventListener('dragstart', dragStart);
@@ -516,6 +712,16 @@ function openPopup(columnId, task = null) {
     popup.style.maxWidth = `${maxScreenWidth * 0.9}px`; // Set max width based on initial screen size
     popup.style.maxHeight = `${maxScreenHeight * 0.9}px`; // Set max height based on initial screen size
     document.getElementById('overlay').style.display = 'block';
+    
+    // Add Ctrl+S key listener to save task
+    const popupElement = popup;
+    popupElement.onkeydown = function(event) {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            saveTask();
+        }
+    };
+    
     setTimeout(() => popup.classList.add('show'), 10); // Add show class after a short delay
 }
 
@@ -908,7 +1114,7 @@ async function handleEntry() {
                 const savedLanguage = localStorage.getItem('language') || 'en';
                 document.getElementById('languageSelect').value = savedLanguage;
                 applyTranslations(savedLanguage);
-                updateFloatingPopupLabels(); // Add this line
+                updateFloatingPopupLabels(savedLanguage); // Add this line
             }, 500);
         } catch (error) {
             if (error.message === "No tasks to decrypt") {
@@ -1097,10 +1303,16 @@ function highlightCurrentFilter() {
 }
 
 function applyFilterAndHighlight(value) {
-    filterAssignedTo = value === 'All' ? '' : value; // Update the current filter value
-    highlightCurrentFilter(); 
-    applyFilter(filterAssignedTo);
-    // Highlight the current filter
+    const newFilterValue = value === 'All' ? '' : value; // Convert selected value
+    // Only close popup if the selected filter is different from the current one
+    if (newFilterValue !== filterAssignedTo) {
+        filterAssignedTo = newFilterValue; // Update the current filter value
+        highlightCurrentFilter(); 
+        applyFilter(filterAssignedTo);
+        closeFilterPopup(); // Auto-close the popup when a different filter is selected
+    } else {
+        closeFilterPopup(); // Also close if the same filter is clicked again
+    }
 }
 
 function applyFilter(filterValue = filterAssignedTo) {
@@ -1315,6 +1527,7 @@ window.addEventListener('load', async () => {
     const savedLanguage = localStorage.getItem('language') || 'en';
     document.getElementById('languageSelect').value = savedLanguage;
     applyTranslations(savedLanguage);
+    updateLanguageOptions(savedLanguage); // Initialize language options in the current language
 
     // Ensure floating-popup translations are applied on load
     const floatingPopup = document.querySelector('.floating-popup');
@@ -1373,6 +1586,12 @@ document.addEventListener('DOMContentLoaded', () => {
             handleEntry(); // Trigger submit on ENTER key
         }
     });
+    
+    // Add language select change listener
+    const languageSelect = document.getElementById('languageSelect');
+    if (languageSelect) {
+        languageSelect.addEventListener('change', changeLanguage);
+    }
 });
 
 function toggleTaskStyle() {
@@ -1446,20 +1665,15 @@ document.getElementById('filterSelect').addEventListener('click', (event) => {
 });
 
 // Update the floating popup labels based on the selected language
-function updateFloatingPopupLabels() {
-    const language = localStorage.getItem('language') || 'en';
-    document.getElementById('reorderTasksLabel').textContent = translations[language].reorderTasks;
-    document.getElementById('filterTasksLabel').textContent = translations[language].filterTasks;
-    document.getElementById('settingsLabel').textContent = translations[language].settings;
+function updateFloatingPopupLabels(language = null) {
+    const lang = language || localStorage.getItem('language') || 'en';
+    document.getElementById('reorderTasksLabel').textContent = translations[lang].reorderTasks;
+    document.getElementById('filterTasksLabel').textContent = translations[lang].filterTasks;
+    document.getElementById('settingsLabel').textContent = translations[lang].settings;
 }
 
 // Call the function to update labels on page load
 window.addEventListener('load', () => {
-    updateFloatingPopupLabels();
-});
-
-// Update floating popup labels when the language changes
-document.getElementById('languageSelect').addEventListener('change', () => {
     updateFloatingPopupLabels();
 });
 
