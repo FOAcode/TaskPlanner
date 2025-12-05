@@ -476,16 +476,16 @@ function applyTranslations(language) {
     
     try {
         // Update task details (due date and assigned to)
-        const taskDescriptions = document.querySelectorAll('.task .description');
-        console.log('Found task descriptions:', taskDescriptions.length);
-        taskDescriptions.forEach(description => {
-            const details = description.nextElementSibling;
-            if (details) {
-                const [dueText, assignedToText] = details.innerText.split('|');
-                const dueDate = dueText.split(': ')[1].split(' ')[0];
-                const dayOfWeek = getDayOfWeek(dueDate, language);
-                const assignedTo = assignedToText.split(': ')[1];
-                details.innerText = `${translations[language].due}: ${dueDate} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}`;
+        document.querySelectorAll('.task').forEach(task => {
+            const date = task.getAttribute('data-date');
+            const assignedTo = task.getAttribute('data-assigned-to');
+            if (date && assignedTo) {
+                const dayOfWeek = getDayOfWeek(date, language);
+                const detailsElement = task.querySelector('.details');
+                if (detailsElement) {
+                    detailsElement.innerText = `${translations[language].due}: ${date} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}`;
+                    console.log('Updated task details for date:', date);
+                }
             }
         });
     } catch (e) {
@@ -650,6 +650,9 @@ function createTaskElement(description, date, assignedTo, isPrioritary = false) 
     task.classList.add(getTaskColorClass(date));
     task.setAttribute('draggable', 'true');
     task.setAttribute('id', `task-${taskCounter++}`);
+    // Store date and assignedTo as data attributes for translation updates
+    task.setAttribute('data-date', date);
+    task.setAttribute('data-assigned-to', assignedTo);
     const language = localStorage.getItem('language') || 'en';
     const dayOfWeek = getDayOfWeek(date, language);
     const formattedDescription = description.replace(/\n/g, '<br>'); // Replace newline with <br>
