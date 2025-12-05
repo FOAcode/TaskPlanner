@@ -1334,8 +1334,12 @@ function openFilterPopup() {
     filterPopup.style.width = window.innerWidth > 900 ? '30%' : '85%'; // Ensure popup width is within 30% on big screens and 85% on small screens
     filterPopup.style.maxWidth = `${maxScreenWidth * 0.9}px`; // Set max width based on initial screen size
     filterPopup.style.maxHeight = `${maxScreenHeight * 0.9}px`; // Set max height based on initial screen size
-    document.getElementById('overlay').style.display = 'block';
-    setTimeout(() => filterPopup.classList.add('show'), 10); // Add show class after a short delay
+    const overlay = document.getElementById('overlay');
+    overlay.style.display = 'block';
+    setTimeout(() => {
+        filterPopup.classList.add('show');
+        overlay.classList.add('show');
+    }, 10); // Add show class after a short delay
 }
 
 function highlightCurrentFilter() {
@@ -1381,11 +1385,17 @@ function applyFilter(filterValue = filterAssignedTo) {
 
 function closeFilterPopup() {
     const filterPopup = document.getElementById('filter-popup');
+    const overlay = document.getElementById('overlay');
     filterPopup.classList.remove('show');
+    overlay.classList.remove('show');
+    filterPopup.classList.add('hiding');
+    overlay.classList.add('hiding');
     setTimeout(() => {
         filterPopup.style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }, 150); // Wait for the fade-out transition to complete
+        overlay.style.display = 'none';
+        filterPopup.classList.remove('hiding');
+        overlay.classList.remove('hiding');
+    }, 300); // Wait for the very slow fade-out transition to complete (1.2s)
 }
 
 function closeFilterOnClickOutside(event) {
