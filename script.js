@@ -73,7 +73,8 @@ const translations = {
         incorrectPassword: "Incorrect password. Please try again.",
         passwordCannotBeEmpty: "Password cannot be empty.",
         writeDownPassword: "Remember your password as it will be used to decrypt your data.",
-        passwordsDoNotMatch: "Passwords do not match. Please try again."
+        passwordsDoNotMatch: "Passwords do not match. Please try again.",
+        confirmation: "Confirmation"
     },
     it: {
         languageName: "Italiano",
@@ -127,7 +128,8 @@ const translations = {
         tooManyAttempts: "Troppi tentativi falliti. Attendere {time} secondi.",
         incorrectPassword: "Password errata. Riprova.",
         passwordCannotBeEmpty: "La password non può essere vuota.",
-        writeDownPassword: "Ricorda la tua password poiché verrà utilizzata per decrittografare i tuoi dati."
+        writeDownPassword: "Ricorda la tua password poiché verrà utilizzata per decrittografare i tuoi dati.",
+        confirmation: "Conferma"
     },
     es: {
         languageName: "Español",
@@ -181,7 +183,8 @@ const translations = {
         tooManyAttempts: "Demasiados intentos fallidos. Espere {time} segundos.",
         incorrectPassword: "Contraseña incorrecta. Inténtalo de nuevo.",
         passwordCannotBeEmpty: "La contraseña no puede estar vacía.",
-        writeDownPassword: "Recuerda tu contraseña ya que se utilizará para descifrar tus datos."
+        writeDownPassword: "Recuerda tu contraseña ya que se utilizará para descifrar tus datos.",
+        confirmation: "Confirmación"
     },
     pt: {
         languageName: "Português",
@@ -235,7 +238,8 @@ const translations = {
         tooManyAttempts: "Muitas tentativas falharam. Aguarde {time} segundos.",
         incorrectPassword: "Senha incorreta. Tente novamente.",
         passwordCannotBeEmpty: "A senha não pode estar vazia.",
-        writeDownPassword: "Lembre-se da sua senha, pois ela será usada para descriptografar seus dados."
+        writeDownPassword: "Lembre-se da sua senha, pois ela será usada para descriptografar seus dados.",
+        confirmation: "Confirmação"
     },
     ro: {
         languageName: "Română",
@@ -289,7 +293,8 @@ const translations = {
         tooManyAttempts: "Prea multe tentative eșuate. Așteptați {time} secunde.",
         incorrectPassword: "Parolă incorectă. Încercați din nou.",
         passwordCannotBeEmpty: "Parola nu poate fi goală.",
-        writeDownPassword: "Ține minte parola ta, deoarece va fi folosită pentru a decripta datele tale."
+        writeDownPassword: "Ține minte parola ta, deoarece va fi folosită pentru a decripta datele tale.",
+        confirmation: "Confirmare"
     },
     de: {
         languageName: "Deutsch",
@@ -343,7 +348,8 @@ const translations = {
         tooManyAttempts: "Zu viele fehlgeschlagene Versuche. Bitte warten Sie {time} Sekunden.",
         incorrectPassword: "Falsches Passwort. Bitte versuchen Sie es erneut.",
         passwordCannotBeEmpty: "Das Passwort darf nicht leer sein.",
-        writeDownPassword: "Merken Sie sich Ihr Passwort, da es zur Entschlüsselung Ihrer Daten verwendet wird."
+        writeDownPassword: "Merken Sie sich Ihr Passwort, da es zur Entschlüsselung Ihrer Daten verwendet wird.",
+        confirmation: "Bestätigung"
     },
     zh: {
         languageName: "中文",
@@ -397,7 +403,8 @@ const translations = {
         tooManyAttempts: "尝试次数过多。请等待 {time} 秒。",
         incorrectPassword: "密码错误。请再试一次。",
         passwordCannotBeEmpty: "密码不能为空。",
-        writeDownPassword: "记住您的密码，因为它将用于解密您的数据。"
+        writeDownPassword: "记住您的密码，因为它将用于解密您的数据。",
+        confirmation: "确认"
     },
     fr: {
         languageName: "Français",
@@ -451,7 +458,8 @@ const translations = {
         tooManyAttempts: "Trop de tentatives échouées. Veuillez attendre {time} secondes.",
         incorrectPassword: "Mot de passe incorrect. Veuillez réessayer.",
         passwordCannotBeEmpty: "Le mot de passe ne peut pas être vide.",
-        writeDownPassword: "Mémorisez votre mot de passe car il sera utilisé pour décrypter vos données."
+        writeDownPassword: "Mémorisez votre mot de passe car il sera utilisé pour décrypter vos données.",
+        confirmation: "Confirmation"
     }
     // Add more languages as needed
 };
@@ -560,6 +568,17 @@ function applyTranslations(language) {
             settingsLabel.childNodes[1].nodeValue = ` ${translations[language].settings}`;
         }
     }
+    
+    // Update confirmation modal text
+    const confirmationTitle = document.getElementById('confirmation-title');
+    const confirmationMessage = document.getElementById('confirmation-message');
+    const confirmationCancel = document.getElementById('confirmation-cancel');
+    const confirmationConfirm = document.getElementById('confirmation-confirm');
+    
+    if (confirmationTitle) confirmationTitle.innerText = translations[language].confirmation;
+    if (confirmationMessage) confirmationMessage.innerText = translations[language].confirmDeleteDoneTasks;
+    if (confirmationCancel) confirmationCancel.innerText = 'Cancel';
+    if (confirmationConfirm) confirmationConfirm.innerText = translations[language].delete;
     
     console.log('About to call updateTodayDate()...');
     updateTodayDate(); // Update the initial column date
@@ -1226,9 +1245,39 @@ async function loadAutoSavedTasks() {
 }
 
 function confirmDeleteDoneTasks() {
-    if (confirm(translations[localStorage.getItem('language') || 'en'].confirmDeleteDoneTasks)) {
-        deleteDoneTasks();
-    }
+    // Show the confirmation modal instead of browser confirm
+    const language = localStorage.getItem('language') || 'en';
+    document.getElementById('confirmation-title').innerText = translations[language].confirmation;
+    document.getElementById('confirmation-message').innerText = translations[language].confirmDeleteDoneTasks;
+    document.getElementById('confirmation-cancel').innerText = translations[language].close || 'Cancel';
+    document.getElementById('confirmation-confirm').innerText = translations[language].delete;
+    
+    const confirmationModal = document.getElementById('confirmation-modal');
+    const confirmationOverlay = document.getElementById('confirmation-overlay');
+    
+    confirmationModal.style.display = 'block';
+    confirmationOverlay.style.display = 'block';
+    confirmationModal.style.zIndex = '1003';
+    confirmationOverlay.style.zIndex = '1002';
+    
+    setTimeout(() => confirmationModal.classList.add('show'), 10);
+}
+
+function confirmDeleteDoneTasks_Modal() {
+    // Actually delete the tasks
+    deleteDoneTasks();
+    closeConfirmationModal();
+}
+
+function closeConfirmationModal() {
+    const confirmationModal = document.getElementById('confirmation-modal');
+    const confirmationOverlay = document.getElementById('confirmation-overlay');
+    
+    confirmationModal.classList.remove('show');
+    setTimeout(() => {
+        confirmationModal.style.display = 'none';
+        confirmationOverlay.style.display = 'none';
+    }, 150);
 }
 
 function deleteDoneTasks() {

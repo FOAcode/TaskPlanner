@@ -176,6 +176,17 @@
         </div>
     </div>
 
+    <!-- Confirmation Modal for Delete Done Tasks -->
+    <div class="overlay" id="confirmation-overlay" onclick="closeConfirmationModal()"></div>
+    <div class="popup" id="confirmation-modal">
+        <h3 id="confirmation-title" style="text-align: center;">Confirm Delete</h3>
+        <p id="confirmation-message" style="text-align: center; margin: 20px 0;">Are you sure you want to delete all tasks in the Done column?</p>
+        <div class="button-container">
+            <button id="confirmation-cancel" onclick="closeConfirmationModal()" class="popup-button">Cancel</button>
+            <button id="confirmation-confirm" onclick="confirmDeleteDoneTasks_Modal()" class="popup-button" style="background-color: #d32f2f; color: white;">Delete</button>
+        </div>
+    </div>
+
     <div class="column" id="todo-column">
         <div class="row">
             <div class="button-container">
