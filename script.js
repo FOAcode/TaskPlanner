@@ -526,7 +526,7 @@ function applyTranslations(language) {
     updateElement('#settings-popup button[onclick="exportTasks()"]', 'innerText', translations[language].export);
     updateElement('#settings-popup h3:nth-of-type(2)', 'innerText', translations[language].settings);
     updateElement('label[for="darkModeToggle"]', 'innerText', translations[language].darkMode);
-    updateElement('label[for="fontStyle"]', 'innerText', translations[language].fontStyle);
+    updateElement('.options-container:has(.font-style-buttons) > label', 'innerText', translations[language].fontStyle);
     updateElement('label[for="fontFamily"]', 'innerText', translations[language].fontFamily);
     updateElement('label[for="languageSelect"]', 'innerText', translations[language].language);
     updateElement('#settings-popup h3:nth-of-type(3)', 'innerText', translations[language].about);
@@ -534,7 +534,7 @@ function applyTranslations(language) {
     
     const aboutSection = document.querySelector('#settings-popup p');
     if (aboutSection) {
-        aboutSection.innerHTML = `Task Planner v0.8.1 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
+        aboutSection.innerHTML = `Task Planner v0.8.2 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
     }
     
     const footer = document.querySelector('#settings-popup footer');
@@ -644,6 +644,58 @@ function updateLanguageOptions(currentLanguage) {
     }
 }
 
+function handleTaskRightClick(event, task) {
+    event.preventDefault();
+    
+    // Store reference to the current task
+    window.currentContextTask = task;
+    
+    // Get the context menu
+    const contextMenu = document.getElementById('task-context-menu');
+    
+    // Position the context menu at the mouse cursor
+    contextMenu.style.left = event.pageX + 'px';
+    contextMenu.style.top = event.pageY + 'px';
+    
+    // Show the context menu
+    contextMenu.classList.add('show');
+    
+    // Close context menu when clicking elsewhere
+    document.addEventListener('click', closeContextMenu);
+}
+
+function closeContextMenu() {
+    const contextMenu = document.getElementById('task-context-menu');
+    contextMenu.classList.remove('show');
+    document.removeEventListener('click', closeContextMenu);
+}
+
+function copyTaskToClipboard() {
+    const task = window.currentContextTask;
+    if (!task) return;
+    
+    // Get task information
+    const description = task.querySelector('.description').innerText;
+    const details = task.querySelector('.details').innerText;
+    const taskText = `${description}\n${details}`;
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(taskText).then(() => {
+        // Show brief visual feedback
+        task.style.opacity = '0.7';
+        setTimeout(() => {
+            task.style.opacity = '1';
+        }, 200);
+        
+        // Close the context menu
+        closeContextMenu();
+    }).catch(err => {
+        console.error('Failed to copy to clipboard:', err);
+        alert('Failed to copy task to clipboard');
+        closeContextMenu();
+    });
+}
+
 function createTaskElement(description, date, assignedTo, isPrioritary = false) {
     const task = document.createElement('div');
     task.classList.add('task');
@@ -664,6 +716,7 @@ function createTaskElement(description, date, assignedTo, isPrioritary = false) 
     task.addEventListener('dragstart', dragStart);
     task.addEventListener('dragend', dragEnd);
     task.addEventListener('dblclick', () => openPopup(task.parentElement.id, task));
+    task.addEventListener('contextmenu', (e) => handleTaskRightClick(e, task));
 
     // Apply font style to new task
     const fontStyle = localStorage.getItem('fontStyle');
@@ -682,9 +735,15 @@ function createTaskElement(description, date, assignedTo, isPrioritary = false) 
 
 // Set color for the tasks based on date
 function getTaskColorClass(date) {
+    // Parse the date string (format: YYYY-MM-DD) and create a local date
+    const [year, month, day] = date.split('-').map(Number);
+    const taskDate = new Date(year, month - 1, day);
+    
+    // Get today's date (local, no time component)
     const today = new Date();
-    const taskDate = new Date(date);
-    const diffTime = taskDate - today;
+    const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    
+    const diffTime = taskDate - todayDate;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays < 0) {
@@ -943,7 +1002,14 @@ function loadTasks(content) {
         const column = document.getElementById(taskData.columnId);
         const taskElement = createTaskElement(taskData.description.replace(/<br>/g, '\n'), taskData.date, taskData.assignedTo, taskData.isPrioritary); // Replace <br> with newline
         if (column.id === 'done-column') {
-            taskElement.className = 'task green';
+            // For done-column tasks, replace color classes with 'green'
+            const classArray = Array.from(taskElement.classList);
+            classArray.forEach(className => {
+                if (className.startsWith('red-') || className === 'grey' || className === 'today' || className === 'past') {
+                    taskElement.classList.remove(className);
+                }
+            });
+            taskElement.classList.add('green');
         }
         column.appendChild(taskElement);
     });
@@ -1294,13 +1360,24 @@ function toggleDarkMode() {
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
-function changeFontStyle() {
-    const fontStyle = document.getElementById('fontStyle').value;
+function changeFontStyle(style) {
+    // If called from button, style parameter is provided
+    // If called from initialization, get from dropdown
+    if (!style) {
+        style = document.getElementById('fontStyle') ? document.getElementById('fontStyle').value : localStorage.getItem('fontStyle') || 'normal';
+    }
+    
+    // Update button highlighting
+    document.getElementById('fontStyleNormal').classList.toggle('selected', style === 'normal');
+    document.getElementById('fontStyleBold').classList.toggle('selected', style === 'bold');
+    document.getElementById('fontStyleItalic').classList.toggle('selected', style === 'italic');
+    
+    // Apply font style to tasks
     document.querySelectorAll('.task .description').forEach(description => {
-        description.style.fontStyle = fontStyle === 'italic' ? 'italic' : 'normal';
-        description.style.fontWeight = fontStyle === 'bold' ? 'bold' : 'normal';
+        description.style.fontStyle = style === 'italic' ? 'italic' : 'normal';
+        description.style.fontWeight = style === 'bold' ? 'bold' : 'normal';
     });
-    localStorage.setItem('fontStyle', fontStyle);
+    localStorage.setItem('fontStyle', style);
 }
 
 function changeFontFamily() {
@@ -1320,7 +1397,7 @@ function openFilterPopup() {
     filterSelect.innerHTML = ''; // Clear existing options
     const allOption = document.createElement('div');
     allOption.className = 'filter-tile';
-    allOption.innerText = 'All';
+    allOption.innerText = 'All Tasks';
     allOption.onclick = () => applyFilterAndHighlight('All');
     filterSelect.appendChild(allOption);
     assignedToValues.forEach(value => {
@@ -1359,7 +1436,7 @@ function highlightCurrentFilter() {
 }
 
 function applyFilterAndHighlight(value) {
-    const newFilterValue = value === 'All' ? '' : value; // Convert selected value
+    const newFilterValue = value === 'All' || value === 'All Tasks' ? '' : value; // Convert selected value
     // Only close popup if the selected filter is different from the current one
     if (newFilterValue !== filterAssignedTo) {
         filterAssignedTo = newFilterValue; // Update the current filter value
@@ -1575,8 +1652,9 @@ window.addEventListener('load', async () => {
     }
     const savedFontStyle = localStorage.getItem('fontStyle');
     if (savedFontStyle) {
-        document.getElementById('fontStyle').value = savedFontStyle;
-        changeFontStyle();
+        changeFontStyle(savedFontStyle);
+    } else {
+        changeFontStyle('normal');
     }
     const savedFontFamily = localStorage.getItem('fontFamily');
     if (savedFontFamily) {

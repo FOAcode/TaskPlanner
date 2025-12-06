@@ -165,9 +165,7 @@
             }
         </script>
         <textarea id="taskDescription" placeholder="Description" autocomplete="off"></textarea>
-        <hr style="border: none; border-top: 1px solid #ddd; margin: 10px 0;">
         <input type="date" id="taskDate" autocomplete="off">
-        <hr style="border: none; border-top: 1px solid #ddd; margin: 10px 0;">
         <input list="assignedToList" id="taskAssignedTo" placeholder="Assigned To" autocomplete="off" onfocus="showAllOptions()" onclick="showAllOptions()">
         <datalist id="assignedToList" style="display: none; position: absolute; max-height: 150px; overflow-y: auto;"></datalist>
         <div class="button-container">
@@ -222,6 +220,14 @@
         <span class="close-popup" onclick="closeFilterPopup()">&#10006;</span>
         <div id="filterSelect" class="filter-tiles"></div>
     </div>
+
+    <div class="task-context-menu" id="task-context-menu">
+        <button onclick="copyTaskToClipboard()" class="context-menu-button">
+            <span class="material-icons">content_copy</span>
+            <span>Copy Task</span>
+        </button>
+    </div>
+
     <div class="settings-popup" id="settings-popup">
         <span class="close-popup" onclick="closeSettings()">&#10006;</span>
         <h2>Menu</h2>
@@ -249,12 +255,12 @@
             </label>
         </div>
         <div class="options-container">
-            <label for="fontStyle">Font Style</label>
-            <select id="fontStyle" onchange="changeFontStyle()">
-                <option value="normal">Normal</option>
-                <option value="bold">Bold</option>
-                <option value="italic">Italic</option>
-            </select>
+            <label>Font Style</label>
+            <div class="font-style-buttons">
+                <button id="fontStyleNormal" class="font-style-btn selected" onclick="changeFontStyle('normal')" title="Normal" style="font-weight: normal;">N</button>
+                <button id="fontStyleBold" class="font-style-btn" onclick="changeFontStyle('bold')" title="Bold" style="font-weight: bold;">B</button>
+                <button id="fontStyleItalic" class="font-style-btn" onclick="changeFontStyle('italic')" title="Italic" style="font-style: italic;">I</button>
+            </div>
         </div>
         <div class="options-container">
             <label for="fontFamily">Font Family</label>
