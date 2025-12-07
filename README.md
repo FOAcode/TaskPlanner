@@ -1,4 +1,4 @@
-# Task Planner v0.8.0 (Beta)
+# Task Planner v0.8.2 (Beta)
 
 **Task Planner** is a lightweight and fast local task management tool designed to help you organize activities efficiently.  
 This is a **beta release** — bugs and instability may be present.
@@ -29,7 +29,6 @@ Start by entering and confirming your password. This is the only way to access y
 **Keep it safe — forgotten passwords cannot be recovered.**
 
 ![SetPassword1](./media/example_task_planner_setpassword1.png)
-![SetPassword2](./media/example_task_planner_setpassword2.png)
 
 ---
 
