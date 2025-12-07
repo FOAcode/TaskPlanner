@@ -986,11 +986,20 @@ function closeSettingsOnClickOutside(event) {
 
 function loadFile(event) {
     const file = event.target.files[0];
+    if (!file) return;
+    
     const reader = new FileReader();
     reader.onload = function(e) {
-        const content = JSON.parse(e.target.result);
-        loadTasks(content);
-        closeSettings();
+        try {
+            const content = JSON.parse(e.target.result);
+            loadTasks(content);
+            closeSettings();
+        } catch (error) {
+            console.error('Error parsing JSON file:', error);
+            alert('Error loading file. Please ensure it is a valid JSON file.');
+        }
+        // Reset the file input so the same file can be loaded again
+        event.target.value = '';
     };
     reader.readAsText(file);
 }
