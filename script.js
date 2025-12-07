@@ -1178,6 +1178,9 @@ async function handleEntry() {
             if (filterLabel) filterLabel.textContent = translations[language].filterTasks;
             if (settingsLabel) settingsLabel.textContent = translations[language].settings;
             
+            // Update language dropdown options with translated names
+            updateLanguageOptions(language);
+            
             applyTranslations(language);
         }, 500);
 
@@ -1201,6 +1204,10 @@ async function handleEntry() {
                 document.body.classList.add("unlocked");
                 const savedLanguage = localStorage.getItem('language') || 'en';
                 document.getElementById('languageSelect').value = savedLanguage;
+                
+                // Update language dropdown options with translated names
+                updateLanguageOptions(savedLanguage);
+                
                 applyTranslations(savedLanguage);
                 updateFloatingPopupLabels(savedLanguage); // Add this line
             }, 500);
