@@ -1000,7 +1000,8 @@ function loadTasks(content) {
     document.querySelectorAll('.task').forEach(task => task.remove());
     content.forEach(taskData => {
         const column = document.getElementById(taskData.columnId);
-        const taskElement = createTaskElement(taskData.description.replace(/<br>/g, '\n'), taskData.date, taskData.assignedTo, taskData.isPrioritary); // Replace <br> with newline
+        // Description already has newlines from export, just use it as-is
+        const taskElement = createTaskElement(taskData.description, taskData.date, taskData.assignedTo, taskData.isPrioritary);
         if (column.id === 'done-column') {
             // For done-column tasks, replace color classes with 'green'
             const classArray = Array.from(taskElement.classList);
@@ -1020,6 +1021,7 @@ function loadTasks(content) {
 function exportTasks() {
     const tasks = [];
     document.querySelectorAll('.task').forEach(task => {
+        // Get the raw description with newlines preserved from innerText
         const description = task.querySelector('.description').innerText;
         const details = task.querySelector('.details').innerText.split('|');
         const date = details[0].split(': ')[1].split(' ')[0];
