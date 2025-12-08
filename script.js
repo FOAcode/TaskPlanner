@@ -534,7 +534,7 @@ function applyTranslations(language) {
     
     const aboutSection = document.querySelector('#settings-popup p');
     if (aboutSection) {
-        aboutSection.innerHTML = `Task Planner v0.8.2 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
+        aboutSection.innerHTML = `Task Planner v0.8.3 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
     }
     
     const footer = document.querySelector('#settings-popup footer');
@@ -608,6 +608,7 @@ function changeLanguage() {
     } catch (error) {
         console.error('Error in applyTranslations:', error);
     }
+    updateFloatingDateLabel();
     console.log('changeLanguage() completed');
 }
 
@@ -1633,6 +1634,38 @@ function updateTodayDate() {
     document.getElementById('today-date').innerText = `${dayOfWeek}, ${formattedDate}`;
 }
 
+function updateFloatingDateLabel() {
+    const dayOfWeekEl = document.getElementById('day-of-week');
+    const currentDateEl = document.getElementById('current-date');
+    
+    if (!dayOfWeekEl || !currentDateEl) {
+        console.warn('Floating date label elements not found');
+        return;
+    }
+    
+    try {
+        const today = new Date();
+        const language = localStorage.getItem('language') || 'en';
+        
+        // Check if translations are available
+        if (!translations || !translations[language] || !translations[language].weekdays) {
+            console.warn('Translations not available for language:', language);
+            return;
+        }
+        
+        const dayOfWeek = translations[language].weekdays[today.getDay()];
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        
+        dayOfWeekEl.innerText = dayOfWeek;
+        currentDateEl.innerText = formattedDate;
+    } catch (error) {
+        console.error('Error updating floating date label:', error);
+    }
+}
+
 function showAllOptions() {
     const assignedToInput = document.getElementById('taskAssignedTo');
     assignedToInput.value = '';
@@ -1667,6 +1700,10 @@ window.addEventListener('load', async () => {
     if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
         document.getElementById('darkModeToggle').checked = true;
+    }
+    if (localStorage.getItem('oneColorMode') === 'true') {
+        document.body.classList.add('one-color-mode');
+        document.getElementById('taskStyleToggle').checked = true;
     }
     const savedFontStyle = localStorage.getItem('fontStyle');
     if (savedFontStyle) {
@@ -1710,6 +1747,8 @@ window.addEventListener('load', async () => {
     document.querySelector('.floating-popup .settings').innerText = translations[savedLanguage].settings;
 
     updateTodayDate();
+    // Update floating date label after translations are applied
+    updateFloatingDateLabel();
 
     // Set the initial state of the filter to "All"
     const filterValue = 'All';
@@ -1738,6 +1777,9 @@ function updateBlinkingCircle(filterValue) {
 
 // Add event listeners for the task style toggle and filter select
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize floating date label as soon as DOM is ready
+    updateFloatingDateLabel();
+    
     const entryPassword = document.getElementById('entry-password');
     entryPassword.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
@@ -1753,13 +1795,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function toggleTaskStyle() {
-    const futureTaskStyle = document.getElementById('taskStyleToggle').checked;
-    if (futureTaskStyle) {
-        document.body.classList.add('future-task-style');
+    const oneColorMode = document.getElementById('taskStyleToggle').checked;
+    if (oneColorMode) {
+        document.body.classList.add('one-color-mode');
     } else {
-        document.body.classList.remove('future-task-style');
+        document.body.classList.remove('one-color-mode');
     }
-    localStorage.setItem('futureTaskStyle', futureTaskStyle);
+    localStorage.setItem('oneColorMode', oneColorMode);
 }
 
 // Close popup when user clicks outside of popups
