@@ -1704,6 +1704,8 @@ window.addEventListener('load', async () => {
     if (localStorage.getItem('oneColorMode') === 'true') {
         document.body.classList.add('one-color-mode');
         document.getElementById('taskStyleToggle').checked = true;
+        // Force style refresh after applying one-color-mode class
+        setTimeout(() => refreshTaskStyles(), 0);
     }
     const savedFontStyle = localStorage.getItem('fontStyle');
     if (savedFontStyle) {
@@ -1802,6 +1804,17 @@ function toggleTaskStyle() {
         document.body.classList.remove('one-color-mode');
     }
     localStorage.setItem('oneColorMode', oneColorMode);
+    // Force style refresh for all tasks
+    refreshTaskStyles();
+}
+
+function refreshTaskStyles() {
+    // Force browser to recalculate styles by triggering a reflow
+    const tasks = document.querySelectorAll('.task');
+    tasks.forEach(task => {
+        // Trigger a reflow by accessing offsetHeight
+        void task.offsetHeight;
+    });
 }
 
 // Close popup when user clicks outside of popups
