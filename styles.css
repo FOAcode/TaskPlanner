@@ -904,7 +904,7 @@ input:checked + .slider:before {
 /* Floating Button Styles */
 .floating-button {
     position: fixed;
-    bottom: 20px;
+    bottom: 32px;
     right: 20px;
     width: 60px;
     height: 60px;
@@ -1022,7 +1022,7 @@ input:checked + .slider:before {
 /* Blinking Circle Styles */
 .blinking-circle {
     position: fixed;
-    bottom: 80px; /* Adjusted to be above the floating button */
+    bottom: 92px; /* Adjusted to be above the floating button */
     right: 20px; /* Adjusted to avoid overlap with other items */
     width: 20px;
     height: 20px;
