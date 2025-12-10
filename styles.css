@@ -1,3 +1,56 @@
+/* Date Tile Styles */
+.date-tile {
+    padding: 10px 20px;
+    text-align: center;
+    font-weight: bold;
+    background: transparent;
+    color: inherit;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.date-tile::before,
+.date-tile::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 50%;
+    background: linear-gradient(90deg, transparent 0%, currentColor 40%, currentColor 60%, transparent 100%);
+    opacity: 0.15;
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.date-tile::before {
+    left: 8px;
+    clip-path: polygon(100% 0%, 50% 0%, 0% 50%, 50% 100%, 100% 100%);
+}
+
+.date-tile::after {
+    right: 8px;
+    clip-path: polygon(0% 0%, 50% 0%, 100% 50%, 50% 100%, 0% 100%);
+}
+
+.date-tile #tile-day-of-week {
+    font-size: 0.95em;
+    font-weight: bold;
+    display: inline;
+    letter-spacing: 0.5px;
+}
+
+.date-tile #tile-current-date {
+    font-size: 0.85em;
+    margin-left: 5px;
+    font-weight: bold;
+    display: inline;
+    letter-spacing: 0.3px;
+}
+
 /* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
     width: 6px;
@@ -232,11 +285,11 @@ body.unlocked > *:not(#entry-page) {
 }
 
 .task.green {
-    background: linear-gradient(135deg, rgba(59, 184, 63, 0.5) 0%, rgba(59, 184, 63, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(144, 202, 153, 0.4) 0%, rgba(144, 202, 153, 0.1) 100%);
 }
 
 .dark-mode .task.green {
-    background: linear-gradient(135deg, rgba(59, 184, 63, 0.5) 0%, rgba(59, 184, 63, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(110, 168, 119, 0.4) 0%, rgba(110, 168, 119, 0.1) 100%);
 }
 
 /* Task Date Styles */
@@ -936,33 +989,7 @@ input:checked + .slider:before {
 
 /* Floating Date Label Styles */
 .floating-date-label {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: radial-gradient(circle, rgba(200, 200, 200, 0.8) 0%, rgba(200, 200, 200, 0.4) 50%, rgba(200, 200, 200, 0) 100%);
-    border-radius: 10px;
-    padding: 12px 18px;
-    z-index: 1001;
-    text-align: center;
-    font-size: 1em;
-    color: #333;
-    line-height: 1.5;
-    min-width: 85px;
-}
-
-.dark-mode .floating-date-label {
-    background: radial-gradient(circle, rgba(100, 100, 100, 0.4) 0%, rgba(100, 100, 100, 0.2) 50%, rgba(100, 100, 100, 0) 100%);
-    color: #e0e0e0;
-}
-
-.floating-date-label #day-of-week {
-    font-weight: bold;
-    font-size: 0.95em;
-}
-
-.floating-date-label #current-date {
-    font-size: 0.85em;
-    margin-top: 2px;
+    display: none;
 }
 
 /* Floating Button Popup Styles */
@@ -1035,25 +1062,25 @@ input:checked + .slider:before {
 
 @keyframes blink {
     0% {
-        opacity: 0;
-        transform: scale(1); /* Start small */
+        opacity: 0.7;
+        transform: scale(0.9); /* 90% size */
     }
     50% {
         opacity: 0.5;
-        transform: scale(1.3); /* Increase size by 30% */
+        transform: scale(0.7); /* 70% size */
     }
     100% {
-        opacity: 0;
-        transform: scale(1); /* Start small */
+        opacity: 0.7;
+        transform: scale(0.9); /* 90% size */
     }
 }
 
 @keyframes blink-size {
     0%, 100% {
-        transform: scale(0.8); /* Start small */
+        transform: scale(0.9); /* 90% size */
     }
     50% {
-        transform: scale(1.3); /* Increase size by 30% */
+        transform: scale(0.7); /* 70% size */
     }
 }
 

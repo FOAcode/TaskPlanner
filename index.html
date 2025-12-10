@@ -194,6 +194,10 @@
             <h2>To Do</h2>
         </div>
         <hr>
+        <div class="date-tile" id="date-tile">
+            <div id="tile-day-of-week"></div>
+            <div id="tile-current-date"></div>
+        </div>
     </div>
     <div class="column" id="in-progress-column">
         <div class="row">
@@ -295,10 +299,6 @@
     <button class="floating-button" onclick="toggleFloatingPopup()">
         <span class="material-icons">menu</span>
     </button>
-    <div class="floating-date-label" id="floating-date-label">
-        <div id="day-of-week"></div>
-        <div id="current-date"></div>
-    </div>
     <div class="floating-popup" id="floating-popup">
         <ul>
             <li onclick="reorderTasks()">

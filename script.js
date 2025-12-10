@@ -534,7 +534,7 @@ function applyTranslations(language) {
     
     const aboutSection = document.querySelector('#settings-popup p');
     if (aboutSection) {
-        aboutSection.innerHTML = `Task Planner v0.8.3 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
+        aboutSection.innerHTML = `Task Planner v0.8.4 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
     }
     
     const footer = document.querySelector('#settings-popup footer');
@@ -1586,6 +1586,7 @@ function reorderTasks() {
     const columns = document.querySelectorAll('.column');
     columns.forEach(column => {
         const tasks = Array.from(column.querySelectorAll('.task'));
+        const isDoneColumn = column.id === 'done-column';
         tasks.sort((a, b) => {
             const isPrioritaryA = a.classList.contains('prioritary');
             const isPrioritaryB = b.classList.contains('prioritary');
@@ -1593,7 +1594,7 @@ function reorderTasks() {
             if (!isPrioritaryA && isPrioritaryB) return 1;
             const dateA = new Date(a.querySelector('.details').innerText.split('|')[0].split(': ')[1].split(' ')[0]);
             const dateB = new Date(b.querySelector('.details').innerText.split('|')[0].split(': ')[1].split(' ')[0]);
-            return dateA - dateB;
+            return isDoneColumn ? dateB - dateA : dateA - dateB;
         });
         tasks.forEach(task => column.appendChild(task));
     });
@@ -1635,11 +1636,11 @@ function updateTodayDate() {
 }
 
 function updateFloatingDateLabel() {
-    const dayOfWeekEl = document.getElementById('day-of-week');
-    const currentDateEl = document.getElementById('current-date');
+    const dayOfWeekEl = document.getElementById('tile-day-of-week');
+    const currentDateEl = document.getElementById('tile-current-date');
     
     if (!dayOfWeekEl || !currentDateEl) {
-        console.warn('Floating date label elements not found');
+        console.warn('Date tile elements not found');
         return;
     }
     
@@ -1662,7 +1663,7 @@ function updateFloatingDateLabel() {
         dayOfWeekEl.innerText = dayOfWeek;
         currentDateEl.innerText = formattedDate;
     } catch (error) {
-        console.error('Error updating floating date label:', error);
+        console.error('Error updating date tile:', error);
     }
 }
 
@@ -1888,6 +1889,26 @@ function updateFloatingPopupLabels(language = null) {
 // Call the function to update labels on page load
 window.addEventListener('load', () => {
     updateFloatingPopupLabels();
+});
+
+// Prevent copying and right-click on date tile
+window.addEventListener('load', () => {
+    const dateTile = document.getElementById('date-tile');
+    if (dateTile) {
+        // Prevent right-click on date tile
+        dateTile.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+        });
+        
+        // Prevent selection of date tile
+        dateTile.style.userSelect = 'none';
+        dateTile.style.webkitUserSelect = 'none';
+        
+        // Prevent copying
+        dateTile.addEventListener('copy', (e) => {
+            e.preventDefault();
+        });
+    }
 });
 
 function togglePasswordVisibility(isConfirm = false) {
