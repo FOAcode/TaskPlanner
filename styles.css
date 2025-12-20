@@ -402,6 +402,16 @@ body.unlocked > *:not(#entry-page) {
     border-top: 1px solid #666;
 }
 
+#validation-error {
+    font-weight: 500;
+}
+
+.dark-mode #validation-error {
+    background-color: #b71c1c !important;
+    color: #fff !important;
+    border-left-color: #ff6b6b !important;
+}
+
 .filter-popup select {
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;

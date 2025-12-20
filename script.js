@@ -1,4 +1,4 @@
-// Register the Service Worker
+﻿// Register the Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/TaskPlanner/service-worker.js')
         .then(() => console.log('Service Worker registered successfully.'))
@@ -67,6 +67,7 @@ const translations = {
         moveToInProgress: "Move to In Progress",
         moveToDone: "Move to Done",
         eliminate: "Eliminate",
+        fillMissingData: "Please fill in the missing data!",
         setPassword: "Set Password",
         password: "Password",
         setPasswordPlaceholder: "Password",
@@ -127,6 +128,7 @@ const translations = {
         moveToInProgress: "Sposta in Corso",
         moveToDone: "Sposta in Fatto",
         eliminate: "Elimina",
+        fillMissingData: "Per favore compila i dati mancanti!",
         setPassword: "Imposta Password",
         password: "Password",
         setPasswordPlaceholder: "Password",
@@ -186,6 +188,7 @@ const translations = {
         moveToInProgress: "Mover a En Progreso",
         moveToDone: "Mover a Hecho",
         eliminate: "Eliminar",
+        fillMissingData: "¡Por favor completa los datos faltantes!",
         setPassword: "Establecer Contraseña",
         password: "Contraseña",
         setPasswordPlaceholder: "Contraseña",
@@ -245,6 +248,7 @@ const translations = {
         moveToInProgress: "Mover para Em Progresso",
         moveToDone: "Mover para Feito",
         eliminate: "Eliminar",
+        fillMissingData: "Por favor, preencha os dados ausentes!",
         setPassword: "Definir Senha",
         password: "Senha",
         setPasswordPlaceholder: "Senha",
@@ -304,6 +308,7 @@ const translations = {
         moveToInProgress: "Mută în Progres",
         moveToDone: "Mută în Terminat",
         eliminate: "Șterge",
+        fillMissingData: "Vă rugăm completați datele lipsă!",
         setPassword: "Setează Parola",
         password: "Parola",
         setPasswordPlaceholder: "Parolă",
@@ -363,6 +368,7 @@ const translations = {
         moveToInProgress: "In Bearbeitung Verschieben",
         moveToDone: "Zu Erledigt Verschieben",
         eliminate: "Löschen",
+        fillMissingData: "Bitte füllen Sie die fehlenden Daten aus!",
         setPassword: "Passwort Festlegen",
         password: "Passwort",
         setPasswordPlaceholder: "Passwort",
@@ -422,10 +428,7 @@ const translations = {
         moveToInProgress: "移至进行中",
         moveToDone: "移至已完成",
         eliminate: "删除",
-        setPassword: "设置密码",
-        password: "密码",
-        setPasswordPlaceholder: "密码",
-        enterPasswordPlaceholder: "输入您的密码",
+        fillMissingData: "请填写缺失的数据！",
         setPasswordButton: "设置密码",
         submitButton: "提交",
         tooManyAttempts: "尝试次数过多。请等待 {time} 秒。",
@@ -481,6 +484,7 @@ const translations = {
         moveToInProgress: "Déplacer en Cours",
         moveToDone: "Déplacer en Terminé",
         eliminate: "Supprimer",
+        fillMissingData: "Veuillez remplir les données manquantes !",
         setPassword: "Définir le Mot de Passe",
         password: "Mot de Passe",
         setPasswordPlaceholder: "Mot de Passe",
@@ -566,7 +570,7 @@ function applyTranslations(language) {
     
     const aboutSection = document.querySelector('#settings-popup p');
     if (aboutSection) {
-        aboutSection.innerHTML = `Task Planner v0.8.4 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
+        aboutSection.innerHTML = `Task Planner v0.8.5 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
     }
     
     const footer = document.querySelector('#settings-popup footer');
@@ -862,6 +866,17 @@ function openPopup(columnId, task = null) {
     currentColumnId = columnId;
     currentEditTask = task;
 
+    // Clear any previous validation errors
+    const errorDiv = document.getElementById('validation-error');
+    errorDiv.style.display = 'none';
+    errorDiv.textContent = '';
+    document.getElementById('taskDescription').style.borderColor = '';
+    document.getElementById('taskDescription').style.borderWidth = '';
+    document.getElementById('taskDate').style.borderColor = '';
+    document.getElementById('taskDate').style.borderWidth = '';
+    document.getElementById('taskAssignedTo').style.borderColor = '';
+    document.getElementById('taskAssignedTo').style.borderWidth = '';
+
     const assignedToList = document.getElementById('assignedToList');
     assignedToList.innerHTML = '';
     const assignedToValues = [...new Set([...document.querySelectorAll('.task .details')].map(details => details.innerText.split('|')[1].split(': ')[1]))];
@@ -920,18 +935,35 @@ function saveTask() {
     const date = document.getElementById('taskDate').value;
     let assignedTo = document.getElementById('taskAssignedTo').value;
     const isPrioritary = document.getElementById('taskPriority').checked;
+    const language = localStorage.getItem('language') || 'en';
+    const errorDiv = document.getElementById('validation-error');
+
+    // Clear previous error
+    errorDiv.style.display = 'none';
+    errorDiv.textContent = '';
+    document.getElementById('taskDescription').style.borderColor = '';
+    document.getElementById('taskDescription').style.borderWidth = '';
+    document.getElementById('taskDate').style.borderColor = '';
+    document.getElementById('taskDate').style.borderWidth = '';
+    document.getElementById('taskAssignedTo').style.borderColor = '';
+    document.getElementById('taskAssignedTo').style.borderWidth = '';
 
     if (description && date) {
         if (currentColumnId === 'todo-column' && !assignedTo) {
             assignedTo = 'None';
         } else if (currentColumnId === 'in-progress-column' && !assignedTo) {
-            alert('Please fill in the Assigned To field.');
+            // Show validation error
+            errorDiv.textContent = translations[language].fillMissingData;
+            errorDiv.style.display = 'block';
+            // Highlight the field with thick red border
+            const assignedToField = document.getElementById('taskAssignedTo');
+            assignedToField.style.borderColor = '#c62828';
+            assignedToField.style.borderWidth = '4px';
             return;
         }
 
         if (currentEditTask) {
             currentEditTask.querySelector('.description').innerHTML = description.replace(/\n/g, '<br>'); // Replace newline with <br>
-            const language = localStorage.getItem('language') || 'en';
             const dayOfWeek = getDayOfWeek(date, language);
             currentEditTask.querySelector('.details').innerText = `${translations[language].due}: ${date} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}`;
             currentEditTask.className = `task ${getTaskColorClass(date)}`;
@@ -949,7 +981,21 @@ function saveTask() {
         autoSave();
         updateAssignedToList();
     } else {
-        alert('Please fill in all fields except Assigned To.');
+        // Show validation error
+        errorDiv.textContent = translations[language].fillMissingData;
+        errorDiv.style.display = 'block';
+        
+        // Highlight missing fields with thick red border
+        if (!description) {
+            const descriptionField = document.getElementById('taskDescription');
+            descriptionField.style.borderColor = '#c62828';
+            descriptionField.style.borderWidth = '4px';
+        }
+        if (!date) {
+            const dateField = document.getElementById('taskDate');
+            dateField.style.borderColor = '#c62828';
+            dateField.style.borderWidth = '4px';
+        }
     }
 }
 
