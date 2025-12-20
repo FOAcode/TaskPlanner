@@ -1459,7 +1459,8 @@ function applyFilterAndHighlight(value) {
     // Only close popup if the selected filter is different from the current one
     if (newFilterValue !== filterAssignedTo) {
         filterAssignedTo = newFilterValue; // Update the current filter value
-        highlightCurrentFilter(); 
+        highlightCurrentFilter();
+        updateFilterTile(); // Update the filter tile display
         applyFilter(filterAssignedTo);
         closeFilterPopup(); // Auto-close the popup when a different filter is selected
     } else {
@@ -1480,6 +1481,14 @@ function applyFilter(filterValue = filterAssignedTo) {
     updateBlinkingCircle(filterValue);
     highlightCurrentFilter(); // Highlight the current filter
     updateAssignedToList();
+    updateFilterTile(); // Update the filter tile display
+}
+
+function updateFilterTile() {
+    const filterValueElement = document.getElementById('tile-filter-value');
+    if (filterValueElement) {
+        filterValueElement.innerText = filterAssignedTo === '' ? 'All Tasks' : filterAssignedTo;
+    }
 }
 
 function closeFilterPopup() {
@@ -1758,6 +1767,7 @@ window.addEventListener('load', async () => {
     document.getElementById('filterSelect').value = filterValue;
     filterAssignedTo = filterValue === 'All' ? '' : filterValue;
     applyFilter(filterAssignedTo);
+    updateFilterTile(); // Update the filter tile display on initialization
 
     // Update the blinking circle after setting the filter
     updateBlinkingCircle(filterAssignedTo);
@@ -1771,11 +1781,8 @@ window.addEventListener('load', async () => {
 // Update the blinking circle based on the current filter value
 function updateBlinkingCircle(filterValue) {
     const blinkingCircle = document.getElementById('blinking-circle');
-    if (filterValue === '' || filterValue === 'All') {
-        blinkingCircle.style.display = 'none';
-    } else {
-        blinkingCircle.style.display = 'block';
-    }
+    // Always hide the blinking circle since the filter tile now shows the active filter
+    blinkingCircle.style.display = 'none';
 }
 
 // Add event listeners for the task style toggle and filter select

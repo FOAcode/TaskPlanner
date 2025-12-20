@@ -11,40 +11,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-left: 4px solid #007BFF;
+    border-right: 4px solid #007BFF;
+    padding-left: 16px;
+    padding-right: 16px;
 }
 
-.date-tile::before,
-.date-tile::after {
-    content: '';
-    position: absolute;
-    width: 12px;
-    height: 50%;
-    background: linear-gradient(90deg, transparent 0%, currentColor 40%, currentColor 60%, transparent 100%);
-    opacity: 0.15;
-    border-radius: 50%;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.date-tile::before {
-    left: 8px;
-    clip-path: polygon(100% 0%, 50% 0%, 0% 50%, 50% 100%, 100% 100%);
-}
-
-.date-tile::after {
-    right: 8px;
-    clip-path: polygon(0% 0%, 50% 0%, 100% 50%, 50% 100%, 0% 100%);
+.dark-mode .date-tile {
+    border-left-color: #64B5F6;
+    border-right-color: #64B5F6;
 }
 
 .date-tile #tile-day-of-week {
-    font-size: 0.95em;
+    font-size: 1.05em;
     font-weight: bold;
     display: inline;
     letter-spacing: 0.5px;
 }
 
 .date-tile #tile-current-date {
-    font-size: 0.85em;
+    font-size: 0.95em;
     margin-left: 5px;
     font-weight: bold;
     display: inline;

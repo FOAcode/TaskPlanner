@@ -194,9 +194,12 @@
             <h2>To Do</h2>
         </div>
         <hr>
-        <div class="date-tile" id="date-tile">
+        <div class="date-tile" id="date-tile" onclick="reorderTasks()">
             <div id="tile-day-of-week"></div>
             <div id="tile-current-date"></div>
+        </div>
+        <div class="date-tile" id="filter-tile" onclick="openFilterPopup()">
+            <div id="tile-filter-value">All Tasks</div>
         </div>
     </div>
     <div class="column" id="in-progress-column">
