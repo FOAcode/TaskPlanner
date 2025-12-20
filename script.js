@@ -63,6 +63,10 @@ const translations = {
         oneColor: "One Color",
         assignPriority: "Assign Priority",
         removePriority: "Remove Priority",
+        copyTask: "Copy Task",
+        moveToInProgress: "Move to In Progress",
+        moveToDone: "Move to Done",
+        eliminate: "Eliminate",
         setPassword: "Set Password",
         password: "Password",
         setPasswordPlaceholder: "Password",
@@ -119,6 +123,10 @@ const translations = {
         oneColor: "Un Colore",
         assignPriority: "Assegna Priorità",
         removePriority: "Rimuovi Priorità",
+        copyTask: "Copia Compito",
+        moveToInProgress: "Sposta in Corso",
+        moveToDone: "Sposta in Fatto",
+        eliminate: "Elimina",
         setPassword: "Imposta Password",
         password: "Password",
         setPasswordPlaceholder: "Password",
@@ -174,6 +182,10 @@ const translations = {
         oneColor: "Un Color",
         assignPriority: "Asignar Prioridad",
         removePriority: "Quitar Prioridad",
+        copyTask: "Copiar Tarea",
+        moveToInProgress: "Mover a En Progreso",
+        moveToDone: "Mover a Hecho",
+        eliminate: "Eliminar",
         setPassword: "Establecer Contraseña",
         password: "Contraseña",
         setPasswordPlaceholder: "Contraseña",
@@ -229,6 +241,10 @@ const translations = {
         oneColor: "Uma Cor",
         assignPriority: "Atribuir Prioridade",
         removePriority: "Remover Prioridade",
+        copyTask: "Copiar Tarefa",
+        moveToInProgress: "Mover para Em Progresso",
+        moveToDone: "Mover para Feito",
+        eliminate: "Eliminar",
         setPassword: "Definir Senha",
         password: "Senha",
         setPasswordPlaceholder: "Senha",
@@ -284,6 +300,10 @@ const translations = {
         oneColor: "O Culoare",
         assignPriority: "Atribuie Prioritate",
         removePriority: "Elimină Prioritate",
+        copyTask: "Copiere Sarcină",
+        moveToInProgress: "Mută în Progres",
+        moveToDone: "Mută în Terminat",
+        eliminate: "Șterge",
         setPassword: "Setează Parola",
         password: "Parola",
         setPasswordPlaceholder: "Parolă",
@@ -339,6 +359,10 @@ const translations = {
         oneColor: "Eine Farbe",
         assignPriority: "Priorität Zuweisen",
         removePriority: "Priorität Entfernen",
+        copyTask: "Aufgabe Kopieren",
+        moveToInProgress: "In Bearbeitung Verschieben",
+        moveToDone: "Zu Erledigt Verschieben",
+        eliminate: "Löschen",
         setPassword: "Passwort Festlegen",
         password: "Passwort",
         setPasswordPlaceholder: "Passwort",
@@ -394,6 +418,10 @@ const translations = {
         oneColor: "单色",
         assignPriority: "分配优先级",
         removePriority: "移除优先级",
+        copyTask: "复制任务",
+        moveToInProgress: "移至进行中",
+        moveToDone: "移至已完成",
+        eliminate: "删除",
         setPassword: "设置密码",
         password: "密码",
         setPasswordPlaceholder: "密码",
@@ -449,6 +477,10 @@ const translations = {
         oneColor: "Une Couleur",
         assignPriority: "Assigner la Priorité",
         removePriority: "Supprimer la Priorité",
+        copyTask: "Copier la Tâche",
+        moveToInProgress: "Déplacer en Cours",
+        moveToDone: "Déplacer en Terminé",
+        eliminate: "Supprimer",
         setPassword: "Définir le Mot de Passe",
         password: "Mot de Passe",
         setPasswordPlaceholder: "Mot de Passe",
@@ -580,6 +612,19 @@ function applyTranslations(language) {
     if (confirmationCancel) confirmationCancel.innerText = 'Cancel';
     if (confirmationConfirm) confirmationConfirm.innerText = translations[language].delete;
     
+    // Update context menu button
+    const copyTaskText = document.getElementById('copy-task-text');
+    if (copyTaskText) copyTaskText.innerText = translations[language].copyTask;
+    
+    const moveToInProgressText = document.getElementById('move-to-in-progress-text');
+    if (moveToInProgressText) moveToInProgressText.innerText = translations[language].moveToInProgress;
+    
+    const moveToDoneText = document.getElementById('move-to-done-text');
+    if (moveToDoneText) moveToDoneText.innerText = translations[language].moveToDone;
+    
+    const eliminateText = document.getElementById('eliminate-text');
+    if (eliminateText) eliminateText.innerText = translations[language].eliminate;
+    
     console.log('About to call updateTodayDate()...');
     updateTodayDate(); // Update the initial column date
     console.log('About to call updateFloatingPopupLabels...');
@@ -651,6 +696,26 @@ function handleTaskRightClick(event, task) {
     // Store reference to the current task
     window.currentContextTask = task;
     
+    // Determine which column the task is in
+    const columnId = task.closest('.column').id;
+    window.currentContextTaskColumn = columnId;
+    
+    // Get all context menu buttons
+    const moveToInProgressBtn = document.getElementById('move-to-in-progress-button');
+    const moveToDoneBtn = document.getElementById('move-to-done-button');
+    
+    // Show/hide buttons based on which column the task is in
+    if (columnId === 'todo-column') {
+        moveToInProgressBtn.style.display = 'flex';
+        moveToDoneBtn.style.display = 'none';
+    } else if (columnId === 'in-progress-column') {
+        moveToInProgressBtn.style.display = 'none';
+        moveToDoneBtn.style.display = 'flex';
+    } else if (columnId === 'done-column') {
+        moveToInProgressBtn.style.display = 'none';
+        moveToDoneBtn.style.display = 'none';
+    }
+    
     // Get the context menu
     const contextMenu = document.getElementById('task-context-menu');
     
@@ -695,6 +760,40 @@ function copyTaskToClipboard() {
         alert('Failed to copy task to clipboard');
         closeContextMenu();
     });
+}
+
+function moveTaskToInProgress() {
+    const task = window.currentContextTask;
+    if (!task) return;
+    
+    const inProgressColumn = document.getElementById('in-progress-column');
+    if (inProgressColumn) {
+        inProgressColumn.appendChild(task);
+        autoSave();
+        closeContextMenu();
+    }
+}
+
+function moveTaskToDone() {
+    const task = window.currentContextTask;
+    if (!task) return;
+    
+    const doneColumn = document.getElementById('done-column');
+    if (doneColumn) {
+        doneColumn.appendChild(task);
+        autoSave();
+        closeContextMenu();
+    }
+}
+
+function eliminateTask() {
+    const task = window.currentContextTask;
+    if (!task) return;
+    
+    // Remove the task element
+    task.remove();
+    autoSave();
+    closeContextMenu();
 }
 
 function createTaskElement(description, date, assignedTo, isPrioritary = false) {

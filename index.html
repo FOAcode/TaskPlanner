@@ -229,9 +229,21 @@
     </div>
 
     <div class="task-context-menu" id="task-context-menu">
-        <button onclick="copyTaskToClipboard()" class="context-menu-button">
+        <button onclick="copyTaskToClipboard()" class="context-menu-button" id="copy-task-button">
             <span class="material-icons">content_copy</span>
-            <span>Copy Task</span>
+            <span id="copy-task-text">Copy Task</span>
+        </button>
+        <button onclick="moveTaskToInProgress()" class="context-menu-button" id="move-to-in-progress-button" style="display:none;">
+            <span class="material-icons">play_arrow</span>
+            <span id="move-to-in-progress-text">Move to In Progress</span>
+        </button>
+        <button onclick="moveTaskToDone()" class="context-menu-button" id="move-to-done-button" style="display:none;">
+            <span class="material-icons">check_circle</span>
+            <span id="move-to-done-text">Move to Done</span>
+        </button>
+        <button onclick="eliminateTask()" class="context-menu-button" id="eliminate-button">
+            <span class="material-icons">delete</span>
+            <span id="eliminate-text">Eliminate</span>
         </button>
     </div>
 
