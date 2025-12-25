@@ -37,6 +37,10 @@
     letter-spacing: 0.3px;
 }
 
+html {
+    scrollbar-gutter: stable;
+}
+
 /* Custom Scrollbar Styles */
 ::-webkit-scrollbar {
     width: 6px;
