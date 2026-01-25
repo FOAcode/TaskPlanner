@@ -2310,7 +2310,7 @@ function updateWorkloadMatrix() {
                 if (count === 0) {
                     html += `<td class="matrix-cell ${intensityClass}">-</td>`;
                 } else {
-                    html += `<td class="matrix-cell ${intensityClass} has-tasks"><strong>${count}</strong></td>`;
+                    html += `<td class="matrix-cell ${intensityClass} has-tasks" data-person="${person}" data-date="${dateStr}" style="cursor: pointer;"><strong>${count}</strong></td>`;
                 }
             });
             
@@ -2321,5 +2321,118 @@ function updateWorkloadMatrix() {
     });
     
     container.innerHTML = html;
+    
+    // Attach click handlers to cells with tasks
+    document.querySelectorAll('.matrix-cell.has-tasks').forEach(cell => {
+        cell.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const person = cell.getAttribute('data-person');
+            const dateStr = cell.getAttribute('data-date');
+            showTasksPopup(person, dateStr, e);
+        });
+    });
+}
+
+function showTasksPopup(person, dateStr, event) {
+    console.log('showTasksPopup called with:', person, dateStr);
+    const date = new Date(dateStr);
+    const language = localStorage.getItem('language') || 'en';
+    
+    // Find all tasks for this person on this date
+    const tasks = document.querySelectorAll('.task');
+    const matchingTasks = [];
+    
+    tasks.forEach(task => {
+        const taskDate = task.getAttribute('data-date');
+        const taskAssigned = task.getAttribute('data-assigned-to');
+        if (taskDate === dateStr && taskAssigned === person) {
+            const description = task.querySelector('.description').innerText;
+            matchingTasks.push(description);
+        }
+    });
+    
+    console.log('Found matching tasks:', matchingTasks);
+    
+    if (matchingTasks.length === 0) {
+        console.log('No matching tasks found');
+        return;
+    }
+    
+    // Remove existing popup if any
+    const existingPopup = document.querySelector('.tasks-details-popup');
+    if (existingPopup) existingPopup.remove();
+    
+    // Create popup
+    const popup = document.createElement('div');
+    popup.className = 'tasks-details-popup';
+    popup.style.position = 'fixed';
+    popup.style.zIndex = '10003';
+    popup.style.pointerEvents = 'auto';
+    popup.style.display = 'none'; // Start hidden
+    
+    const dateFormatted = date.toLocaleDateString();
+    let content = `<div style="padding: 15px;"><strong>${person} - ${dateFormatted}</strong><br><hr>`;
+    matchingTasks.forEach(task => {
+        content += `<div style="margin-bottom: 8px;">• ${task}</div>`;
+    });
+    content += '</div>';
+    
+    popup.innerHTML = content;
+    popup.onclick = (e) => e.stopPropagation();
+    
+    // Append to DOM but keep hidden to measure
+    document.body.appendChild(popup);
+    
+    // Get popup dimensions using offsetWidth/offsetHeight which work for hidden elements in DOM
+    const popupWidth = popup.offsetWidth;
+    const popupHeight = popup.offsetHeight;
+    
+    // Get mouse position with offset
+    let x, y;
+    const offset = 10;
+    const padding = 10;
+    
+    // Check if there's enough space to the right of the click
+    const spaceToRight = window.innerWidth - event.clientX;
+    
+    if (spaceToRight >= popupWidth) {
+        // Enough space to the right - show popup to the right
+        x = event.clientX + offset;
+    } else {
+        // Not enough space to the right - show popup to the left with right corner at click position
+        x = event.clientX - popupWidth;
+    }
+    
+    // Clamp x to stay within padding
+    x = Math.max(padding, x);
+    
+    // Handle vertical positioning - show below by default, above if not enough space
+    if (window.innerHeight - event.clientY >= popupHeight) {
+        y = event.clientY + offset;
+    } else {
+        y = event.clientY - popupHeight - offset;
+    }
+    
+    // Clamp y to stay within padding
+    y = Math.max(padding, y);
+    
+    // Set position styles before showing
+    popup.style.left = x + 'px';
+    popup.style.top = y + 'px';
+    popup.style.display = 'block';
+    
+    console.log('Popup positioned at:', x, y);
+    
+    // Close popup on outside click or after 5 seconds
+    const closePopup = () => {
+        console.log('Closing popup');
+        if (popup.parentElement) popup.remove();
+    };
+    
+    setTimeout(() => {
+        document.addEventListener('click', closePopup, { once: true });
+    }, 100);
+    
+    setTimeout(closePopup, 5000);
 }
 
