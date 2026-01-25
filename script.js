@@ -64,8 +64,9 @@ const translations = {
         assignPriority: "Assign Priority",
         removePriority: "Remove Priority",
         copyTask: "Copy Task",
-        moveToInProgress: "Move to In Progress",
-        moveToDone: "Move to Done",
+        moveToToDo: "Move to <b>To Do</b>",
+        moveToInProgress: "Move to <b>In Progress</b>",
+        moveToDone: "Move to <b>Done</b>",
         eliminate: "Eliminate",
         fillMissingData: "Please fill in the missing data!",
         setPassword: "Set Password",
@@ -125,8 +126,9 @@ const translations = {
         assignPriority: "Assegna Priorità",
         removePriority: "Rimuovi Priorità",
         copyTask: "Copia Compito",
-        moveToInProgress: "Sposta in Corso",
-        moveToDone: "Sposta in Fatto",
+        moveToToDo: "Sposta in <b>Da Fare</b>",
+        moveToInProgress: "Sposta in <b>In Corso</b>",
+        moveToDone: "Sposta in <b>Fatto</b>",
         eliminate: "Elimina",
         fillMissingData: "Per favore compila i dati mancanti!",
         setPassword: "Imposta Password",
@@ -185,8 +187,9 @@ const translations = {
         assignPriority: "Asignar Prioridad",
         removePriority: "Quitar Prioridad",
         copyTask: "Copiar Tarea",
-        moveToInProgress: "Mover a En Progreso",
-        moveToDone: "Mover a Hecho",
+        moveToToDo: "Mover a <b>Por Hacer</b>",
+        moveToInProgress: "Mover a <b>En Progreso</b>",
+        moveToDone: "Mover a <b>Hecho</b>",
         eliminate: "Eliminar",
         fillMissingData: "¡Por favor completa los datos faltantes!",
         setPassword: "Establecer Contraseña",
@@ -245,8 +248,9 @@ const translations = {
         assignPriority: "Atribuir Prioridade",
         removePriority: "Remover Prioridade",
         copyTask: "Copiar Tarefa",
-        moveToInProgress: "Mover para Em Progresso",
-        moveToDone: "Mover para Feito",
+        moveToToDo: "Mover para <b>A Fazer</b>",
+        moveToInProgress: "Mover para <b>Em Progresso</b>",
+        moveToDone: "Mover para <b>Feito</b>",
         eliminate: "Eliminar",
         fillMissingData: "Por favor, preencha os dados ausentes!",
         setPassword: "Definir Senha",
@@ -305,8 +309,9 @@ const translations = {
         assignPriority: "Atribuie Prioritate",
         removePriority: "Elimină Prioritate",
         copyTask: "Copiere Sarcină",
-        moveToInProgress: "Mută în Progres",
-        moveToDone: "Mută în Terminat",
+        moveToToDo: "Mută în <b>De Făcut</b>",
+        moveToInProgress: "Mută în <b>Progres</b>",
+        moveToDone: "Mută în <b>Terminat</b>",
         eliminate: "Șterge",
         fillMissingData: "Vă rugăm completați datele lipsă!",
         setPassword: "Setează Parola",
@@ -365,8 +370,9 @@ const translations = {
         assignPriority: "Priorität Zuweisen",
         removePriority: "Priorität Entfernen",
         copyTask: "Aufgabe Kopieren",
-        moveToInProgress: "In Bearbeitung Verschieben",
-        moveToDone: "Zu Erledigt Verschieben",
+        moveToToDo: "Zu <b>Aufgaben</b> Verschieben",
+        moveToInProgress: "Zu <b>In Bearbeitung</b> Verschieben",
+        moveToDone: "Zu <b>Erledigt</b> Verschieben",
         eliminate: "Löschen",
         fillMissingData: "Bitte füllen Sie die fehlenden Daten aus!",
         setPassword: "Passwort Festlegen",
@@ -425,8 +431,9 @@ const translations = {
         assignPriority: "分配优先级",
         removePriority: "移除优先级",
         copyTask: "复制任务",
-        moveToInProgress: "移至进行中",
-        moveToDone: "移至已完成",
+        moveToToDo: "移至<b>待做</b>",
+        moveToInProgress: "移至<b>进行中</b>",
+        moveToDone: "移至<b>已完成</b>",
         eliminate: "删除",
         fillMissingData: "请填写缺失的数据！",
         setPasswordButton: "设置密码",
@@ -481,8 +488,9 @@ const translations = {
         assignPriority: "Assigner la Priorité",
         removePriority: "Supprimer la Priorité",
         copyTask: "Copier la Tâche",
-        moveToInProgress: "Déplacer en Cours",
-        moveToDone: "Déplacer en Terminé",
+        moveToToDo: "Déplacer en <b>À Faire</b>",
+        moveToInProgress: "Déplacer en <b>Cours</b>",
+        moveToDone: "Déplacer en <b>Terminé</b>",
         eliminate: "Supprimer",
         fillMissingData: "Veuillez remplir les données manquantes !",
         setPassword: "Définir le Mot de Passe",
@@ -620,11 +628,14 @@ function applyTranslations(language) {
     const copyTaskText = document.getElementById('copy-task-text');
     if (copyTaskText) copyTaskText.innerText = translations[language].copyTask;
     
+    const moveToTodoText = document.getElementById('move-to-todo-text');
+    if (moveToTodoText) moveToTodoText.innerHTML = translations[language].moveToToDo;
+    
     const moveToInProgressText = document.getElementById('move-to-in-progress-text');
-    if (moveToInProgressText) moveToInProgressText.innerText = translations[language].moveToInProgress;
+    if (moveToInProgressText) moveToInProgressText.innerHTML = translations[language].moveToInProgress;
     
     const moveToDoneText = document.getElementById('move-to-done-text');
-    if (moveToDoneText) moveToDoneText.innerText = translations[language].moveToDone;
+    if (moveToDoneText) moveToDoneText.innerHTML = translations[language].moveToDone;
     
     const eliminateText = document.getElementById('eliminate-text');
     if (eliminateText) eliminateText.innerText = translations[language].eliminate;
@@ -705,18 +716,22 @@ function handleTaskRightClick(event, task) {
     window.currentContextTaskColumn = columnId;
     
     // Get all context menu buttons
+    const moveToTodoBtn = document.getElementById('move-to-todo-button');
     const moveToInProgressBtn = document.getElementById('move-to-in-progress-button');
     const moveToDoneBtn = document.getElementById('move-to-done-button');
     
     // Show/hide buttons based on which column the task is in
     if (columnId === 'todo-column') {
+        moveToTodoBtn.style.display = 'none';
         moveToInProgressBtn.style.display = 'flex';
         moveToDoneBtn.style.display = 'none';
     } else if (columnId === 'in-progress-column') {
+        moveToTodoBtn.style.display = 'none';
         moveToInProgressBtn.style.display = 'none';
         moveToDoneBtn.style.display = 'flex';
     } else if (columnId === 'done-column') {
-        moveToInProgressBtn.style.display = 'none';
+        moveToTodoBtn.style.display = 'flex';
+        moveToInProgressBtn.style.display = 'flex';
         moveToDoneBtn.style.display = 'none';
     }
     
@@ -766,6 +781,21 @@ function copyTaskToClipboard() {
     });
 }
 
+function moveTaskToToDo() {
+    const task = window.currentContextTask;
+    if (!task) return;
+    
+    const todoColumn = document.getElementById('todo-column');
+    if (todoColumn) {
+        todoColumn.appendChild(task);
+        // Update color class based on date
+        const dateText = task.querySelector('.details').innerText.split('|')[0].split(': ')[1].split(' ')[0];
+        task.className = `task ${getTaskColorClass(dateText)} ${task.classList.contains('prioritary') ? 'prioritary' : ''}`;
+        autoSave();
+        closeContextMenu();
+    }
+}
+
 function moveTaskToInProgress() {
     const task = window.currentContextTask;
     if (!task) return;
@@ -773,6 +803,9 @@ function moveTaskToInProgress() {
     const inProgressColumn = document.getElementById('in-progress-column');
     if (inProgressColumn) {
         inProgressColumn.appendChild(task);
+        // Update color class based on date
+        const dateText = task.querySelector('.details').innerText.split('|')[0].split(': ')[1].split(' ')[0];
+        task.className = `task ${getTaskColorClass(dateText)} ${task.classList.contains('prioritary') ? 'prioritary' : ''}`;
         autoSave();
         closeContextMenu();
     }
@@ -785,6 +818,9 @@ function moveTaskToDone() {
     const doneColumn = document.getElementById('done-column');
     if (doneColumn) {
         doneColumn.appendChild(task);
+        // Apply green color for done tasks and remove prioritary status
+        task.classList.remove('prioritary');
+        task.className = 'task green';
         autoSave();
         closeContextMenu();
     }
