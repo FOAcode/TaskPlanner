@@ -321,6 +321,10 @@
     </button>
     <div class="floating-popup" id="floating-popup">
         <ul>
+            <li onclick="openWorkloadMatrix()">
+                <span class="material-icons">grid_on</span>
+                <span id="workloadMatrixLabel"></span>
+            </li>
             <li onclick="reorderTasks()">
                 <span class="material-icons">reorder</span>
                 <span id="reorderTasksLabel"></span>
@@ -334,6 +338,21 @@
                 <span id="settingsLabel"></span>
             </li>
         </ul>
+    </div>
+
+    <div class="overlay" id="workload-overlay" onclick="closeWorkloadMatrix()"></div>
+    <div class="workload-matrix-popup" id="workload-matrix-popup">
+        <button class="close-button" onclick="closeWorkloadMatrix()">✕</button>
+        <h2 id="workloadMatrixTitle" style="display: none;">Workload Matrix</h2>
+        
+        <div class="workload-controls">
+            <label for="weekSelector" id="selectWeeksLabel">Select Weeks to Display (1-4):</label>
+            <input type="number" id="weekSelector" min="1" max="4" value="1" onchange="updateWorkloadMatrix()">
+        </div>
+        
+        <div class="workload-matrix-container" id="workload-matrix-container">
+            <!-- Matrix will be generated here -->
+        </div>
     </div>
 
     <div class="blinking-circle" id="blinking-circle" style="display: none;"></div>

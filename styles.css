@@ -1383,3 +1383,467 @@ input:checked + .slider:before {
 .dark-mode.one-color-mode .task.past {
     background: linear-gradient(135deg, rgba(51, 51, 51, 0.5) 0%, rgba(51, 51, 51, 0.2) 100%) !important;
 }
+/* Workload Matrix Styles */
+.workload-matrix-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 10001;
+    overflow: auto;
+    display: none;
+    padding: 20px 20px 20px 20px;
+    box-sizing: border-box;
+}
+
+.workload-matrix-popup.show {
+    display: block;
+}
+
+.dark-mode .workload-matrix-popup {
+    background: #222;
+    color: #fff;
+}
+
+.workload-matrix-popup h2 {
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 20px;
+    text-align: left;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.workload-matrix-popup .close-button {
+    position: fixed;
+    top: 20px;
+    right: 30px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: inherit;
+    padding: 8px 12px;
+    line-height: 1;
+    transition: opacity 0.2s ease;
+    z-index: 10002;
+}
+
+.workload-matrix-popup .close-button:hover {
+    opacity: 0.7;
+}
+
+.workload-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 0 20px;
+}
+
+.workload-controls label {
+    font-weight: bold;
+}
+
+.workload-controls input {
+    width: 60px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.dark-mode .workload-controls input {
+    background: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+.workload-matrix-container {
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.matrix-week-section {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.matrix-week-header {
+    text-align: center;
+    font-size: 16px;
+    margin: 15px 0 10px 0;
+    color: inherit;
+    font-weight: bold;
+}
+
+.matrix-table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.matrix-table-vertical {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    table-layout: fixed;
+}
+
+.matrix-table th,
+.matrix-table td,
+.matrix-table-vertical th,
+.matrix-table-vertical td {
+    border: 1px solid #ddd;
+    padding: 8px 4px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.dark-mode .matrix-table th,
+.dark-mode .matrix-table td,
+.dark-mode .matrix-table-vertical th,
+.dark-mode .matrix-table-vertical td {
+    border-color: #555;
+}
+
+.matrix-table th,
+.matrix-table-vertical th {
+    background: #f0f0f0;
+    font-weight: bold;
+    padding: 8px 4px;
+}
+
+.dark-mode .matrix-table th,
+.dark-mode .matrix-table-vertical th {
+    background: #333;
+}
+
+.matrix-table td,
+.matrix-table-vertical td {
+    background: #fff;
+}
+
+.dark-mode .matrix-table td,
+.dark-mode .matrix-table-vertical td {
+    background: #2a2a2a;
+}
+
+.matrix-table td:first-child,
+.matrix-table-vertical td:first-child {
+    text-align: center;
+    font-weight: bold;
+    width: 65px;
+    min-width: 65px;
+    max-width: 65px;
+    flex-shrink: 0;
+}
+
+.matrix-person-header td {
+    background: #f0f0f0;
+    font-weight: bold;
+    padding: 8px 4px;
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.matrix-person-header td:first-child {
+    width: 65px;
+    min-width: 65px;
+    max-width: 65px;
+}
+
+.matrix-person-header td:not(:first-child) {
+    flex: 1;
+    min-width: 50px;
+}
+
+.dark-mode .matrix-person-header td {
+    background: #333;
+    border-color: #555;
+}
+
+.matrix-day-label {
+    font-weight: bold;
+    text-align: center;
+    width: 65px;
+    min-width: 65px;
+    max-width: 65px;
+    flex-shrink: 0;
+}
+
+.matrix-day-row {
+    transition: background-color 0.2s ease;
+}
+
+.matrix-day-row:hover {
+    opacity: 0.9;
+}
+
+/* Row coloring based on day urgency */
+
+
+.matrix-day-row.matrix-day-today {
+    background-color: rgba(255, 255, 100, 0.1);
+}
+
+.dark-mode .matrix-day-row.matrix-day-today {
+    background-color: rgba(200, 200, 100, 0.2);
+}
+
+.matrix-day-row.matrix-day-past {
+    background-color: rgba(180, 180, 180, 0.1);
+    opacity: 0.8;
+}
+
+.dark-mode .matrix-day-row.matrix-day-past {
+    background-color: rgba(120, 120, 120, 0.2);
+}
+
+.matrix-day-row.matrix-day-grey {
+    background-color: rgba(200, 200, 200, 0.05);
+}
+
+.dark-mode .matrix-day-row.matrix-day-grey {
+    background-color: rgba(100, 100, 100, 0.1);
+}
+
+/* Matrix cell color classes based on task colors */
+.matrix-cell {
+    position: relative;
+}
+
+.matrix-cell.matrix-cell-past {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.2) 100%);
+    border: 2px dashed black;
+}
+
+.dark-mode .matrix-cell.matrix-cell-past {
+    background: linear-gradient(135deg, rgba(51, 51, 51, 0.5) 0%, rgba(51, 51, 51, 0.2) 100%);
+    border: 2px dashed white;
+}
+
+.matrix-cell.matrix-cell-today {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.2) 100%);
+    border: 2px solid black;
+}
+
+.dark-mode .matrix-cell.matrix-cell-today {
+    background: linear-gradient(135deg, rgba(51, 51, 51, 0.5) 0%, rgba(51, 51, 51, 0.2) 100%);
+    border: 2px solid white;
+}
+
+.matrix-cell.matrix-cell-red-1,
+.matrix-cell.matrix-cell-red-2,
+.matrix-cell.matrix-cell-red-3,
+.matrix-cell.matrix-cell-red-4,
+.matrix-cell.matrix-cell-red-5,
+.matrix-cell.matrix-cell-red-6,
+.matrix-cell.matrix-cell-red-7 {
+    background: linear-gradient(135deg, rgba(255, 200, 200, 0.4) 0%, rgba(255, 200, 200, 0.1) 100%);
+}
+
+.dark-mode .matrix-cell.matrix-cell-red-1,
+.dark-mode .matrix-cell.matrix-cell-red-2,
+.dark-mode .matrix-cell.matrix-cell-red-3,
+.dark-mode .matrix-cell.matrix-cell-red-4,
+.dark-mode .matrix-cell.matrix-cell-red-5,
+.dark-mode .matrix-cell.matrix-cell-red-6,
+.dark-mode .matrix-cell.matrix-cell-red-7 {
+    background: linear-gradient(135deg, rgba(200, 100, 100, 0.4) 0%, rgba(200, 100, 100, 0.1) 100%);
+}
+
+.matrix-cell.matrix-cell-grey {
+    background: #f9f9f9;
+    color: #999;
+}
+
+.dark-mode .matrix-cell.matrix-cell-grey {
+    background: #1a1a1a;
+    color: #666;
+}
+
+.matrix-cell.has-tasks {
+    font-weight: bold;
+}
+
+/* Task intensity gradients - from light grey to red */
+.matrix-cell.intensity-1 {
+    background: linear-gradient(135deg, rgba(220, 220, 220, 0.3) 0%, rgba(200, 200, 200, 0.2) 100%) !important;
+}
+
+.dark-mode .matrix-cell.intensity-1 {
+    background: linear-gradient(135deg, rgba(100, 100, 100, 0.3) 0%, rgba(80, 80, 80, 0.2) 100%) !important;
+}
+
+.matrix-cell.intensity-2-3 {
+    background: linear-gradient(135deg, rgba(200, 200, 150, 0.4) 0%, rgba(180, 180, 100, 0.2) 100%) !important;
+}
+
+.dark-mode .matrix-cell.intensity-2-3 {
+    background: linear-gradient(135deg, rgba(180, 150, 80, 0.4) 0%, rgba(150, 120, 60, 0.2) 100%) !important;
+}
+
+.matrix-cell.intensity-4-5 {
+    background: linear-gradient(135deg, rgba(255, 220, 100, 0.5) 0%, rgba(255, 180, 80, 0.3) 100%) !important;
+}
+
+.dark-mode .matrix-cell.intensity-4-5 {
+    background: linear-gradient(135deg, rgba(200, 140, 60, 0.5) 0%, rgba(180, 110, 40, 0.3) 100%) !important;
+}
+
+.matrix-cell.intensity-6-7 {
+    background: linear-gradient(135deg, rgba(255, 180, 60, 0.6) 0%, rgba(255, 140, 40, 0.4) 100%) !important;
+}
+
+.dark-mode .matrix-cell.intensity-6-7 {
+    background: linear-gradient(135deg, rgba(200, 100, 30, 0.6) 0%, rgba(180, 70, 20, 0.4) 100%) !important;
+}
+
+.matrix-cell.intensity-8-9 {
+    background: linear-gradient(135deg, rgba(255, 120, 60, 0.7) 0%, rgba(255, 80, 20, 0.5) 100%) !important;
+}
+
+.dark-mode .matrix-cell.intensity-8-9 {
+    background: linear-gradient(135deg, rgba(200, 60, 20, 0.7) 0%, rgba(180, 40, 10, 0.5) 100%) !important;
+}
+
+.matrix-cell.intensity-10+ {
+    background: linear-gradient(135deg, rgba(255, 80, 80, 0.8) 0%, rgba(200, 40, 40, 0.6) 100%) !important;
+    color: #fff;
+}
+
+.dark-mode .matrix-cell.intensity-10+ {
+    background: linear-gradient(135deg, rgba(200, 40, 40, 0.8) 0%, rgba(150, 20, 20, 0.6) 100%) !important;
+    color: #fff;
+}
+
+.matrix-header-past,
+.matrix-header-today {
+    font-weight: bold;
+}
+
+.matrix-header-red-1,
+.matrix-header-red-2,
+.matrix-header-red-3,
+.matrix-header-red-4,
+.matrix-header-red-5,
+.matrix-header-red-6,
+.matrix-header-red-7 {
+    background: linear-gradient(135deg, rgba(255, 100, 100, 0.2) 0%, rgba(255, 100, 100, 0.1) 100%) !important;
+    color: #c41c3b;
+}
+
+.dark-mode .matrix-header-red-1,
+.dark-mode .matrix-header-red-2,
+.dark-mode .matrix-header-red-3,
+.dark-mode .matrix-header-red-4,
+.dark-mode .matrix-header-red-5,
+.dark-mode .matrix-header-red-6,
+.dark-mode .matrix-header-red-7 {
+    background: linear-gradient(135deg, rgba(200, 100, 100, 0.3) 0%, rgba(200, 100, 100, 0.1) 100%) !important;
+    color: #ff8888;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .matrix-table th,
+    .matrix-table td {
+        padding: 6px 4px;
+        font-size: 12px;
+        min-width: 50px;
+    }
+    
+    .matrix-table td:first-child {
+        min-width: 80px;
+    }
+}
+
+#workload-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    display: none;
+}
+
+#workload-overlay.show {
+    display: block;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .matrix-table th,
+    .matrix-table td,
+    .matrix-table-vertical th,
+    .matrix-table-vertical td {
+        padding: 6px 3px;
+        font-size: 12px;
+    }
+    
+    .matrix-table td:first-child,
+    .matrix-table-vertical td:first-child {
+        width: 55px;
+        min-width: 55px;
+        max-width: 55px;
+    }
+    
+    .matrix-day-label {
+        width: 55px;
+        min-width: 55px;
+        max-width: 55px;
+    }
+    
+    .matrix-person-header td:first-child {
+        width: 55px;
+        min-width: 55px;
+        max-width: 55px;
+    }
+}
+
+@media (max-width: 480px) {
+    .matrix-table th,
+    .matrix-table td,
+    .matrix-table-vertical th,
+    .matrix-table-vertical td {
+        padding: 5px 2px;
+        font-size: 11px;
+    }
+    
+    .matrix-table td:first-child,
+    .matrix-table-vertical td:first-child {
+        width: 50px;
+        min-width: 50px;
+        max-width: 50px;
+    }
+    
+    .matrix-day-label {
+        width: 50px;
+        min-width: 50px;
+        max-width: 50px;
+    }
+    
+    .matrix-person-header td:first-child {
+        width: 50px;
+        min-width: 50px;
+        max-width: 50px;
+    }
+}

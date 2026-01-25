@@ -53,6 +53,7 @@ const translations = {
         language: "Language",
         about: "About",
         reorderTasks: "Reorder Tasks",
+        workloadMatrix: "Workload Matrix",
         filterList: "Filter List",
         filterListAlt: "Filter List Alt",
         confirmDeleteDoneTasks: "Are you sure you want to delete all tasks in the Done column?",
@@ -80,7 +81,10 @@ const translations = {
         passwordCannotBeEmpty: "Password cannot be empty.",
         writeDownPassword: "Remember your password as it will be used to decrypt your data.",
         passwordsDoNotMatch: "Passwords do not match. Please try again.",
-        confirmation: "Confirmation"
+        confirmation: "Confirmation",
+        date: "Date",
+        week: "Week",
+        selectWeeksLabel: "Select Weeks to Display (1-4):"
     },
     it: {
         languageName: "Italiano",
@@ -115,6 +119,7 @@ const translations = {
         language: "Lingua",
         about: "Informazioni",
         reorderTasks: "Riordina Compiti",
+        workloadMatrix: "Matrice di Carico di Lavoro",
         filterList: "Lista Filtri",
         filterListAlt: "Lista Filtri Alternativa",
         confirmDeleteDoneTasks: "Sei sicuro di voler eliminare tutti i compiti nella colonna Fatto?",
@@ -141,7 +146,10 @@ const translations = {
         incorrectPassword: "Password errata. Riprova.",
         passwordCannotBeEmpty: "La password non può essere vuota.",
         writeDownPassword: "Ricorda la tua password poiché verrà utilizzata per decrittografare i tuoi dati.",
-        confirmation: "Conferma"
+        confirmation: "Conferma",
+        date: "Data",
+        week: "Settimana",
+        selectWeeksLabel: "Seleziona Settimane da Visualizzare (1-4):"
     },
     es: {
         languageName: "Español",
@@ -176,6 +184,7 @@ const translations = {
         language: "Idioma",
         about: "Acerca de",
         reorderTasks: "Reordenar Tareas",
+        workloadMatrix: "Matriz de Carga de Trabajo",
         filterList: "Lista de Filtros",
         filterListAlt: "Lista de Filtros Alternativa",
         confirmDeleteDoneTasks: "¿Estás seguro de que deseas eliminar todas las tareas en la columna Hecho?",
@@ -202,7 +211,10 @@ const translations = {
         incorrectPassword: "Contraseña incorrecta. Inténtalo de nuevo.",
         passwordCannotBeEmpty: "La contraseña no puede estar vacía.",
         writeDownPassword: "Recuerda tu contraseña ya que se utilizará para descifrar tus datos.",
-        confirmation: "Confirmación"
+        confirmation: "Confirmación",
+        date: "Fecha",
+        week: "Semana",
+        selectWeeksLabel: "Selecciona Semanas a Mostrar (1-4):"
     },
     pt: {
         languageName: "Português",
@@ -237,6 +249,7 @@ const translations = {
         language: "Idioma",
         about: "Sobre",
         reorderTasks: "Reordenar Tarefas",
+        workloadMatrix: "Matriz de Carga de Trabalho",
         filterList: "Lista de Filtros",
         filterListAlt: "Lista de Filtros Alternativa",
         confirmDeleteDoneTasks: "Tem certeza de que deseja excluir todas as tarefas na coluna Feito?",
@@ -263,7 +276,10 @@ const translations = {
         incorrectPassword: "Senha incorreta. Tente novamente.",
         passwordCannotBeEmpty: "A senha não pode estar vazia.",
         writeDownPassword: "Lembre-se da sua senha, pois ela será usada para descriptografar seus dados.",
-        confirmation: "Confirmação"
+        confirmation: "Confirmação",
+        date: "Data",
+        week: "Semana",
+        selectWeeksLabel: "Selecione Semanas para Exibir (1-4):"
     },
     ro: {
         languageName: "Română",
@@ -298,6 +314,7 @@ const translations = {
         language: "Limbă",
         about: "Despre",
         reorderTasks: "Reordonează Sarcini",
+        workloadMatrix: "Matrice de Sarcină",
         filterList: "Listă de Filtre",
         filterListAlt: "Listă de Filtre Alternativă",
         confirmDeleteDoneTasks: "Ești sigur că vrei să ștergi toate sarcinile din coloana Terminat?",
@@ -324,7 +341,10 @@ const translations = {
         incorrectPassword: "Parolă incorectă. Încercați din nou.",
         passwordCannotBeEmpty: "Parola nu poate fi goală.",
         writeDownPassword: "Ține minte parola ta, deoarece va fi folosită pentru a decripta datele tale.",
-        confirmation: "Confirmare"
+        confirmation: "Confirmare",
+        date: "Data",
+        week: "Săptămâna",
+        selectWeeksLabel: "Selectează Săptămânile de Afișat (1-4):"
     },
     de: {
         languageName: "Deutsch",
@@ -359,6 +379,7 @@ const translations = {
         language: "Sprache",
         about: "Über",
         reorderTasks: "Aufgaben Neu Ordnen",
+        workloadMatrix: "Arbeitsauslastungsmatrix",
         filterList: "Filterliste",
         filterListAlt: "Alternative Filterliste",
         confirmDeleteDoneTasks: "Sind Sie sicher, dass Sie alle Aufgaben in der Spalte Erledigt löschen möchten?",
@@ -385,7 +406,10 @@ const translations = {
         incorrectPassword: "Falsches Passwort. Bitte versuchen Sie es erneut.",
         passwordCannotBeEmpty: "Das Passwort darf nicht leer sein.",
         writeDownPassword: "Merken Sie sich Ihr Passwort, da es zur Entschlüsselung Ihrer Daten verwendet wird.",
-        confirmation: "Bestätigung"
+        confirmation: "Bestätigung",
+        date: "Datum",
+        week: "Woche",
+        selectWeeksLabel: "Wählen Sie Wochen zur Anzeige (1-4):"
     },
     zh: {
         languageName: "中文",
@@ -420,6 +444,7 @@ const translations = {
         language: "语言",
         about: "关于",
         reorderTasks: "重新排序任务",
+        workloadMatrix: "工作负荷矩阵",
         filterList: "筛选列表",
         filterListAlt: "筛选列表（替代）",
         confirmDeleteDoneTasks: "确定要删除“已完成”列中的所有任务吗？",
@@ -442,7 +467,10 @@ const translations = {
         incorrectPassword: "密码错误。请再试一次。",
         passwordCannotBeEmpty: "密码不能为空。",
         writeDownPassword: "记住您的密码，因为它将用于解密您的数据。",
-        confirmation: "确认"
+        confirmation: "确认",
+        date: "日期",
+        week: "周",
+        selectWeeksLabel: "选择要显示的周数 (1-4):"
     },
     fr: {
         languageName: "Français",
@@ -477,6 +505,7 @@ const translations = {
         language: "Langue",
         about: "À Propos",
         reorderTasks: "Réorganiser les Tâches",
+        workloadMatrix: "Matrice de Charge de Travail",
         filterList: "Liste des Filtres",
         filterListAlt: "Liste des Filtres Alt",
         confirmDeleteDoneTasks: "Êtes-vous sûr de vouloir supprimer toutes les tâches dans la colonne Terminé ?",
@@ -503,7 +532,10 @@ const translations = {
         incorrectPassword: "Mot de passe incorrect. Veuillez réessayer.",
         passwordCannotBeEmpty: "Le mot de passe ne peut pas être vide.",
         writeDownPassword: "Mémorisez votre mot de passe car il sera utilisé pour décrypter vos données.",
-        confirmation: "Confirmation"
+        confirmation: "Confirmation",
+        date: "Date",
+        week: "Semaine",
+        selectWeeksLabel: "Sélectionnez les Semaines à Afficher (1-4):"
     }
     // Add more languages as needed
 };
@@ -669,6 +701,8 @@ function changeLanguage() {
         console.error('Error in applyTranslations:', error);
     }
     updateFloatingDateLabel();
+    // Explicitly update floating popup labels to ensure they translate immediately
+    updateFloatingPopupLabels(language);
     console.log('changeLanguage() completed');
 }
 
@@ -1917,27 +1951,13 @@ window.addEventListener('load', async () => {
     applyTranslations(savedLanguage);
     updateLanguageOptions(savedLanguage); // Initialize language options in the current language
 
-    // Ensure floating-popup translations are applied on load
-    const floatingPopup = document.querySelector('.floating-popup');
-    if (floatingPopup) {
-        const reorderTaskLabel = floatingPopup.querySelector('li:nth-child(1)');
-        const filterTaskLabel = floatingPopup.querySelector('li:nth-child(2)');
-        const settingsLabel = floatingPopup.querySelector('li:nth-child(3)');
-        
-        reorderTaskLabel.childNodes[1].nodeValue = ` ${translations[savedLanguage].reorderTasks}`;
-        filterTaskLabel.childNodes[1].nodeValue = ` ${translations[savedLanguage].filterTasks}`;
-        settingsLabel.childNodes[1].nodeValue = ` ${translations[savedLanguage].settings}`;
-    }
+    // Update all floating popup labels and matrix labels
+    updateFloatingPopupLabels(savedLanguage);
 
     // Update icon tooltips based on the selected language
     document.querySelector('.reorder-icon').setAttribute('title', translations[savedLanguage].reorderTasks);
     document.querySelector('.filter-icon').setAttribute('title', translations[savedLanguage].filterTasks);
     document.querySelector('.settings-icon').setAttribute('title', translations[savedLanguage].settings);
-
-    // Update floating button menu labels based on the selected language
-    document.querySelector('.floating-popup .reorder-tasks').innerText = translations[savedLanguage].reorderTasks;
-    document.querySelector('.floating-popup .filter-tasks').innerText = translations[savedLanguage].filterTasks;
-    document.querySelector('.floating-popup .settings').innerText = translations[savedLanguage].settings;
 
     updateTodayDate();
     // Update floating date label after translations are applied
@@ -2069,9 +2089,32 @@ document.getElementById('filterSelect').addEventListener('click', (event) => {
 // Update the floating popup labels based on the selected language
 function updateFloatingPopupLabels(language = null) {
     const lang = language || localStorage.getItem('language') || 'en';
-    document.getElementById('reorderTasksLabel').textContent = translations[lang].reorderTasks;
-    document.getElementById('filterTasksLabel').textContent = translations[lang].filterTasks;
-    document.getElementById('settingsLabel').textContent = translations[lang].settings;
+    
+    // Update floating popup menu labels
+    const workloadMatrixLabel = document.getElementById('workloadMatrixLabel');
+    if (workloadMatrixLabel) workloadMatrixLabel.textContent = translations[lang].workloadMatrix;
+    
+    const reorderTasksLabel = document.getElementById('reorderTasksLabel');
+    if (reorderTasksLabel) reorderTasksLabel.textContent = translations[lang].reorderTasks;
+    
+    const filterTasksLabel = document.getElementById('filterTasksLabel');
+    if (filterTasksLabel) filterTasksLabel.textContent = translations[lang].filterTasks;
+    
+    const settingsLabel = document.getElementById('settingsLabel');
+    if (settingsLabel) settingsLabel.textContent = translations[lang].settings;
+    
+    // Update workload matrix popup labels
+    const selectWeeksLabel = document.getElementById('selectWeeksLabel');
+    if (selectWeeksLabel) selectWeeksLabel.innerText = translations[lang].selectWeeksLabel;
+    
+    const workloadMatrixTitle = document.getElementById('workloadMatrixTitle');
+    if (workloadMatrixTitle) workloadMatrixTitle.innerText = translations[lang].workloadMatrix;
+    
+    // Refresh the matrix if it's open
+    const popup = document.getElementById('workload-matrix-popup');
+    if (popup && popup.classList.contains('show')) {
+        updateWorkloadMatrix();
+    }
 }
 
 // Call the function to update labels on page load
@@ -2119,3 +2162,164 @@ function showConfirmPasswordField() {
         confirmToggleIcon.style.display = 'none'; // Hide the second toggle otherwise
     }
 }
+
+// Workload Matrix Functions
+function openWorkloadMatrix() {
+    hideFloatingPopup();
+    const workloadOverlay = document.getElementById('workload-overlay');
+    const workloadPopup = document.getElementById('workload-matrix-popup');
+    
+    workloadOverlay.classList.add('show');
+    workloadPopup.classList.add('show');
+    
+    // Update title based on language
+    const language = localStorage.getItem('language') || 'en';
+    document.getElementById('workloadMatrixTitle').textContent = translations[language].workloadMatrix;
+    
+    // Update labels
+    const selectWeeksLabel = document.getElementById('selectWeeksLabel');
+    if (language === 'en') selectWeeksLabel.textContent = 'Select Weeks to Display (1-4):';
+    else if (language === 'it') selectWeeksLabel.textContent = 'Seleziona Settimane da Visualizzare (1-4):';
+    else if (language === 'es') selectWeeksLabel.textContent = 'Seleccionar Semanas a Mostrar (1-4):';
+    else if (language === 'pt') selectWeeksLabel.textContent = 'Selecionar Semanas para Exibir (1-4):';
+    else if (language === 'ro') selectWeeksLabel.textContent = 'Selectați Săptămânile de Afișat (1-4):';
+    else if (language === 'de') selectWeeksLabel.textContent = 'Wochen zum Anzeigen Auswählen (1-4):';
+    else if (language === 'zh') selectWeeksLabel.textContent = '选择要显示的周数 (1-4):';
+    else if (language === 'fr') selectWeeksLabel.textContent = 'Sélectionnez les Semaines à Afficher (1-4):';
+    
+    updateWorkloadMatrix();
+}
+
+function closeWorkloadMatrix() {
+    const workloadOverlay = document.getElementById('workload-overlay');
+    const workloadPopup = document.getElementById('workload-matrix-popup');
+    
+    workloadOverlay.classList.remove('show');
+    workloadPopup.classList.remove('show');
+}
+
+function updateWorkloadMatrix() {
+    const weeks = parseInt(document.getElementById('weekSelector').value) || 1;
+    const container = document.getElementById('workload-matrix-container');
+    
+    // Get all tasks
+    const allTasks = document.querySelectorAll('.task');
+    
+    // Get available filter options (assigned to values) from current tasks using data attributes
+    const filterOptions = [...new Set([...allTasks].map(task => task.getAttribute('data-assigned-to')))].filter(v => v).sort();
+    
+    // Group tasks by assigned person and by date
+    const tasksByPerson = {};
+    const taskColorByDate = {}; // Store color class for each date
+    
+    allTasks.forEach(task => {
+        const date = task.getAttribute('data-date');
+        const assigned = task.getAttribute('data-assigned-to');
+        
+        if (date && assigned) {
+            if (!tasksByPerson[assigned]) {
+                tasksByPerson[assigned] = {};
+            }
+            if (!tasksByPerson[assigned][date]) {
+                tasksByPerson[assigned][date] = 0;
+            }
+            tasksByPerson[assigned][date]++;
+            
+            // Store the color class for this date
+            if (!taskColorByDate[date]) {
+                taskColorByDate[date] = getTaskColorClass(date);
+            }
+        }
+    });
+    
+    // Get date range based on weeks selected
+    const today = new Date();
+    const startDate = new Date(today);
+    startDate.setDate(startDate.getDate() - today.getDay()); // Start from Sunday
+    
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + (weeks * 7) - 1); // End on Saturday of last week
+    
+    // Generate all dates in the range and group by week
+    const datesByWeek = {};
+    const currentDate = new Date(startDate);
+    
+    while (currentDate <= endDate) {
+        const dateStr = currentDate.toISOString().split('T')[0];
+        const weekStart = new Date(currentDate);
+        weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+        const weekKey = weekStart.toISOString().split('T')[0];
+        
+        if (!datesByWeek[weekKey]) {
+            datesByWeek[weekKey] = [];
+        }
+        datesByWeek[weekKey].push(dateStr);
+        
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
+    // Create matrix with separate sections for each week
+    let html = '';
+    const language = localStorage.getItem('language') || 'en';
+    const weekdays = translations[language].weekdays;
+    const dateLabel = translations[language].date || 'Date';
+    const weekLabel = translations[language].week || 'Week';
+    
+    Object.keys(datesByWeek).forEach(weekKey => {
+        const weekDates = datesByWeek[weekKey];
+        const weekStart = new Date(weekKey);
+        const weekEnd = new Date(weekDates[weekDates.length - 1]);
+        
+        html += `<div class="matrix-week-section">
+                    <h3 class="matrix-week-header">
+                        ${weekLabel}: ${weekStart.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}
+                    </h3>
+                    <table class="matrix-table-vertical"><tbody>`;
+        
+        // Add header row with person names
+        html += `<tr class="matrix-person-header"><td>${dateLabel}</td>`;
+        filterOptions.forEach(person => {
+            html += `<td><strong>${person}</strong></td>`;
+        });
+        html += '</tr>';
+        
+        // Add rows for each day (vertical layout)
+        weekDates.forEach(dateStr => {
+            const date = new Date(dateStr);
+            const dayName = weekdays[date.getDay()];
+            const dayNum = date.getDate();
+            
+            html += `<tr class="matrix-day-row">
+                        <td class="matrix-day-label">
+                            <strong>${dayName.substring(0, 3)}<br>${dayNum}</strong>
+                        </td>`;
+            
+            // Add cells for each person
+            filterOptions.forEach(person => {
+                const count = (tasksByPerson[person] && tasksByPerson[person][dateStr]) || 0;
+                
+                // Determine intensity class based on task count
+                let intensityClass = 'intensity-0'; // no tasks
+                if (count === 1) intensityClass = 'intensity-1';
+                else if (count === 2 || count === 3) intensityClass = 'intensity-2-3';
+                else if (count === 4 || count === 5) intensityClass = 'intensity-4-5';
+                else if (count === 6 || count === 7) intensityClass = 'intensity-6-7';
+                else if (count === 8 || count === 9) intensityClass = 'intensity-8-9';
+                else if (count >= 10) intensityClass = 'intensity-10+';
+                
+                if (count === 0) {
+                    html += `<td class="matrix-cell ${intensityClass}">-</td>`;
+                } else {
+                    html += `<td class="matrix-cell ${intensityClass} has-tasks"><strong>${count}</strong></td>`;
+                }
+            });
+            
+            html += '</tr>';
+        });
+        
+        html += '</tbody></table></div>';
+    });
+    
+    container.innerHTML = html;
+}
+
