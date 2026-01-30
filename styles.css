@@ -1709,7 +1709,7 @@ input:checked + .slider:before {
     font-weight: bold;
 }
 
-/* Task intensity gradients - from light grey to red */
+/* Task intensity gradients - grey, yellow, orange, red */
 .matrix-cell.intensity-1 {
     background: linear-gradient(135deg, rgba(220, 220, 220, 0.3) 0%, rgba(200, 200, 200, 0.2) 100%) !important;
 }
@@ -1718,36 +1718,36 @@ input:checked + .slider:before {
     background: linear-gradient(135deg, rgba(100, 100, 100, 0.3) 0%, rgba(80, 80, 80, 0.2) 100%) !important;
 }
 
-.matrix-cell.intensity-2-3 {
-    background: linear-gradient(135deg, rgba(200, 200, 150, 0.4) 0%, rgba(180, 180, 100, 0.2) 100%) !important;
+.matrix-cell.intensity-2 {
+    background: linear-gradient(135deg, rgba(230, 230, 190, 0.4) 0%, rgba(220, 220, 170, 0.2) 100%) !important;
 }
 
-.dark-mode .matrix-cell.intensity-2-3 {
-    background: linear-gradient(135deg, rgba(180, 150, 80, 0.4) 0%, rgba(150, 120, 60, 0.2) 100%) !important;
+.dark-mode .matrix-cell.intensity-2 {
+    background: linear-gradient(135deg, rgba(150, 130, 70, 0.3) 0%, rgba(130, 110, 60, 0.2) 100%) !important;
 }
 
-.matrix-cell.intensity-4-5 {
+.matrix-cell.intensity-3 {
     background: linear-gradient(135deg, rgba(255, 220, 100, 0.5) 0%, rgba(255, 180, 80, 0.3) 100%) !important;
 }
 
-.dark-mode .matrix-cell.intensity-4-5 {
+.dark-mode .matrix-cell.intensity-3 {
     background: linear-gradient(135deg, rgba(200, 140, 60, 0.5) 0%, rgba(180, 110, 40, 0.3) 100%) !important;
 }
 
-.matrix-cell.intensity-6-7 {
+.matrix-cell.intensity-4 {
     background: linear-gradient(135deg, rgba(255, 180, 60, 0.6) 0%, rgba(255, 140, 40, 0.4) 100%) !important;
 }
 
-.dark-mode .matrix-cell.intensity-6-7 {
+.dark-mode .matrix-cell.intensity-4 {
     background: linear-gradient(135deg, rgba(200, 100, 30, 0.6) 0%, rgba(180, 70, 20, 0.4) 100%) !important;
 }
 
-.matrix-cell.intensity-8+ {
+.matrix-cell.intensity-5+ {
     background: linear-gradient(135deg, rgba(255, 80, 80, 0.8) 0%, rgba(200, 40, 40, 0.6) 100%) !important;
     color: #fff;
 }
 
-.dark-mode .matrix-cell.intensity-8+ {
+.dark-mode .matrix-cell.intensity-5+ {
     background: linear-gradient(135deg, rgba(200, 40, 40, 0.8) 0%, rgba(150, 20, 20, 0.6) 100%) !important;
     color: #fff;
 }

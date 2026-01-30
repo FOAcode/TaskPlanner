@@ -2306,10 +2306,10 @@ function updateWorkloadMatrix() {
                 // Determine intensity class based on task count
                 let intensityClass = 'intensity-0'; // no tasks
                 if (count === 1) intensityClass = 'intensity-1';
-                else if (count === 2 || count === 3) intensityClass = 'intensity-2-3';
-                else if (count === 4 || count === 5) intensityClass = 'intensity-4-5';
-                else if (count === 6 || count === 7) intensityClass = 'intensity-6-7';
-                else if (count >= 8) intensityClass = 'intensity-8+';
+                else if (count === 2) intensityClass = 'intensity-2';
+                else if (count === 3) intensityClass = 'intensity-3';
+                else if (count === 4) intensityClass = 'intensity-4';
+                else if (count >= 5) intensityClass = 'intensity-5+';
                 
                 if (count === 0) {
                     html += `<td class="matrix-cell ${intensityClass}">&nbsp;</td>`;
