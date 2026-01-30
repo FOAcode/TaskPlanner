@@ -2171,6 +2171,7 @@ function openWorkloadMatrix() {
     
     workloadOverlay.classList.add('show');
     workloadPopup.classList.add('show');
+    document.body.classList.add('workload-matrix-open');
     
     // Update title based on language
     const language = localStorage.getItem('language') || 'en';
@@ -2196,6 +2197,7 @@ function closeWorkloadMatrix() {
     
     workloadOverlay.classList.remove('show');
     workloadPopup.classList.remove('show');
+    document.body.classList.remove('workload-matrix-open');
 }
 
 function updateWorkloadMatrix() {
@@ -2270,9 +2272,12 @@ function updateWorkloadMatrix() {
         const weekStart = new Date(weekKey);
         const weekEnd = new Date(weekDates[weekDates.length - 1]);
         
+        const formattedWeekStart = `${String(weekStart.getDate()).padStart(2, '0')}/${String(weekStart.getMonth() + 1).padStart(2, '0')}`;
+        const formattedWeekEnd = `${String(weekEnd.getDate()).padStart(2, '0')}/${String(weekEnd.getMonth() + 1).padStart(2, '0')}`;
+
         html += `<div class="matrix-week-section">
                     <h3 class="matrix-week-header">
-                        ${weekLabel}: ${weekStart.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}
+                        ${formattedWeekStart} - ${formattedWeekEnd}
                     </h3>
                     <table class="matrix-table-vertical"><tbody>`;
         
