@@ -610,12 +610,12 @@ function applyTranslations(language) {
     
     const aboutSection = document.querySelector('#settings-popup p');
     if (aboutSection) {
-        aboutSection.innerHTML = `Task Planner v0.8.5 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
+        aboutSection.innerHTML = `Task Planner v0.8.6 beta test version.<br><a href="https://github.com/FOAcode/TaskPlanner" target="_blank" style="color: #4A90E2;">Github Task Planner repository</a>`;
     }
     
     const footer = document.querySelector('#settings-popup footer');
     if (footer) {
-        footer.innerText = `©2025 FOAcode`;
+        footer.innerText = `©2025-2026 FOAcode`;
     }
     
     // Update priority label
@@ -1917,7 +1917,7 @@ function setVersion(version) {
     const aboutSection = document.querySelector('#settings-popup p');
     aboutSection.innerHTML = `Task Planner v${version} beta.<br>Test version website and associated PWA app.`;
     const footer = document.querySelector('#settings-popup footer');
-    footer.innerHTML = `&copy;2025 Flavius O. Abrudan`;
+    footer.innerHTML = `&copy;2025-2026 Flavius O. Abrudan`;
 }
 
 window.addEventListener('load', async () => {
