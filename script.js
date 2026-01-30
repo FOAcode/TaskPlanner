@@ -773,8 +773,30 @@ function handleTaskRightClick(event, task) {
     const contextMenu = document.getElementById('task-context-menu');
     
     // Position the context menu at the mouse cursor
-    contextMenu.style.left = event.pageX + 'px';
-    contextMenu.style.top = event.pageY + 'px';
+    // Make it visible first (but hidden) so we can measure it
+    contextMenu.style.visibility = 'hidden';
+    contextMenu.classList.add('show');
+
+    // Mouse position relative to viewport (correct for position: fixed)
+    let x = event.clientX;
+    let y = event.clientY;
+
+    // Get menu size
+    const rect = contextMenu.getBoundingClientRect();
+
+    // Prevent overflow on right/bottom edges
+    if (x + rect.width > window.innerWidth) {
+        x = window.innerWidth - rect.width - 5;
+    }
+    if (y + rect.height > window.innerHeight) {
+        y = window.innerHeight - rect.height - 5;
+    }
+
+    // Apply final position
+    contextMenu.style.left = x + 'px';
+    contextMenu.style.top = y + 'px';
+    contextMenu.style.visibility = 'visible';
+
     
     // Show the context menu
     contextMenu.classList.add('show');
