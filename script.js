@@ -2199,7 +2199,7 @@ function closeWorkloadMatrix() {
 }
 
 function updateWorkloadMatrix() {
-    const weeks = parseInt(document.getElementById('weekSelector').value) || 1;
+    const weeks = 4; // Always display 4 weeks
     const container = document.getElementById('workload-matrix-container');
     
     // Get all tasks
@@ -2259,7 +2259,7 @@ function updateWorkloadMatrix() {
     }
     
     // Create matrix with separate sections for each week
-    let html = '';
+    let html = '<div class="matrix-grid">';
     const language = localStorage.getItem('language') || 'en';
     const weekdays = translations[language].weekdays;
     const dateLabel = translations[language].date || 'Date';
@@ -2304,11 +2304,10 @@ function updateWorkloadMatrix() {
                 else if (count === 2 || count === 3) intensityClass = 'intensity-2-3';
                 else if (count === 4 || count === 5) intensityClass = 'intensity-4-5';
                 else if (count === 6 || count === 7) intensityClass = 'intensity-6-7';
-                else if (count === 8 || count === 9) intensityClass = 'intensity-8-9';
-                else if (count >= 10) intensityClass = 'intensity-10+';
+                else if (count >= 8) intensityClass = 'intensity-8+';
                 
                 if (count === 0) {
-                    html += `<td class="matrix-cell ${intensityClass}">-</td>`;
+                    html += `<td class="matrix-cell ${intensityClass}">&nbsp;</td>`;
                 } else {
                     html += `<td class="matrix-cell ${intensityClass} has-tasks" data-person="${person}" data-date="${dateStr}" style="cursor: pointer;"><strong>${count}</strong></td>`;
                 }
@@ -2320,6 +2319,7 @@ function updateWorkloadMatrix() {
         html += '</tbody></table></div>';
     });
     
+    html += '</div>';
     container.innerHTML = html;
     
     // Attach click handlers to cells with tasks
@@ -2392,19 +2392,21 @@ function showTasksPopup(person, dateStr, event) {
     const offset = 10;
     const padding = 10;
     
-    // Check if there's enough space to the right of the click
-    const spaceToRight = window.innerWidth - event.clientX;
+    // Check if the click is on the left or right half of the screen
+    const screenWidth = window.innerWidth;
+    const clickX = event.clientX;
     
-    if (spaceToRight >= popupWidth) {
-        // Enough space to the right - show popup to the right
-        x = event.clientX + offset;
+    if (clickX < screenWidth / 2) {
+        // Click on the left half, open popup to the right
+        x = clickX + offset;
     } else {
-        // Not enough space to the right - show popup to the left with right corner at click position
-        x = event.clientX - popupWidth;
+        // Click on the right half, open popup to the left
+        x = clickX - popupWidth - offset;
     }
     
     // Clamp x to stay within padding
     x = Math.max(padding, x);
+    x = Math.min(x, screenWidth - popupWidth - padding);
     
     // Handle vertical positioning - show below by default, above if not enough space
     if (window.innerHeight - event.clientY >= popupHeight) {

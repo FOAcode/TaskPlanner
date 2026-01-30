@@ -1418,8 +1418,8 @@ input:checked + .slider:before {
 
 .workload-matrix-popup .close-button {
     position: fixed;
-    top: 20px;
-    right: 30px;
+    top: 10px;
+    right: 15px;
     background: none;
     border: none;
     font-size: 24px;
@@ -1474,6 +1474,12 @@ input:checked + .slider:before {
     margin-right: 20px;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+.matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
 }
 
 .matrix-week-section {
@@ -1733,20 +1739,12 @@ input:checked + .slider:before {
     background: linear-gradient(135deg, rgba(200, 100, 30, 0.6) 0%, rgba(180, 70, 20, 0.4) 100%) !important;
 }
 
-.matrix-cell.intensity-8-9 {
-    background: linear-gradient(135deg, rgba(255, 120, 60, 0.7) 0%, rgba(255, 80, 20, 0.5) 100%) !important;
-}
-
-.dark-mode .matrix-cell.intensity-8-9 {
-    background: linear-gradient(135deg, rgba(200, 60, 20, 0.7) 0%, rgba(180, 40, 10, 0.5) 100%) !important;
-}
-
-.matrix-cell.intensity-10+ {
+.matrix-cell.intensity-8+ {
     background: linear-gradient(135deg, rgba(255, 80, 80, 0.8) 0%, rgba(200, 40, 40, 0.6) 100%) !important;
     color: #fff;
 }
 
-.dark-mode .matrix-cell.intensity-10+ {
+.dark-mode .matrix-cell.intensity-8+ {
     background: linear-gradient(135deg, rgba(200, 40, 40, 0.8) 0%, rgba(150, 20, 20, 0.6) 100%) !important;
     color: #fff;
 }
@@ -1780,6 +1778,10 @@ input:checked + .slider:before {
 
 /* Responsive design for smaller screens */
 @media (max-width: 768px) {
+    .matrix-grid {
+        grid-template-columns: 1fr;
+    }
+
     .matrix-table th,
     .matrix-table td {
         padding: 6px 4px;
@@ -1838,6 +1840,10 @@ input:checked + .slider:before {
 }
 
 @media (max-width: 480px) {
+    .matrix-grid {
+        grid-template-columns: 1fr;
+    }
+
     .matrix-table th,
     .matrix-table td,
     .matrix-table-vertical th,
