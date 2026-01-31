@@ -1878,17 +1878,23 @@ input:checked + .slider:before {
 }
 
 .tasks-details-popup {
-    /* Hard-lock the width */
+    /* Hard-lock the width so it never resizes */
     width: 250px !important;
     min-width: 250px !important;
     max-width: 250px !important;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Crucial: padding won't increase width */
     
-    /* Visual styles */
-    background: var(--bg-color, white);
+    background: white;
     border: 1px solid #ccc;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
     border-radius: 8px;
-    padding: 0; /* Padding is handled by the internal div in your JS */
+    color: #333;
+    pointer-events: auto;
     word-wrap: break-word;
+}
+
+.dark-mode .tasks-details-popup {
+    background: #2c2c2c;
+    color: #eee;
+    border-color: #444;
 }

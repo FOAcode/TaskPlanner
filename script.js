@@ -1023,41 +1023,45 @@ function closePopup() {
 }
 
 function saveTask() {
-    const description = document.getElementById('taskDescription').value.replace(/\n/g, '<br>'); // Replace newline with <br>
+    const description = document.getElementById('taskDescription').value.replace(/\n/g, '<br>');
     const date = document.getElementById('taskDate').value;
     let assignedTo = document.getElementById('taskAssignedTo').value;
     const isPrioritary = document.getElementById('taskPriority').checked;
     const language = localStorage.getItem('language') || 'en';
     const errorDiv = document.getElementById('validation-error');
 
-    // Clear previous error
+    // Clear previous errors
     errorDiv.style.display = 'none';
     errorDiv.textContent = '';
-    document.getElementById('taskDescription').style.borderColor = '';
-    document.getElementById('taskDescription').style.borderWidth = '';
-    document.getElementById('taskDate').style.borderColor = '';
-    document.getElementById('taskDate').style.borderWidth = '';
-    document.getElementById('taskAssignedTo').style.borderColor = '';
-    document.getElementById('taskAssignedTo').style.borderWidth = '';
+    const fields = ['taskDescription', 'taskDate', 'taskAssignedTo'];
+    fields.forEach(id => {
+        document.getElementById(id).style.borderColor = '';
+        document.getElementById(id).style.borderWidth = '';
+    });
 
     if (description && date) {
         if (currentColumnId === 'todo-column' && !assignedTo) {
             assignedTo = 'None';
         } else if (currentColumnId === 'in-progress-column' && !assignedTo) {
-            // Show validation error
             errorDiv.textContent = translations[language].fillMissingData;
             errorDiv.style.display = 'block';
-            // Highlight the field with thick red border
-            const assignedToField = document.getElementById('taskAssignedTo');
-            assignedToField.style.borderColor = '#c62828';
-            assignedToField.style.borderWidth = '4px';
+            const field = document.getElementById('taskAssignedTo');
+            field.style.borderColor = '#c62828';
+            field.style.borderWidth = '4px';
             return;
         }
 
         if (currentEditTask) {
-            currentEditTask.querySelector('.description').innerHTML = description.replace(/\n/g, '<br>'); // Replace newline with <br>
+            // 1. UPDATE DATA ATTRIBUTES (Crucial for the Matrix)
+            currentEditTask.setAttribute('data-date', date);
+            currentEditTask.setAttribute('data-assigned-to', assignedTo);
+
+            // 2. Update the visible UI
+            currentEditTask.querySelector('.description').innerHTML = description;
             const dayOfWeek = getDayOfWeek(date, language);
-            currentEditTask.querySelector('.details').innerText = `${translations[language].due}: ${date} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}`;
+            currentEditTask.querySelector('.details').innerText = 
+                `${translations[language].due}: ${date} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}`;
+            
             currentEditTask.className = `task ${getTaskColorClass(date)}`;
             if (isPrioritary) {
                 currentEditTask.classList.add('prioritary');
@@ -1072,21 +1076,29 @@ function saveTask() {
         closePopup();
         autoSave();
         updateAssignedToList();
+
+        // 3. REFRESH THE MATRIX IMMEDIATELY
+        // If the board uses date-tiles, you might also need to call renderTasks() 
+        // to move the task to the correct date section.
+        if (typeof renderTasks === 'function') {
+            renderTasks();
+        }
+        
+        // Final recalculation of the matrix numbers
+        if (document.body.classList.contains('workload-matrix-open')) {
+            updateWorkloadMatrix();
+        }
+        
     } else {
-        // Show validation error
         errorDiv.textContent = translations[language].fillMissingData;
         errorDiv.style.display = 'block';
-        
-        // Highlight missing fields with thick red border
         if (!description) {
-            const descriptionField = document.getElementById('taskDescription');
-            descriptionField.style.borderColor = '#c62828';
-            descriptionField.style.borderWidth = '4px';
+            const f = document.getElementById('taskDescription');
+            f.style.borderColor = '#c62828'; f.style.borderWidth = '4px';
         }
         if (!date) {
-            const dateField = document.getElementById('taskDate');
-            dateField.style.borderColor = '#c62828';
-            dateField.style.borderWidth = '4px';
+            const f = document.getElementById('taskDate');
+            f.style.borderColor = '#c62828'; f.style.borderWidth = '4px';
         }
     }
 }
@@ -2187,30 +2199,57 @@ function showConfirmPasswordField() {
 
 // Workload Matrix Functions
 function openWorkloadMatrix() {
-    hideFloatingPopup();
+    // Hide the floating '+' menu if it's open
+    hideFloatingPopup(); 
+    
     const workloadOverlay = document.getElementById('workload-overlay');
     const workloadPopup = document.getElementById('workload-matrix-popup');
     
+    // 1. FORCE THE BOARD TO REDRAW FIRST
+    // This ensures all .task elements on the screen have the updated 
+    // data-date and data-assigned-to attributes from your latest edits.
+    if (typeof renderTasks === 'function') {
+        renderTasks(); 
+    }
+    
+    // 2. NOW REFRESH THE MATRIX DATA
+    // This function will now find the freshly rendered .task elements.
+    updateWorkloadMatrix(); 
+    
+    // 3. SHOW THE MATRIX UI
     workloadOverlay.classList.add('show');
     workloadPopup.classList.add('show');
     document.body.classList.add('workload-matrix-open');
     
-    // Update title based on language
+    // 4. UPDATE LABELS & TRANSLATIONS
     const language = localStorage.getItem('language') || 'en';
-    document.getElementById('workloadMatrixTitle').textContent = translations[language].workloadMatrix;
     
-    // Update labels
+    // Set the Title
+    const titleElement = document.getElementById('workloadMatrixTitle');
+    if (titleElement) {
+        titleElement.textContent = translations[language].workloadMatrix || 'Workload Matrix';
+    }
+    
+    // Set the Week Selection Label
     const selectWeeksLabel = document.getElementById('selectWeeksLabel');
-    if (language === 'en') selectWeeksLabel.textContent = 'Select Weeks to Display (1-4):';
-    else if (language === 'it') selectWeeksLabel.textContent = 'Seleziona Settimane da Visualizzare (1-4):';
-    else if (language === 'es') selectWeeksLabel.textContent = 'Seleccionar Semanas a Mostrar (1-4):';
-    else if (language === 'pt') selectWeeksLabel.textContent = 'Selecionar Semanas para Exibir (1-4):';
-    else if (language === 'ro') selectWeeksLabel.textContent = 'Selectați Săptămânile de Afișat (1-4):';
-    else if (language === 'de') selectWeeksLabel.textContent = 'Wochen zum Anzeigen Auswählen (1-4):';
-    else if (language === 'zh') selectWeeksLabel.textContent = '选择要显示的周数 (1-4):';
-    else if (language === 'fr') selectWeeksLabel.textContent = 'Sélectionnez les Semaines à Afficher (1-4):';
+    if (selectWeeksLabel) {
+        const weekText = {
+            en: 'Select Weeks to Display (1-4):',
+            it: 'Seleziona Settimane da Visualizzare (1-4):',
+            es: 'Seleccionar Semanas a Mostrar (1-4):',
+            pt: 'Selecionar Semanas para Exibir (1-4):',
+            ro: 'Selectați Săptămânile de Afișat (1-4):',
+            de: 'Wochen zum Anzeigen Auswählen (1-4):',
+            zh: '选择要显示的周数 (1-4):',
+            fr: 'Sélectionnez les Semaines à Afficher (1-4):'
+        };
+        selectWeeksLabel.textContent = weekText[language] || weekText['en'];
+    }
     
-    updateWorkloadMatrix();
+    // Call renderTasks again to update the matrix numbers
+    if (typeof renderTasks === 'function') {
+        renderTasks(); 
+    }
 }
 
 function closeWorkloadMatrix() {
@@ -2223,155 +2262,116 @@ function closeWorkloadMatrix() {
 }
 
 function updateWorkloadMatrix() {
-    const weeks = 4; // Always display 4 weeks
+    const weeks = 4;
     const container = document.getElementById('workload-matrix-container');
     
-    // Get all tasks
-    const allTasks = document.querySelectorAll('.task');
+    // PULL DATA FROM THE UI ELEMENTS (since they aren't in a JSON array yet)
+    const allTaskElements = document.querySelectorAll('.task');
     
-    // Get available filter options (assigned to values) from current tasks using data attributes
-    const filterOptions = [...new Set([...allTasks].map(task => task.getAttribute('data-assigned-to')))].filter(v => v).sort();
-    
-    // Group tasks by assigned person and by date
+    // Group tasks by person and date
     const tasksByPerson = {};
-    const taskColorByDate = {}; // Store color class for each date
-    
-    allTasks.forEach(task => {
+    const peopleSet = new Set();
+
+    allTaskElements.forEach(task => {
         const date = task.getAttribute('data-date');
         const assigned = task.getAttribute('data-assigned-to');
         
         if (date && assigned) {
-            if (!tasksByPerson[assigned]) {
-                tasksByPerson[assigned] = {};
-            }
-            if (!tasksByPerson[assigned][date]) {
-                tasksByPerson[assigned][date] = 0;
-            }
+            peopleSet.add(assigned);
+            if (!tasksByPerson[assigned]) tasksByPerson[assigned] = {};
+            if (!tasksByPerson[assigned][date]) tasksByPerson[assigned][date] = 0;
             tasksByPerson[assigned][date]++;
-            
-            // Store the color class for this date
-            if (!taskColorByDate[date]) {
-                taskColorByDate[date] = getTaskColorClass(date);
-            }
         }
     });
     
-    // Get date range based on weeks selected
+    const filterOptions = Array.from(peopleSet).sort();
+    
+    // Date Range Setup
     const today = new Date();
     const startDate = new Date(today);
-    startDate.setDate(startDate.getDate() - today.getDay()); // Start from Sunday
+    startDate.setDate(startDate.getDate() - today.getDay());
     
     const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + (weeks * 7) - 1); // End on Saturday of last week
+    endDate.setDate(endDate.getDate() + (weeks * 7) - 1);
     
-    // Generate all dates in the range and group by week
     const datesByWeek = {};
-    const currentDate = new Date(startDate);
-    
+    let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
         const dateStr = currentDate.toISOString().split('T')[0];
         const weekStart = new Date(currentDate);
         weekStart.setDate(weekStart.getDate() - weekStart.getDay());
         const weekKey = weekStart.toISOString().split('T')[0];
         
-        if (!datesByWeek[weekKey]) {
-            datesByWeek[weekKey] = [];
-        }
+        if (!datesByWeek[weekKey]) datesByWeek[weekKey] = [];
         datesByWeek[weekKey].push(dateStr);
-        
         currentDate.setDate(currentDate.getDate() + 1);
     }
     
-    // Create matrix with separate sections for each week
+    // Generate HTML
     let html = '<div class="matrix-grid">';
     const language = localStorage.getItem('language') || 'en';
     const weekdays = translations[language].weekdays;
     const dateLabel = translations[language].date || 'Date';
-    const weekLabel = translations[language].week || 'Week';
     
     Object.keys(datesByWeek).forEach(weekKey => {
         const weekDates = datesByWeek[weekKey];
         const weekStart = new Date(weekKey);
         const weekEnd = new Date(weekDates[weekDates.length - 1]);
-        
         const formattedWeekStart = `${String(weekStart.getDate()).padStart(2, '0')}/${String(weekStart.getMonth() + 1).padStart(2, '0')}`;
         const formattedWeekEnd = `${String(weekEnd.getDate()).padStart(2, '0')}/${String(weekEnd.getMonth() + 1).padStart(2, '0')}`;
 
-        html += `<div class="matrix-week-section">
-                    <h3 class="matrix-week-header">
-                        ${formattedWeekStart} - ${formattedWeekEnd}
-                    </h3>
-                    <table class="matrix-table-vertical"><tbody>`;
-        
-        // Add header row with person names
-        html += `<tr class="matrix-person-header"><td>${dateLabel}</td>`;
-        filterOptions.forEach(person => {
-            html += `<td><strong>${person}</strong></td>`;
-        });
-        html += '</tr>';
-        
-        // Add rows for each day (vertical layout)
-        weekDates.forEach(dateStr => {
-            const date = new Date(dateStr);
-            const dayName = weekdays[date.getDay()];
-            const dayNum = date.getDate();
-            
-            html += `<tr class="matrix-day-row">
-                        <td class="matrix-day-label">
-                            <strong>${dayName.substring(0, 3)}<br>${dayNum}</strong>
-                        </td>`;
-            
-            // Add cells for each person
-            filterOptions.forEach(person => {
-                const count = (tasksByPerson[person] && tasksByPerson[person][dateStr]) || 0;
-                
-                // Determine intensity class based on task count
-                let intensityClass = 'intensity-0'; // no tasks
-                if (count === 1) intensityClass = 'intensity-1';
-                else if (count === 2) intensityClass = 'intensity-2';
-                else if (count === 3) intensityClass = 'intensity-3';
-                else if (count === 4) intensityClass = 'intensity-4';
-                else if (count >= 5) intensityClass = 'intensity-5+';
-                
-                if (count === 0) {
-                    html += `<td class="matrix-cell ${intensityClass}">&nbsp;</td>`;
-                } else {
-                    html += `<td class="matrix-cell ${intensityClass} has-tasks" data-person="${person}" data-date="${dateStr}" style="cursor: pointer;"><strong>${count}</strong></td>`;
-                }
-            });
-            
-            html += '</tr>';
-        });
-        
-        html += '</tbody></table></div>';
+        html += `
+            <div class="matrix-week-section">
+                <h3 class="matrix-week-header">${formattedWeekStart} - ${formattedWeekEnd}</h3>
+                <table class="matrix-table-vertical">
+                    <tr class="matrix-person-header">
+                        <td>${dateLabel}</td>
+                        ${filterOptions.map(p => `<td><strong>${p}</strong></td>`).join('')}
+                    </tr>
+                    ${weekDates.map(dateStr => {
+                        const d = new Date(dateStr);
+                        return `
+                            <tr class="matrix-day-row">
+                                <td class="matrix-day-label"><strong>${weekdays[d.getDay()].substring(0, 3)}<br>${d.getDate()}</strong></td>
+                                ${filterOptions.map(person => {
+                                    const count = (tasksByPerson[person] && tasksByPerson[person][dateStr]) || 0;
+                                    let intensity = count >= 5 ? '5+' : count;
+                                    const hasTasks = count > 0 ? 'has-tasks' : '';
+                                    return `<td class="matrix-cell intensity-${intensity} ${hasTasks}" 
+                                                data-person="${person}" data-date="${dateStr}">
+                                                ${count > 0 ? `<strong>${count}</strong>` : '&nbsp;'}
+                                            </td>`;
+                                }).join('')}
+                            </tr>`;
+                    }).join('')}
+                </table>
+            </div>`;
     });
     
-    html += '</div>';
-    container.innerHTML = html;
+    container.innerHTML = html + '</div>';
     
-    // Attach click handlers to cells with tasks
+    // Re-attach handlers
     document.querySelectorAll('.matrix-cell.has-tasks').forEach(cell => {
         cell.addEventListener('click', (e) => {
             e.stopPropagation();
-            const person = cell.getAttribute('data-person');
-            const dateStr = cell.getAttribute('data-date');
-            showTasksPopup(person, dateStr, e);
+            showTasksPopup(cell.getAttribute('data-person'), cell.getAttribute('data-date'), e);
         });
     });
 }
 
-// This function shows a popup with tasks for a specific person on a specific date
 function showTasksPopup(person, dateStr, event) {
-    const date = new Date(dateStr);
-    const tasks = document.querySelectorAll('.task');
+    // PULL DESCRIPTIONS FROM THE UI
+    const allTaskElements = document.querySelectorAll('.task');
     const matchingTasks = [];
-    
-    tasks.forEach(task => {
-        if (task.getAttribute('data-date') === dateStr && task.getAttribute('data-assigned-to') === person) {
-            matchingTasks.push(task.querySelector('.description').innerText);
+
+    allTaskElements.forEach(el => {
+        if (el.getAttribute('data-date') === dateStr && el.getAttribute('data-assigned-to') === person) {
+            matchingTasks.push({
+                text: el.querySelector('.description').innerText
+            });
         }
     });
-    
+
     if (matchingTasks.length === 0) return;
     
     const existingPopup = document.querySelector('.tasks-details-popup');
@@ -2382,55 +2382,45 @@ function showTasksPopup(person, dateStr, event) {
     popup.style.position = 'fixed';
     popup.style.zIndex = '10003';
     
-    const dateFormatted = date.toLocaleDateString();
+    const dateObj = new Date(dateStr);
+    const dateFormatted = dateObj.toLocaleDateString();
+
     popup.innerHTML = `
         <div style="padding: 15px;">
             <strong style="display:block; margin-bottom:5px;">${person}</strong>
             <small style="color: #666;">${dateFormatted}</small>
             <hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
-            ${matchingTasks.map(t => `<div style="margin-bottom: 8px; font-size: 0.9em;">• ${t}</div>`).join('')}
+            <div style="max-height: 200px; overflow-y: auto;">
+                ${matchingTasks.map(t => `<div style="margin-bottom: 8px; font-size: 0.9em; line-height:1.2;">• ${t.text}</div>`).join('')}
+            </div>
         </div>
     `;
 
-    popup.onclick = (e) => e.stopPropagation();
     document.body.appendChild(popup);
 
-    // --- TRANSLATION LOGIC ---
-    const popupWidth = 250; // Must match CSS
+    // --- POSITIONING ---
+    const popupWidth = 250; 
     const popupHeight = popup.offsetHeight;
     const padding = 10;
-    const offset = 10; // Gap between cursor and top of popup
+    const offset = 10; 
     const screenWidth = window.innerWidth;
     const screenHeight = window.innerHeight;
 
-    // 1. Horizontal: Center the top edge middle point on clickX
-    // Math: clickX - half of the popup width
     let x = event.clientX - (popupWidth / 2);
-
-    // 2. Horizontal Translation: Keep it in bounds
-    // Shift right if off-screen left, shift left if off-screen right
     x = Math.max(padding, Math.min(x, screenWidth - popupWidth - padding));
 
-    // 3. Vertical Strategy: Default below, shift above if bottom is crowded
     let y = event.clientY + offset;
-    
     if (y + popupHeight > screenHeight - padding) {
-        // Not enough space below, shift it upwards
         y = event.clientY - popupHeight - offset;
     }
-
-    // 4. Final Vertical Clamp (safety for very long lists)
     y = Math.max(padding, y);
 
-    // Apply translation
     popup.style.left = x + 'px';
     popup.style.top = y + 'px';
-    
-    // Auto-close handling
+    popup.style.display = 'block';
+
     const closePopup = () => { if (popup.parentElement) popup.remove(); };
     setTimeout(() => {
         document.addEventListener('click', closePopup, { once: true });
     }, 100);
-    
-    setTimeout(closePopup, 15000);
 }
