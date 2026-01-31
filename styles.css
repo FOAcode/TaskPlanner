@@ -1876,3 +1876,19 @@ input:checked + .slider:before {
         max-width: 50px;
     }
 }
+
+.tasks-details-popup {
+    /* Hard-lock the width */
+    width: 250px !important;
+    min-width: 250px !important;
+    max-width: 250px !important;
+    box-sizing: border-box;
+    
+    /* Visual styles */
+    background: var(--bg-color, white);
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    padding: 0; /* Padding is handled by the internal div in your JS */
+    word-wrap: break-word;
+}

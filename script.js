@@ -2360,108 +2360,77 @@ function updateWorkloadMatrix() {
     });
 }
 
+// This function shows a popup with tasks for a specific person on a specific date
 function showTasksPopup(person, dateStr, event) {
-    console.log('showTasksPopup called with:', person, dateStr);
     const date = new Date(dateStr);
-    const language = localStorage.getItem('language') || 'en';
-    
-    // Find all tasks for this person on this date
     const tasks = document.querySelectorAll('.task');
     const matchingTasks = [];
     
     tasks.forEach(task => {
-        const taskDate = task.getAttribute('data-date');
-        const taskAssigned = task.getAttribute('data-assigned-to');
-        if (taskDate === dateStr && taskAssigned === person) {
-            const description = task.querySelector('.description').innerText;
-            matchingTasks.push(description);
+        if (task.getAttribute('data-date') === dateStr && task.getAttribute('data-assigned-to') === person) {
+            matchingTasks.push(task.querySelector('.description').innerText);
         }
     });
     
-    console.log('Found matching tasks:', matchingTasks);
+    if (matchingTasks.length === 0) return;
     
-    if (matchingTasks.length === 0) {
-        console.log('No matching tasks found');
-        return;
-    }
-    
-    // Remove existing popup if any
     const existingPopup = document.querySelector('.tasks-details-popup');
     if (existingPopup) existingPopup.remove();
     
-    // Create popup
     const popup = document.createElement('div');
     popup.className = 'tasks-details-popup';
     popup.style.position = 'fixed';
     popup.style.zIndex = '10003';
-    popup.style.pointerEvents = 'auto';
-    popup.style.display = 'none'; // Start hidden
     
     const dateFormatted = date.toLocaleDateString();
-    let content = `<div style="padding: 15px;"><strong>${person} - ${dateFormatted}</strong><br><hr>`;
-    matchingTasks.forEach(task => {
-        content += `<div style="margin-bottom: 8px;">• ${task}</div>`;
-    });
-    content += '</div>';
-    
-    popup.innerHTML = content;
+    popup.innerHTML = `
+        <div style="padding: 15px;">
+            <strong style="display:block; margin-bottom:5px;">${person}</strong>
+            <small style="color: #666;">${dateFormatted}</small>
+            <hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
+            ${matchingTasks.map(t => `<div style="margin-bottom: 8px; font-size: 0.9em;">• ${t}</div>`).join('')}
+        </div>
+    `;
+
     popup.onclick = (e) => e.stopPropagation();
-    
-    // Append to DOM but keep hidden to measure
     document.body.appendChild(popup);
-    
-    // Get popup dimensions using offsetWidth/offsetHeight which work for hidden elements in DOM
-    const popupWidth = popup.offsetWidth;
+
+    // --- TRANSLATION LOGIC ---
+    const popupWidth = 250; // Must match CSS
     const popupHeight = popup.offsetHeight;
-    
-    // Get mouse position with offset
-    let x, y;
-    const offset = 10;
     const padding = 10;
-    
-    // Check if the click is on the left or right half of the screen
+    const offset = 10; // Gap between cursor and top of popup
     const screenWidth = window.innerWidth;
-    const clickX = event.clientX;
+    const screenHeight = window.innerHeight;
+
+    // 1. Horizontal: Center the top edge middle point on clickX
+    // Math: clickX - half of the popup width
+    let x = event.clientX - (popupWidth / 2);
+
+    // 2. Horizontal Translation: Keep it in bounds
+    // Shift right if off-screen left, shift left if off-screen right
+    x = Math.max(padding, Math.min(x, screenWidth - popupWidth - padding));
+
+    // 3. Vertical Strategy: Default below, shift above if bottom is crowded
+    let y = event.clientY + offset;
     
-    if (clickX < screenWidth / 2) {
-        // Click on the left half, open popup to the right
-        x = clickX + offset;
-    } else {
-        // Click on the right half, open popup to the left
-        x = clickX - popupWidth - offset;
-    }
-    
-    // Clamp x to stay within padding
-    x = Math.max(padding, x);
-    x = Math.min(x, screenWidth - popupWidth - padding);
-    
-    // Handle vertical positioning - show below by default, above if not enough space
-    if (window.innerHeight - event.clientY >= popupHeight) {
-        y = event.clientY + offset;
-    } else {
+    if (y + popupHeight > screenHeight - padding) {
+        // Not enough space below, shift it upwards
         y = event.clientY - popupHeight - offset;
     }
-    
-    // Clamp y to stay within padding
+
+    // 4. Final Vertical Clamp (safety for very long lists)
     y = Math.max(padding, y);
-    
-    // Set position styles before showing
+
+    // Apply translation
     popup.style.left = x + 'px';
     popup.style.top = y + 'px';
-    popup.style.display = 'block';
     
-    console.log('Popup positioned at:', x, y);
-    
-    // Close popup on outside click or after 5 seconds
-    const closePopup = () => {
-        console.log('Closing popup');
-        if (popup.parentElement) popup.remove();
-    };
-    
+    // Auto-close handling
+    const closePopup = () => { if (popup.parentElement) popup.remove(); };
     setTimeout(() => {
         document.addEventListener('click', closePopup, { once: true });
     }, 100);
     
-    setTimeout(closePopup, 5000);
+    setTimeout(closePopup, 15000);
 }
-
