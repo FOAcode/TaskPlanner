@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+    <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
         <span class="close-popup" onclick="closePopup()">&#10006;</span>
         <h3 style="text-align: center;">Add / Edit Task</h3>
@@ -123,11 +123,6 @@
             <h2>Done</h2>
         </div>
         <hr>
-    </div>
-
-    <div class="filter-popup" id="filter-popup">
-        <span class="close-popup" onclick="closeFilterPopup()">&#10006;</span>
-        <div id="filterSelect" class="filter-tiles"></div>
     </div>
 
     <div class="task-context-menu" id="task-context-menu">
@@ -251,6 +246,15 @@
         <div class="workload-matrix-container" id="workload-matrix-container">
             <!-- Matrix will be generated here -->
         </div>
+    </div>
+
+    <div class="filter-popup" id="filter-popup">
+        <span class="close-popup" onclick="closeFilterPopup()">&#10006;</span>
+        <h3 id="filterTasksTitle" style="text-align: center;">Filter Tasks</h3>
+        
+        <div id="filterSelect" class="filter-tiles-container"></div>
+        
+        <button onclick="closeFilterPopup()" id="closeFilterButton" style="margin-top: 15px; display: none">Close</button>
     </div>
 
     <script src="script.js"></script>
