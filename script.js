@@ -1657,6 +1657,7 @@ function changeFontFamily() {
 }
 
 function openFilterPopup() {
+    hideFloatingPopup();
     const popup = document.getElementById('filter-popup');
     const container = document.getElementById('filterSelect');
     const overlay = document.getElementById('overlay');
