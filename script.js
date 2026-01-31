@@ -2385,9 +2385,15 @@ function showTasksPopup(person, dateStr, event) {
     const dateObj = new Date(dateStr);
     const dateFormatted = dateObj.toLocaleDateString();
 
+    // ... inside showTasksPopup ...
     popup.innerHTML = `
-        <div style="padding: 15px;">
-            <strong style="display:block; margin-bottom:5px;">${person}</strong>
+        <div style="padding: 15px; position: relative;">
+            <button id="copy-popup-content" title="Copy to clipboard" 
+                style="position: absolute; top: 10px; right: 10px; background: none; border: none; cursor: pointer; color: #666; padding: 5px;">
+                <span class="material-icons" style="font-size: 18px;">content_copy</span>
+            </button>
+
+            <strong style="display:block; margin-bottom:5px; padding-right: 25px;">${person}</strong>
             <small style="color: #666;">${dateFormatted}</small>
             <hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
             <div style="max-height: 200px; overflow-y: auto;">
@@ -2396,7 +2402,13 @@ function showTasksPopup(person, dateStr, event) {
         </div>
     `;
 
+    // Attach the copy event listener immediately after adding the popup to the body
     document.body.appendChild(popup);
+
+    document.getElementById('copy-popup-content').addEventListener('click', (e) => {
+        e.stopPropagation();
+        copyPopupToClipboard(person, dateFormatted, matchingTasks);
+    });
 
     // --- POSITIONING ---
     const popupWidth = 250; 
@@ -2423,4 +2435,27 @@ function showTasksPopup(person, dateStr, event) {
     setTimeout(() => {
         document.addEventListener('click', closePopup, { once: true });
     }, 100);
+}
+
+function copyPopupToClipboard(person, date, tasks) {
+    // Format the text: "Name - Date \n • Task 1 \n • Task 2"
+    const taskList = tasks.map(t => `• ${t.text.replace(/<br>/g, '\n')}`).join('\n');
+    const textToCopy = `${person} - ${date}\n${taskList}`;
+
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        // Visual feedback: Change icon briefly
+        const btn = document.getElementById('copy-popup-content');
+        const icon = btn.querySelector('.material-icons');
+        const originalIcon = icon.innerText;
+        
+        icon.innerText = 'check';
+        icon.style.color = '#4caf50';
+        
+        setTimeout(() => {
+            icon.innerText = originalIcon;
+            icon.style.color = '#666';
+        }, 2000);
+    }).catch(err => {
+        console.error('Could not copy text: ', err);
+    });
 }
