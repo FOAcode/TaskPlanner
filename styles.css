@@ -15,6 +15,7 @@
     border-right: 4px solid #007BFF;
     padding-left: 16px;
     padding-right: 16px;
+    cursor: pointer;
 }
 
 .dark-mode .date-tile {
@@ -178,6 +179,7 @@ body.unlocked > *:not(#entry-page) {
     border-radius: 5px;
     background-color: #f4f4f4;
     color: black;
+    cursor: default;
 }
 
 .dark-mode .column h2 {
