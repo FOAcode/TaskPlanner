@@ -1000,6 +1000,7 @@ function openPopup(columnId, task = null) {
     popup.style.maxWidth = `${maxScreenWidth * 0.9}px`; // Set max width based on initial screen size
     popup.style.maxHeight = `${maxScreenHeight * 0.9}px`; // Set max height based on initial screen size
     document.getElementById('overlay').style.display = 'block';
+    document.getElementById('overlay').onclick = closePopup;
     
     // Add Ctrl+S key listener to save task
     const popupElement = popup;
@@ -1215,6 +1216,7 @@ function openSettings() {
     settingsPopup.style.maxWidth = `${maxScreenWidth * 0.9}px`; // Set max width based on initial screen size
     settingsPopup.style.maxHeight = `${maxScreenHeight * 0.9}px`; // Set max height based on initial screen size
     document.getElementById('overlay').style.display = 'block';
+    document.getElementById('overlay').onclick = closeSettings;
     setTimeout(() => settingsPopup.classList.add('show'), 10); // Add show class after a short delay
 }
 
@@ -1656,84 +1658,71 @@ function changeFontFamily() {
 
 function openFilterPopup() {
     hideFloatingPopup();
-    const filterSelect = document.getElementById('filterSelect');
-    const tasks = document.querySelectorAll('.task');
-    const assignedToValues = [...new Set([...tasks].map(task => task.querySelector('.details').innerText.split('|')[1].split(': ')[1]))];
-    
-    
-    assignedToValues.sort((a, b) => a.localeCompare(b)); // Sort assignedTo values alphabetically
-    filterSelect.innerHTML = ''; // Clear existing options
-    const allOption = document.createElement('div');
-    allOption.className = 'filter-tile';
-    allOption.innerText = 'All Tasks';
-    allOption.onclick = () => applyFilterAndHighlight('All');
-    filterSelect.appendChild(allOption);
-    assignedToValues.forEach(value => {
-        const option = document.createElement('div');
-        option.className = 'filter-tile';
-        option.innerText = value;
-        option.onclick = () => applyFilterAndHighlight(value);
-        filterSelect.appendChild(option);
-    });
-    highlightCurrentFilter();
-    const filterPopup = document.getElementById('filter-popup');
-    filterPopup.style.display = 'block';
-    filterPopup.style.zIndex = '1002'; // Ensure popup is on top
-    filterPopup.style.width = window.innerWidth > 900 ? '30%' : '85%'; // Ensure popup width is within 30% on big screens and 85% on small screens
-    filterPopup.style.maxWidth = `${maxScreenWidth * 0.9}px`; // Set max width based on initial screen size
-    filterPopup.style.maxHeight = `${maxScreenHeight * 0.9}px`; // Set max height based on initial screen size
+    const popup = document.getElementById('filter-popup');
+    const container = document.getElementById('filterSelect');
     const overlay = document.getElementById('overlay');
-    overlay.style.display = 'block';
-    setTimeout(() => {
-        filterPopup.classList.add('show');
-        overlay.classList.add('show');
-    }, 10); // Add show class after a short delay
-}
 
-function highlightCurrentFilter() {
-    const filterSelect = document.getElementById('filterSelect');
-    const filterTiles = filterSelect.querySelectorAll('.filter-tile');
-    filterTiles.forEach(tile => {
-        if (tile.innerText === filterAssignedTo || (filterAssignedTo === '' && tile.innerText === 'All')) {
-            tile.classList.add('selected');
-        } else {
-            tile.classList.remove('selected');
+    if (!popup || !container) return;
+
+    // 1. Collect unique names from existing tasks
+    const assignedPeople = new Set();
+    document.querySelectorAll('.task').forEach(task => {
+        const name = task.getAttribute('data-assigned-to');
+        if (name && name.trim() !== "") {
+            assignedPeople.add(name.trim());
         }
     });
-    updateBlinkingCircle(filterAssignedTo); // Update the blinking circle based on the current filter
-}
 
-function applyFilterAndHighlight(value) {
-    const newFilterValue = value === 'All' || value === 'All Tasks' ? '' : value; // Convert selected value
-    // Only close popup if the selected filter is different from the current one
-    if (newFilterValue !== filterAssignedTo) {
-        filterAssignedTo = newFilterValue; // Update the current filter value
-        highlightCurrentFilter();
-        updateFilterTile(); // Update the filter tile display
-        applyFilter(filterAssignedTo);
-        closeFilterPopup(); // Auto-close the popup when a different filter is selected
-    } else {
-        closeFilterPopup(); // Also close if the same filter is clicked again
+    // 2. Clear and build the Tile List
+    const language = localStorage.getItem('language') || 'en';
+    const allLabel = (translations[language] && translations[language].allTasks) ? translations[language].allTasks : "All Tasks";
+    
+    container.innerHTML = ''; // Clear previous tiles
+
+    // Create the "All Tasks" tile
+    createFilterTile(allLabel, '', container);
+
+    // Create a tile for each unique person found
+    Array.from(assignedPeople).sort().forEach(person => {
+        createFilterTile(person, person, container);
+    });
+
+    // 3. Show popup
+    popup.style.display = 'block';
+    if (overlay) {
+        overlay.style.display = 'block';
+        setTimeout(() => overlay.classList.add('show'), 10);
     }
+    setTimeout(() => popup.classList.add('show'), 10);
 }
 
-function applyFilter(filterValue = filterAssignedTo) {
+// Helper function to create the clickable tiles
+function createFilterTile(label, value, container) {
+    const tile = document.createElement('div');
+    tile.className = 'filter-tile';
+    if (filterAssignedTo === value) tile.classList.add('selected');
+    
+    tile.innerText = label;
+    tile.onclick = function() {
+        filterAssignedTo = value;
+        applyFilterLogic();
+        closeFilterPopup();
+    };
+    container.appendChild(tile);
+}
+
+function applyFilterLogic() {
     const tasks = document.querySelectorAll('.task');
     tasks.forEach(task => {
-        const assignedTo = task.querySelector('.details').innerText.split('|')[1].split(': ')[1];
-        task.style.display = filterValue === '' || assignedTo === filterValue ? 'block' : 'none';
+        const taskAssignedTo = task.getAttribute('data-assigned-to');
+        if (filterAssignedTo === "" || taskAssignedTo === filterAssignedTo) {
+            task.style.display = 'block';
+        } else {
+            task.style.display = 'none';
+        }
     });
-    const filterIconText = filterValue === '' ? 'filter_list' : 'filter_list_alt';
-    document.getElementById('filterIcon').innerText = filterIconText;
-    document.getElementById('doneFilterIcon').innerText = filterIconText;
 
-    updateBlinkingCircle(filterValue);
-    highlightCurrentFilter(); // Highlight the current filter
-    updateAssignedToList();
-    updateFilterTile(); // Update the filter tile display
-}
-
-function updateFilterTile() {
+    // Update the label in the Todo Column
     const filterValueElement = document.getElementById('tile-filter-value');
     if (filterValueElement) {
         filterValueElement.innerText = filterAssignedTo === '' ? 'All Tasks' : filterAssignedTo;
@@ -1741,18 +1730,16 @@ function updateFilterTile() {
 }
 
 function closeFilterPopup() {
-    const filterPopup = document.getElementById('filter-popup');
+    const popup = document.getElementById('filter-popup');
     const overlay = document.getElementById('overlay');
-    filterPopup.classList.remove('show');
-    overlay.classList.remove('show');
-    filterPopup.classList.add('hiding');
-    overlay.classList.add('hiding');
+    
+    popup.classList.remove('show');
+    if (overlay) overlay.classList.remove('show');
+    
     setTimeout(() => {
-        filterPopup.style.display = 'none';
-        overlay.style.display = 'none';
-        filterPopup.classList.remove('hiding');
-        overlay.classList.remove('hiding');
-    }, 300); // Wait for the very slow fade-out transition to complete (1.2s)
+        popup.style.display = 'none';
+        if (overlay) overlay.style.display = 'none';
+    }, 300);
 }
 
 function closeFilterOnClickOutside(event) {
@@ -1761,7 +1748,6 @@ function closeFilterOnClickOutside(event) {
     }
 }
 
-document.getElementById('overlay').addEventListener('click', closePopupOnClickOutside);
 document.addEventListener('click', closeSettingsOnClickOutside);
 
 function copyTasksToClipboard(columnId) {
