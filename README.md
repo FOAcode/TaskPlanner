@@ -1,79 +1,39 @@
-# Task Planner v0.8.2 (Beta)
+# Task Planner
 
-**Task Planner** is a lightweight and fast local task management tool designed to help you organize activities efficiently.  
-This is a **beta release** — bugs and instability may be present.
+**Task Planner** is a lightweight, fast, and secure local task management tool designed to help you organize your activities efficiently. It runs entirely in your browser, ensuring your data remains private and under your control.
 
----
-
-## 🔹 Features
-- Organize tasks by due date and importance  
-- Assign responsibilities and manage deadlines  
-- Store data locally and securely using a password  
-- Import/export task lists  
-- Toggle Dark Mode and One Color Mode  
-- Customize font style and language
-
----
-
-## 🚀 Launch
-
-To use the application, visit the [Task Planner GitHub Page](https://foacode.github.io/TaskPlanner/).  
-On Chromium-based browsers, you can install it as a Progressive Web App (PWA) for a native app experience.
-
----
-
-## 🔐 Set Password
-
-The application requires a password to encrypt and unlock your data.  
-Start by entering and confirming your password. This is the only way to access your stored information.  
-**Keep it safe — forgotten passwords cannot be recovered.**
-
-![SetPassword1](./media/example_task_planner_setpassword1.png)
-
----
-
-## 🔓 Login
-
-At each access, enter your chosen password to decrypt and load your data.  
-After **5 incorrect attempts**, the app will introduce a 5-second delay before allowing another try.
-
-![Login](./media/example_task_planner_password.png)
-
----
-
-## 📋 Main Screen
-
-The main interface displays the task list ordered by date and importance. Drag and drop the task from one column to another to change their status. Copy to clipboard the currently displayed column tasks and paste them in chats or other documents. 
+[![en](https://img.shields.io/badge/lang-en-red.svg)](./README.md)
+[![it](https://img.shields.io/badge/lang-it-blue.svg)](./README.it.md)
 
 ![MainView](./media/example_tasks_list.png)
 
----
+## ✨ Features
 
-## ☰ Menu Options
+- **Organize with Ease:** Categorize tasks by due date and priority.
+- **Secure & Local:** All data is encrypted and stored locally in your browser. Access your tasks with a password you set.
+- **Data Portability:** Easily import and export your task lists.
+- **Customizable Interface:**
+  - Light and Dark modes.
+  - "One Color Mode" for a minimalist view.
+  - Multiple font styles and languages.
+- **PWA Ready:** Install it as a Progressive Web App (PWA) on Chromium-based browsers for a native app-like experience.
 
-- Import/Export task list  
-- Toggle **Dark Mode**  
-- Toggle **One Color Mode** for tasks  
-- Choose a **Font Style & Family**  
-- Change application **language**
+## 🚀 Getting Started
 
-![Menu](./media/example_task_planner_menu.png)
+1.  **Open Task Planner:** Visit the [Task Planner GitHub Page](https://foacode.github.io/TaskPlanner/).
+2.  **Set Your Password:** The first time you use the app, you'll be prompted to set a password. This password encrypts your data. **Choose a password you'll remember, as it cannot be recovered.**
+3.  **Start Organizing:** Create, manage, and track your tasks.
 
----
+## 📸 Screenshots
 
-### 🌙 Dark Mode Example
+| Login | Main View (Dark Mode) |
+|---|---|
+| ![Login](./media/example_task_planner_password.png) | ![MainViewDark](./media/example_tasks_list_dark.png) |
 
-Enable Dark Mode via the floating action button in the bottom-right corner of the screen.
+## CONTRIBUTING
 
-![MenuDark](./media/example_task_planner_menu_dark.png)
-![MainViewDark](./media/example_tasks_list_dark.png)
+We welcome contributions to **Task Planner**! If you have ideas for improvements or new features, please open an issue or submit a pull request.
 
----
+## 📝 License
 
-## 💾 Storage
-
-All data is stored in the browser's local cache.  
-Please **back up your task list** before clearing your browser cache or data.
-
-> **Warning:**  
-> Do not store sensitive information. Although the app encrypts data, if your browser is compromised or the app malfunctions, data may be lost permanently.
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
