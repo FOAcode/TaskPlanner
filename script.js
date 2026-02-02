@@ -2252,7 +2252,10 @@ function updateWorkloadMatrix() {
     const container = document.getElementById('workload-matrix-container');
     
     // PULL DATA FROM THE UI ELEMENTS (since they aren't in a JSON array yet)
-    const allTaskElements = document.querySelectorAll('.task');
+    // Only include tasks from To Do and In Progress columns, exclude Done column
+    const todoColumn = document.getElementById('todo-column');
+    const inProgressColumn = document.getElementById('in-progress-column');
+    const allTaskElements = [...todoColumn.querySelectorAll('.task'), ...inProgressColumn.querySelectorAll('.task')];
     
     // Group tasks by person and date
     const tasksByPerson = {};
@@ -2347,13 +2350,24 @@ function updateWorkloadMatrix() {
 
 function showTasksPopup(person, dateStr, event) {
     // PULL DESCRIPTIONS FROM THE UI
-    const allTaskElements = document.querySelectorAll('.task');
+    // Only include tasks from To Do and In Progress columns, exclude Done column
+    const todoColumn = document.getElementById('todo-column');
+    const inProgressColumn = document.getElementById('in-progress-column');
+    const allTaskElements = [...todoColumn.querySelectorAll('.task'), ...inProgressColumn.querySelectorAll('.task')];
     const matchingTasks = [];
 
     allTaskElements.forEach(el => {
         if (el.getAttribute('data-date') === dateStr && el.getAttribute('data-assigned-to') === person) {
+            const descElement = el.querySelector('.description');
+            // Get the inner HTML to preserve formatting including line breaks
+            const text = descElement.innerHTML
+                .replace(/<br\s*\/?>/gi, '\n')
+                .replace(/<[^>]*>/g, '')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&amp;/g, '&');
             matchingTasks.push({
-                text: el.querySelector('.description').innerText
+                text: text
             });
         }
     });
@@ -2383,7 +2397,7 @@ function showTasksPopup(person, dateStr, event) {
             <small style="color: #666;">${dateFormatted}</small>
             <hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
             <div style="max-height: 200px; overflow-y: auto;">
-                ${matchingTasks.map(t => `<div style="margin-bottom: 8px; font-size: 0.9em; line-height:1.2;">• ${t.text}</div>`).join('')}
+                ${matchingTasks.map(t => `<div style="margin-bottom: 8px; font-size: 0.9em; line-height:1.4; white-space: pre-wrap; word-wrap: break-word;">• ${t.text}</div>`).join('')}
             </div>
         </div>
     `;
@@ -2397,7 +2411,7 @@ function showTasksPopup(person, dateStr, event) {
     });
 
     // --- POSITIONING ---
-    const popupWidth = 250; 
+    const popupWidth = 350; 
     const popupHeight = popup.offsetHeight;
     const padding = 10;
     const offset = 10; 
