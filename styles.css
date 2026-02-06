@@ -209,8 +209,8 @@ body.unlocked > *:not(#entry-page) {
     color: white;
 }
 
-.dark-mode .task .details {
-    color: white;
+.dark-mode .task .task-footer {
+    color: #ccc;
 }
 
 .dark-mode .task.grey {
@@ -356,9 +356,18 @@ body.unlocked > *:not(#entry-page) {
     font-weight: normal;
 }
 
-.task .details {
+.task .task-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     font-size: 0.8em;
     color: #555;
+}
+
+.task .task-assignee {
+    font-weight: bold;
+    text-align: right;
+    margin-left: 10px;
 }
 
 .task .task-separator {

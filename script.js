@@ -557,11 +557,10 @@ function applyTranslations(language) {
             const assignedTo = task.getAttribute('data-assigned-to');
             if (date && assignedTo) {
                 const dayOfWeek = getDayOfWeek(date, language);
-                const detailsElement = task.querySelector('.details');
-                if (detailsElement) {
-                    detailsElement.innerText = `${translations[language].due}: ${date} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}`;
-                    console.log('Updated task details for date:', date);
-                }
+                const dateEl = task.querySelector('.task-date');
+                const assignEl = task.querySelector('.task-assignee');
+                if (dateEl) dateEl.innerText = `${translations[language].due}: ${date} (${dayOfWeek})`;
+                if (assignEl) assignEl.innerText = assignedTo;
             }
         });
     } catch (e) {
@@ -817,7 +816,11 @@ function copyTaskToClipboard() {
     
     // Get task information
     const description = task.querySelector('.description').innerText;
-    const details = task.querySelector('.details').innerText;
+    const date = task.getAttribute('data-date');
+    const assignedTo = task.getAttribute('data-assigned-to');
+    const language = localStorage.getItem('language') || 'en';
+    const dayOfWeek = getDayOfWeek(date, language);
+    const details = `${translations[language].due}: ${date} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}`;
     const taskText = `${description}\n${details}`;
     
     // Copy to clipboard
@@ -845,7 +848,7 @@ function moveTaskToToDo() {
     if (todoColumn) {
         todoColumn.appendChild(task);
         // Update color class based on date
-        const dateText = task.querySelector('.details').innerText.split('|')[0].split(': ')[1].split(' ')[0];
+        const dateText = task.getAttribute('data-date');
         task.className = `task ${getTaskColorClass(dateText)} ${task.classList.contains('prioritary') ? 'prioritary' : ''}`;
         autoSave();
         closeContextMenu();
@@ -860,7 +863,7 @@ function moveTaskToInProgress() {
     if (inProgressColumn) {
         inProgressColumn.appendChild(task);
         // Update color class based on date
-        const dateText = task.querySelector('.details').innerText.split('|')[0].split(': ')[1].split(' ')[0];
+        const dateText = task.getAttribute('data-date');
         task.className = `task ${getTaskColorClass(dateText)} ${task.classList.contains('prioritary') ? 'prioritary' : ''}`;
         autoSave();
         closeContextMenu();
@@ -907,7 +910,10 @@ function createTaskElement(description, date, assignedTo, isPrioritary = false) 
     task.innerHTML = `
         <div class="description">${formattedDescription}</div>
         <hr class="task-separator">
-        <div class="details">${translations[language].due}: ${date} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}</div>
+        <div class="task-footer">
+            <div class="task-date">${translations[language].due}: ${date} (${dayOfWeek})</div>
+            <div class="task-assignee">${assignedTo}</div>
+        </div>
     `;
     task.addEventListener('dragstart', dragStart);
     task.addEventListener('dragend', dragEnd);
@@ -971,7 +977,7 @@ function openPopup(columnId, task = null) {
 
     const assignedToList = document.getElementById('assignedToList');
     assignedToList.innerHTML = '';
-    const assignedToValues = [...new Set([...document.querySelectorAll('.task .details')].map(details => details.innerText.split('|')[1].split(': ')[1]))];
+    const assignedToValues = [...new Set([...document.querySelectorAll('.task')].map(task => task.getAttribute('data-assigned-to')))];
     assignedToValues.forEach(value => {
         const option = document.createElement('option');
         option.value = value;
@@ -980,11 +986,11 @@ function openPopup(columnId, task = null) {
 
     if (task) {
         document.getElementById('taskDescription').value = task.querySelector('.description').innerText;
-        const dateText = task.querySelector('.details').innerText.split('|')[0].split(': ')[1].split(' ')[0];
+        const dateText = task.getAttribute('data-date');
         const date = new Date(dateText);
         date.setDate(date.getDate());
         document.getElementById('taskDate').value = date.toISOString().split('T')[0];
-        document.getElementById('taskAssignedTo').value = task.querySelector('.details').innerText.split('|')[1].split(': ')[1];
+        document.getElementById('taskAssignedTo').value = task.getAttribute('data-assigned-to');
         document.getElementById('taskPriority').checked = task.classList.contains('prioritary');
     } else {
         document.getElementById('taskDescription').value = '';
@@ -1060,8 +1066,8 @@ function saveTask() {
             // 2. Update the visible UI
             currentEditTask.querySelector('.description').innerHTML = description;
             const dayOfWeek = getDayOfWeek(date, language);
-            currentEditTask.querySelector('.details').innerText = 
-                `${translations[language].due}: ${date} (${dayOfWeek}) | ${translations[language].assignedTo}: ${assignedTo}`;
+            currentEditTask.querySelector('.task-date').innerText = `${translations[language].due}: ${date} (${dayOfWeek})`;
+            currentEditTask.querySelector('.task-assignee').innerText = assignedTo;
             
             currentEditTask.className = `task ${getTaskColorClass(date)}`;
             if (isPrioritary) {
@@ -1116,7 +1122,7 @@ function deleteTask() {
 function updateAssignedToList() {
     const assignedToList = document.getElementById('assignedToList');
     assignedToList.innerHTML = '';
-    const assignedToValues = [...new Set([...document.querySelectorAll('.task .details')].map(details => details.innerText.split('|')[1].split(': ')[1]))];
+    const assignedToValues = [...new Set([...document.querySelectorAll('.task')].map(task => task.getAttribute('data-assigned-to')))];
     assignedToValues.forEach(value => {
         const option = document.createElement('option');
         option.value = value;
@@ -1199,7 +1205,7 @@ function drop(event) {
             task.classList.remove('prioritary'); // Remove "prioritary" status
             task.className = 'task green'; // Apply "Done" column styling
         } else {
-            const dateText = task.querySelector('.details').innerText.split('|')[0].split(': ')[1].split(' ')[0];
+            const dateText = task.getAttribute('data-date');
             task.className = `task ${getTaskColorClass(dateText)} ${task.classList.contains('prioritary') ? 'prioritary' : ''}`;
         }
         autoSave();
@@ -1284,9 +1290,8 @@ function exportTasks() {
     document.querySelectorAll('.task').forEach(task => {
         // Get the raw description with newlines preserved from innerText
         const description = task.querySelector('.description').innerText;
-        const details = task.querySelector('.details').innerText.split('|');
-        const date = details[0].split(': ')[1].split(' ')[0];
-        const assignedTo = details[1].split(': ')[1];
+        const date = task.getAttribute('data-date');
+        const assignedTo = task.getAttribute('data-assigned-to');
         const columnId = task.parentElement.id;
         const isPrioritary = task.classList.contains('prioritary');
         tasks.push({ description, date, assignedTo, columnId, isPrioritary });
@@ -1558,9 +1563,8 @@ async function autoSave() {
     const tasks = [];
     document.querySelectorAll('.task').forEach(task => {
         const description = task.querySelector('.description').innerHTML.replace(/<br>/g, '\n'); // Replace <br> with newline
-        const details = task.querySelector('.details').innerText.split('|');
-        const date = details[0].split(': ')[1].split(' ')[0];
-        const assignedTo = details[1].split(': ')[1];
+        const date = task.getAttribute('data-date');
+        const assignedTo = task.getAttribute('data-assigned-to');
         const columnId = task.parentElement.id;
         const isPrioritary = task.classList.contains('prioritary');
         tasks.push({ description, date, assignedTo, columnId, isPrioritary });
@@ -1758,7 +1762,10 @@ function copyTasksToClipboard(columnId) {
     tasks.forEach(task => {
         if (task.style.display !== 'none') {
             const description = task.querySelector('.description').innerText;
-            const details = task.querySelector('.details').innerText;
+            const date = task.getAttribute('data-date');
+            const assignedTo = task.getAttribute('data-assigned-to');
+            const dayOfWeek = getDayOfWeek(date, localStorage.getItem('language') || 'en');
+            const details = `${translations[localStorage.getItem('language') || 'en'].due}: ${date} (${dayOfWeek}) | ${translations[localStorage.getItem('language') || 'en'].assignedTo}: ${assignedTo}`;
             // tasksText += `${translations[localStorage.getItem('language') || 'en'].task}: ${description}\n${details}\n\n`;
             tasksText += `• ${description}\n${details}\n\n`;
         }
@@ -1836,8 +1843,8 @@ function reorderTasks() {
             const isPrioritaryB = b.classList.contains('prioritary');
             if (isPrioritaryA && !isPrioritaryB) return -1;
             if (!isPrioritaryA && isPrioritaryB) return 1;
-            const dateA = new Date(a.querySelector('.details').innerText.split('|')[0].split(': ')[1].split(' ')[0]);
-            const dateB = new Date(b.querySelector('.details').innerText.split('|')[0].split(': ')[1].split(' ')[0]);
+            const dateA = new Date(a.getAttribute('data-date'));
+            const dateB = new Date(b.getAttribute('data-date'));
             return isDoneColumn ? dateB - dateA : dateA - dateB;
         });
         tasks.forEach(task => column.appendChild(task));
