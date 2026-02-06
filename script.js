@@ -2292,6 +2292,7 @@ function updateWorkloadMatrix() {
     
     // Date Range Setup
     const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
     const startDate = new Date(today);
     
     // Set start date to the most recent Monday
@@ -2345,9 +2346,11 @@ function updateWorkloadMatrix() {
                     </tr>
                     ${weekDates.map(dateStr => {
                         const d = new Date(dateStr);
+                        const isToday = dateStr === todayStr;
+                        const cellClass = isToday ? 'matrix-day-label current-day' : 'matrix-day-label';
                         return `
                             <tr class="matrix-day-row">
-                                <td class="matrix-day-label"><strong>${weekdays[d.getDay()].substring(0, 3)}<br>${d.getDate()}</strong></td>
+                                <td class="${cellClass}"><strong>${weekdays[d.getDay()].substring(0, 3)}<br>${d.getDate()}</strong></td>
                                 ${filterOptions.map(person => {
                                     const count = (tasksByPerson[person] && tasksByPerson[person][dateStr]) || 0;
                                     let intensity = count >= 5 ? '5+' : count;
