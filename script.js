@@ -2247,6 +2247,14 @@ function closeWorkloadMatrix() {
     document.body.classList.remove('workload-matrix-open');
 }
 
+function getISOWeek(date) {
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
 function updateWorkloadMatrix() {
     const weeks = 4;
     const container = document.getElementById('workload-matrix-container');
@@ -2278,7 +2286,11 @@ function updateWorkloadMatrix() {
     // Date Range Setup
     const today = new Date();
     const startDate = new Date(today);
-    startDate.setDate(startDate.getDate() - today.getDay());
+    
+    // Set start date to the most recent Monday
+    const currentDay = today.getDay(); // 0 (Sun) - 6 (Sat)
+    const distanceToMonday = currentDay === 0 ? 6 : currentDay - 1;
+    startDate.setDate(today.getDate() - distanceToMonday);
     
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + (weeks * 7) - 1);
@@ -2287,8 +2299,13 @@ function updateWorkloadMatrix() {
     let currentDate = new Date(startDate);
     while (currentDate <= endDate) {
         const dateStr = currentDate.toISOString().split('T')[0];
-        const weekStart = new Date(currentDate);
-        weekStart.setDate(weekStart.getDate() - weekStart.getDay());
+        
+        // Calculate Monday of the current week
+        const tempDate = new Date(currentDate);
+        const day = tempDate.getDay();
+        const diff = tempDate.getDate() - day + (day === 0 ? -6 : 1);
+        const weekStart = new Date(tempDate.setDate(diff));
+        
         const weekKey = weekStart.toISOString().split('T')[0];
         
         if (!datesByWeek[weekKey]) datesByWeek[weekKey] = [];
@@ -2301,6 +2318,7 @@ function updateWorkloadMatrix() {
     const language = localStorage.getItem('language') || 'en';
     const weekdays = translations[language].weekdays;
     const dateLabel = translations[language].date || 'Date';
+    const weekLabel = translations[language].week || 'Week';
     
     Object.keys(datesByWeek).forEach(weekKey => {
         const weekDates = datesByWeek[weekKey];
@@ -2308,10 +2326,11 @@ function updateWorkloadMatrix() {
         const weekEnd = new Date(weekDates[weekDates.length - 1]);
         const formattedWeekStart = `${String(weekStart.getDate()).padStart(2, '0')}/${String(weekStart.getMonth() + 1).padStart(2, '0')}`;
         const formattedWeekEnd = `${String(weekEnd.getDate()).padStart(2, '0')}/${String(weekEnd.getMonth() + 1).padStart(2, '0')}`;
+        const weekNum = getISOWeek(weekStart);
 
         html += `
             <div class="matrix-week-section">
-                <h3 class="matrix-week-header">${formattedWeekStart} - ${formattedWeekEnd}</h3>
+                <h3 class="matrix-week-header">${weekLabel} ${weekNum} (${formattedWeekStart} - ${formattedWeekEnd})</h3>
                 <table class="matrix-table-vertical">
                     <tr class="matrix-person-header">
                         <td>${dateLabel}</td>
