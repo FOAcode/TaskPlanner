@@ -14,11 +14,13 @@ let autoScrollInterval;
 let maxScreenWidth = window.innerWidth;
 let maxScreenHeight = window.innerHeight;
 
+// Update max screen width and height on window resize
 window.addEventListener('resize', () => {
     maxScreenWidth = Math.max(maxScreenWidth, window.innerWidth);
     maxScreenHeight = Math.max(maxScreenHeight, window.innerHeight);
 });
 
+// Load saved language from localStorage or default to English
 const translations = {
     en: {
         languageName: "English",
@@ -540,11 +542,13 @@ const translations = {
     // Add more languages as needed
 };
 
+// Function to get the day of the week for a given date and language
 function getDayOfWeek(date, language) {
     const dayIndex = new Date(date).getDay();
     return translations[language].weekdays[dayIndex];
 }
 
+// Function to apply translations to the UI based on the selected language
 function applyTranslations(language) {
     console.log('applyTranslations() called with language:', language);
     console.log('translations object available:', !!translations);
@@ -679,6 +683,7 @@ function applyTranslations(language) {
     console.log('applyTranslations() completed successfully for language:', language);
 }
 
+// Function to handle language change from the dropdown
 function changeLanguage() {
     const language = document.getElementById('languageSelect').value;
     console.log('changeLanguage() called with language:', language);
@@ -705,6 +710,7 @@ function changeLanguage() {
     console.log('changeLanguage() completed');
 }
 
+// Function to update the language option labels in the dropdown based on the current language
 function updateLanguageOptions(currentLanguage) {
     const languageSelect = document.getElementById('languageSelect');
     if (!languageSelect) return;
@@ -738,6 +744,7 @@ function updateLanguageOptions(currentLanguage) {
     }
 }
 
+// Context menu handling
 function handleTaskRightClick(event, task) {
     event.preventDefault();
     
@@ -804,12 +811,14 @@ function handleTaskRightClick(event, task) {
     document.addEventListener('click', closeContextMenu);
 }
 
+// Function to close the context menu
 function closeContextMenu() {
     const contextMenu = document.getElementById('task-context-menu');
     contextMenu.classList.remove('show');
     document.removeEventListener('click', closeContextMenu);
 }
 
+// Context menu actions
 function copyTaskToClipboard() {
     const task = window.currentContextTask;
     if (!task) return;
@@ -840,6 +849,7 @@ function copyTaskToClipboard() {
     });
 }
 
+// Functions to move tasks between columns
 function moveTaskToToDo() {
     const task = window.currentContextTask;
     if (!task) return;
@@ -855,6 +865,7 @@ function moveTaskToToDo() {
     }
 }
 
+// Functions to move tasks between columns
 function moveTaskToInProgress() {
     const task = window.currentContextTask;
     if (!task) return;
@@ -870,6 +881,7 @@ function moveTaskToInProgress() {
     }
 }
 
+// Functions to move tasks between columns
 function moveTaskToDone() {
     const task = window.currentContextTask;
     if (!task) return;
@@ -885,6 +897,7 @@ function moveTaskToDone() {
     }
 }
 
+// Function to eliminate (delete) the task
 function eliminateTask() {
     const task = window.currentContextTask;
     if (!task) return;
@@ -895,6 +908,7 @@ function eliminateTask() {
     closeContextMenu();
 }
 
+// Function to create a task element with the given details
 function createTaskElement(description, date, assignedTo, isPrioritary = false) {
     const task = document.createElement('div');
     task.classList.add('task');
@@ -1020,6 +1034,7 @@ function openPopup(columnId, task = null) {
     setTimeout(() => popup.classList.add('show'), 10); // Add show class after a short delay
 }
 
+// Function to close the popup and clear any validation errors
 function closePopup() {
     const popup = document.getElementById('popup');
     popup.classList.remove('show');
@@ -1029,6 +1044,7 @@ function closePopup() {
     }, 150); // Wait for the fade-out transition to complete
 }
 
+// Function to save the task (both creating new and updating existing)
 function saveTask() {
     const description = document.getElementById('taskDescription').value.replace(/\n/g, '<br>');
     const date = document.getElementById('taskDate').value;
@@ -1110,6 +1126,7 @@ function saveTask() {
     }
 }
 
+// Function to delete the current task being edited
 function deleteTask() {
     if (currentEditTask) {
         currentEditTask.remove();
@@ -1118,7 +1135,7 @@ function deleteTask() {
     }
 }
 
-// Update the assignedTo list in the popup based on current names
+// Function to update the "Assigned To" datalist options based on current tasks
 function updateAssignedToList() {
     const assignedToList = document.getElementById('assignedToList');
     assignedToList.innerHTML = '';
@@ -1130,18 +1147,21 @@ function updateAssignedToList() {
     });
 }
 
+// Drag and Drop Functions
 function dragStart(event) {
     event.dataTransfer.setData('text/plain', event.target.id);
     event.target.classList.add('dragging');
     startAutoScroll();
 }
 
+// Function to handle the end of dragging a taskand stop auto-scrollingwhen the drag operation is complete
 function dragEnd(event) {
     event.target.classList.remove('dragging');
     stopAutoScroll();
     autoSave();
 }
 
+// Function to automatically scroll the window when dragging a task near the top or bottom edge of the viewport
 function startAutoScroll() {
     autoScrollInterval = setInterval(() => {
         const draggingTask = document.querySelector('.dragging');
@@ -1159,10 +1179,12 @@ function startAutoScroll() {
     }, 50);
 }
 
+// Function to stop the auto-scrolling when the drag operation is complete or cancelled
 function stopAutoScroll() {
     clearInterval(autoScrollInterval);
 }
 
+// Function to handle the dragover event on columns, allowing tasks to be dropped and rearranged within the column
 function dragOver(event) {
     event.preventDefault();
     const draggingTask = document.querySelector('.dragging');
@@ -1175,6 +1197,7 @@ function dragOver(event) {
     }
 }
 
+// Function to determine which task in a column should be placed after a dropped task based on the vertical position of the mouse cursor
 function getDragAfterElement(column, y) {
     const draggableElements = [...column.querySelectorAll('.task:not(.dragging)')];
 
@@ -1189,6 +1212,8 @@ function getDragAfterElement(column, y) {
     }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
 
+
+// Function to handle the drop event when a task is dropped into a column, updating its position and styling based on the new column
 function drop(event) {
     event.preventDefault();
     const taskId = event.dataTransfer.getData('text/plain');
@@ -1213,6 +1238,8 @@ function drop(event) {
     stopAutoScroll();
 }
 
+
+// Settings Popup Functions
 function openSettings() {
     hideFloatingPopup();
     const settingsPopup = document.getElementById('settings-popup');
@@ -1226,6 +1253,7 @@ function openSettings() {
     setTimeout(() => settingsPopup.classList.add('show'), 10); // Add show class after a short delay
 }
 
+// Function to close the settings popup and hide the overlay, with a fade-out effect
 function closeSettings() {
     const settingsPopup = document.getElementById('settings-popup');
     settingsPopup.classList.remove('show');
@@ -1235,6 +1263,7 @@ function closeSettings() {
     }, 150); // Wait for the fade-out transition to complete
 }
 
+// Function to close the settings popup when clicking outside of it (on the overlay)
 function closeSettingsOnClickOutside(event) {
     const settingsPopup = document.getElementById('settings-popup');
     if (event.target === settingsPopup) {
@@ -1335,6 +1364,7 @@ let failedAttempts = 0;
 let lockoutTimeout = null;
 let countdownInterval = null;
 
+// Function to update the entry popup language dynamically when the user changes the language selection in the entry popup
 function updateEntryPopupLanguage() {
     const language = document.getElementById('entry-language-select').value;
     const entryTitle = document.getElementById('entry-title');
@@ -1369,6 +1399,7 @@ function updateEntryPopupLanguage() {
     }
 }
 
+// Function to show the entry popup with a specific message and mode (setting password or entering password)
 async function showEntryPage(message, isSetting = false) {
     const language = localStorage.getItem('language') || 'en';
     const entryPage = document.getElementById('entry-page');
@@ -1404,6 +1435,7 @@ async function showEntryPage(message, isSetting = false) {
     }, 0.5);
 }
 
+// Function to handle the submission of the entry popup, either setting a new password or validating the entered password to unlock the app
 async function handleEntry() {
     const password = document.getElementById('entry-password').value;
     const confirmPassword = document.getElementById('entry-confirm-password').value;
@@ -1519,6 +1551,7 @@ async function handleEntry() {
     }
 }
 
+// Function to prompt the user for a password on page load, determining whether to show the password setup or entry screen based on whether an encryption salt exists in local storage
 async function promptForPassword() {
     const salt = localStorage.getItem("encryptionSalt");
     const savedLanguage = localStorage.getItem('language') || 'en';
@@ -1573,6 +1606,7 @@ async function autoSave() {
     localStorage.setItem('TaskPlanner', JSON.stringify(encryptedTasks));
 }
 
+// Function to load tasks from local storage, decrypting them and rendering them on the board. If decryption fails (e.g., due to incorrect password), an error is thrown to prevent loading corrupted data.
 async function loadAutoSavedTasks() {
     const encryptedTasks = localStorage.getItem('TaskPlanner');
     if (encryptedTasks) {
@@ -1587,6 +1621,7 @@ async function loadAutoSavedTasks() {
     }
 }
 
+// Confirmation Modal Functions
 function confirmDeleteDoneTasks() {
     // Show the confirmation modal instead of browser confirm
     const language = localStorage.getItem('language') || 'en';
@@ -1606,12 +1641,14 @@ function confirmDeleteDoneTasks() {
     setTimeout(() => confirmationModal.classList.add('show'), 10);
 }
 
+// Function to handle the confirmation of deleting done tasks, which calls the delete function and then closes the confirmation modal
 function confirmDeleteDoneTasks_Modal() {
     // Actually delete the tasks
     deleteDoneTasks();
     closeConfirmationModal();
 }
 
+// Function to close the confirmation modal and hide the overlay, with a fade-out effect
 function closeConfirmationModal() {
     const confirmationModal = document.getElementById('confirmation-modal');
     const confirmationOverlay = document.getElementById('confirmation-overlay');
@@ -1623,17 +1660,20 @@ function closeConfirmationModal() {
     }, 150);
 }
 
+// Function to delete all tasks in the "Done" column, which is called after the user confirms the deletion in the confirmation modal
 function deleteDoneTasks() {
     const doneColumn = document.getElementById('done-column');
     doneColumn.querySelectorAll('.task').forEach(task => task.remove());
     autoSave();
 }
 
+// Function to toggle dark mode on and off, which adds or removes the "dark-mode" class on the body element and saves the user's preference in local storage
 function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
+// Function to change the font style of task descriptions based on user selection, which updates the font style for all tasks and saves the preference in local storage. The function can be called both from a button click (with a style parameter) or during initialization (without a parameter, in which case it retrieves the saved style).
 function changeFontStyle(style) {
     // If called from button, style parameter is provided
     // If called from initialization, get from dropdown
@@ -1654,12 +1694,14 @@ function changeFontStyle(style) {
     localStorage.setItem('fontStyle', style);
 }
 
+// Function to change the font family of the entire application based on user selection, which updates the font family for the body element and saves the preference in local storage. The function can be called both from a dropdown change (with the selected font family) or during initialization (without a parameter, in which case it retrieves the saved font family).
 function changeFontFamily() {
     const fontFamily = document.getElementById('fontFamily').value;
     document.body.style.fontFamily = fontFamily;
     localStorage.setItem('fontFamily', fontFamily);
 }
 
+// Function to open the filter popup, dynamically generating clickable tiles based on the unique names found in the "Assigned To" field of existing tasks. Each tile represents a person, and clicking on it applies a filter to show only tasks assigned to that person. An additional "All Tasks" tile allows users to clear the filter and show all tasks. The popup is displayed with a fade-in effect, and an overlay is shown behind it to focus attention on the popup.
 function openFilterPopup() {
     hideFloatingPopup();
     const popup = document.getElementById('filter-popup');
@@ -1715,6 +1757,7 @@ function createFilterTile(label, value, container) {
     container.appendChild(tile);
 }
 
+// Function to apply the filter logic based on the selected assigned person, showing only tasks that match the filter and updating the label in the Todo Column to reflect the current filter. If "All Tasks" is selected, all tasks are shown and the label is updated accordingly.
 function applyFilterLogic() {
     const tasks = document.querySelectorAll('.task');
     tasks.forEach(task => {
@@ -1733,6 +1776,7 @@ function applyFilterLogic() {
     }
 }
 
+// Function to close the filter popup and hide the overlay, with a fade-out effect
 function closeFilterPopup() {
     const popup = document.getElementById('filter-popup');
     const overlay = document.getElementById('overlay');
@@ -1746,6 +1790,7 @@ function closeFilterPopup() {
     }, 300);
 }
 
+// Function to close the filter popup when clicking outside of it (on the overlay)
 function closeFilterOnClickOutside(event) {
     if (event.target === document.getElementById('overlay')) {
         closeFilterPopup();
@@ -1754,6 +1799,7 @@ function closeFilterOnClickOutside(event) {
 
 document.addEventListener('click', closeSettingsOnClickOutside);
 
+// Function to copy tasks from a specific column to the clipboard, including their description, due date, day of the week, and assigned person. The copied text is formatted with bullet points and line breaks for better readability when pasted into other applications. If the Clipboard API is not supported, it falls back to using a temporary textarea element to copy the text.
 function copyTasksToClipboard(columnId) {
     const column = document.getElementById(columnId);
     const tasks = column.querySelectorAll('.task');
@@ -1783,7 +1829,7 @@ function copyTasksToClipboard(columnId) {
     }
 }
 
-// Fallback function for copying text to clipboard if navigator.clipboard is not supported
+// Fallback method for copying text to clipboard for older browsers that do not support the Clipboard API, using a temporary textarea element to select and copy the text
 function fallbackCopyTextToClipboard(text) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
@@ -1804,7 +1850,7 @@ function fallbackCopyTextToClipboard(text) {
     document.body.removeChild(textArea);
 }
 
-// Show a temporary alert when tasks are copied to clipboard
+// Show a temporary alert at the bottom of the screen when tasks are copied to clipboard, with styling that adapts to dark mode and translations for the alert text
 function showCopyAlert() {
     const copyAlert = document.createElement('div');
     copyAlert.innerText = translations[localStorage.getItem('language') || 'en'].tasksCopied;
@@ -1831,7 +1877,7 @@ function showCopyAlert() {
     }, 3500);
 }
 
-// Reorder the tasks within the columns
+// Reorder tasks in each column based on their due date, with prioritary tasks always on top, and show a temporary alert when tasks are reordered. In the "Done" column, tasks are ordered with the most recently completed ones at the top. After reordering, save the new order to memory.
 function reorderTasks() {
     hideFloatingPopup();
     const columns = document.querySelectorAll('.column');
@@ -1877,6 +1923,7 @@ function reorderTasks() {
     autoSave(); // Save tasks to memory after reordering
 }
 
+// Update the floating label in the header with the current date and day of the week, using translations for the day names
 function updateTodayDate() {
     const today = new Date();
     const language = localStorage.getItem('language') || 'en';
@@ -1886,6 +1933,7 @@ function updateTodayDate() {
     document.getElementById('today-date').innerText = `${dayOfWeek}, ${formattedDate}`;
 }
 
+// Update the floating date label in the Todo Column with the current date and day of the week, using translations for the day names
 function updateFloatingDateLabel() {
     const dayOfWeekEl = document.getElementById('tile-day-of-week');
     const currentDateEl = document.getElementById('tile-current-date');
@@ -1918,6 +1966,7 @@ function updateFloatingDateLabel() {
     }
 }
 
+// Show all options in the filter dropdown and set the size of the select element to show all options, then reset it back to 1 when it loses focus
 function showAllOptions() {
     const assignedToInput = document.getElementById('taskAssignedTo');
     assignedToInput.value = '';
@@ -1925,21 +1974,25 @@ function showAllOptions() {
     assignedToInput.addEventListener('blur', () => assignedToInput.size = 1);
 }
 
+// Toggle the visibility of the floating label when the user clicks on the filter or reorder icons in the header
 function toggleFloatingLabel() {
     const floatingLabel = document.getElementById('floating-label');
     floatingLabel.style.display = floatingLabel.style.display === 'none' ? 'block' : 'none';
 }
 
+// Add dragstart and dragend event listeners to each task to enable dragging
 document.querySelectorAll('.task').forEach(task => {
     task.addEventListener('dragstart', dragStart);
     task.addEventListener('dragend', dragEnd);
 });
 
+// Add dragover and drop event listeners to each column to enable dragging tasks between columns
 document.querySelectorAll('.column').forEach(column => {
     column.addEventListener('dragover', dragOver);
     column.addEventListener('drop', drop);
 });
 
+// Set the application version in the About section of the settings popup, and update the footer with copyright information
 function setVersion(version) {
     const aboutSection = document.querySelector('#settings-popup p');
     aboutSection.innerHTML = `Task Planner v${version} beta.<br>Test version website and associated PWA app.`;
@@ -1947,6 +2000,7 @@ function setVersion(version) {
     footer.innerHTML = `&copy;2025-2026 Flavius O. Abrudan`;
 }
 
+// Initialize the application when the window loads, including prompting for password, applying saved settings, and setting up event listeners for the task style toggle and filter selector
 window.addEventListener('load', async () => {
     await promptForPassword(); // Ensure password is prompted only once
     if (localStorage.getItem('darkMode') === 'true') {
@@ -1996,22 +2050,7 @@ window.addEventListener('load', async () => {
     filterAssignedTo = filterValue === 'All' ? '' : filterValue;
     applyFilter(filterAssignedTo);
     updateFilterTile(); // Update the filter tile display on initialization
-
-    // Update the blinking circle after setting the filter
-    updateBlinkingCircle(filterAssignedTo);
-
-    // Highlight the initial filter tile
-    highlightCurrentFilter();
-
-    setVersion("0.1"); // Dynamically set the version
 });
-
-// Update the blinking circle based on the current filter value
-function updateBlinkingCircle(filterValue) {
-    const blinkingCircle = document.getElementById('blinking-circle');
-    // Always hide the blinking circle since the filter tile now shows the active filter
-    blinkingCircle.style.display = 'none';
-}
 
 // Add event listeners for the task style toggle and filter select
 document.addEventListener('DOMContentLoaded', () => {
@@ -2032,6 +2071,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Toggle between one-color mode and multi-color mode for tasks, and save the preference in local storage
 function toggleTaskStyle() {
     const oneColorMode = document.getElementById('taskStyleToggle').checked;
     if (oneColorMode) {
@@ -2044,6 +2084,7 @@ function toggleTaskStyle() {
     refreshTaskStyles();
 }
 
+// Function to refresh task styles by forcing a reflow, ensuring that style changes are applied immediately
 function refreshTaskStyles() {
     // Force browser to recalculate styles by triggering a reflow
     const tasks = document.querySelectorAll('.task');
@@ -2063,32 +2104,39 @@ function closePopupOnClickOutside(event) {
     }
 }
 
+// Toggle the visibility of the main popup menu (used for desktop view)
 function togglePopupMenu() {
     const popupMenu = document.getElementById('popup-menu');
     popupMenu.classList.toggle('show');
 }
 
+// Toggle the visibility of the new popup menu (used for mobile view)
 function toggleNewPopupMenu() {
     const newPopupMenu = document.getElementById('new-popup-menu');
     newPopupMenu.classList.toggle('show');
 }
 
+// Toggle the visibility of the floating popup menu (used for mobile view) and ensure other popups are closed when it's opened
 function toggleFloatingPopup() {
     const floatingPopup = document.getElementById('floating-popup');
     floatingPopup.classList.toggle('show');
 }
 
+// Hide the floating popup menu (used when opening other popups to ensure only one is open at a time)
 function hideFloatingPopup() {
     const floatingPopup = document.getElementById('floating-popup');
     floatingPopup.classList.remove('show');
 }
 
+// Add event listener for floating button to toggle the floating popup menu
 document.querySelector('.floating-button').addEventListener('click', toggleFloatingLabel);
 
+// Add event listener for filter select change to apply filter immediately
 document.getElementById('filterSelect').addEventListener('change', () => {
     applyFilterAndClosePopup(); // Apply filter and close popup on change
 });
 
+// Close filter popup when the combobox loses focus
 document.getElementById('filterSelect').addEventListener('blur', () => {
     closeFilterPopup(); // Close the filter popup when the combobox loses focus
 });
@@ -2169,6 +2217,7 @@ window.addEventListener('load', () => {
     }
 });
 
+// Toggle password visibility for both entry and confirm password fields
 function togglePasswordVisibility(isConfirm = false) {
     const passwordField = isConfirm ? document.getElementById('entry-confirm-password') : document.getElementById('entry-password');
     const toggleIcon = isConfirm ? document.getElementById('toggle-confirm-password-visibility') : document.getElementById('toggle-password-visibility');
@@ -2177,6 +2226,7 @@ function togglePasswordVisibility(isConfirm = false) {
     toggleIcon.innerText = isPasswordVisible ? 'visibility' : 'visibility_off';
 }
 
+// Show the confirm password field only when the user is setting a new password and has entered something in the password field
 function showConfirmPasswordField() {
     const passwordField = document.getElementById('entry-password');
     const confirmPasswordContainer = document.getElementById('confirm-password-container');
@@ -2190,7 +2240,7 @@ function showConfirmPasswordField() {
     }
 }
 
-// Workload Matrix Functions
+// This function opens the workload matrix popup, forces a redraw of the board to ensure all task data is up-to-date, and then updates the matrix with the latest task information before displaying it to the user.
 function openWorkloadMatrix() {
     // Hide the floating '+' menu if it's open
     hideFloatingPopup(); 
@@ -2245,6 +2295,7 @@ function openWorkloadMatrix() {
     }
 }
 
+// This function hides the workload matrix popup and overlay, and removes the class that prevents background scrolling.
 function closeWorkloadMatrix() {
     const workloadOverlay = document.getElementById('workload-overlay');
     const workloadPopup = document.getElementById('workload-matrix-popup');
@@ -2254,6 +2305,7 @@ function closeWorkloadMatrix() {
     document.body.classList.remove('workload-matrix-open');
 }
 
+// Helper function to get the ISO week number for a given date
 function getISOWeek(date) {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
     const dayNum = d.getUTCDay() || 7;
@@ -2262,6 +2314,7 @@ function getISOWeek(date) {
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }
 
+// This function gathers task data from the UI, organizes it by person and date, and generates an HTML matrix to display workload distribution over the next 4 weeks.
 function updateWorkloadMatrix() {
     const weeks = 4;
     const container = document.getElementById('workload-matrix-container');
@@ -2377,6 +2430,7 @@ function updateWorkloadMatrix() {
     });
 }
 
+// Function to show a popup with the list of tasks for a specific person and date
 function showTasksPopup(person, dateStr, event) {
     // PULL DESCRIPTIONS FROM THE UI
     // Only include tasks from To Do and In Progress columns, exclude Done column
@@ -2466,6 +2520,7 @@ function showTasksPopup(person, dateStr, event) {
     }, 100);
 }
 
+// Function to copy the popup content to clipboard in a formatted way
 function copyPopupToClipboard(person, date, tasks) {
     // Format the text: "Name - Date \n • Task 1 \n • Task 2"
     const taskList = tasks.map(t => `• ${t.text.replace(/<br>/g, '\n')}`).join('\n');
