@@ -943,3 +943,8 @@ input:checked + .slider:before { transform: translateX(14px); }
     50% { transform: translateX(5px); }
     75% { transform: translateX(-5px); }
 }
+
+/* Hide the default password reveal icon in Edge */
+input[type="password"]::-ms-reveal {
+    display: none;
+}

@@ -2058,11 +2058,22 @@ document.addEventListener('DOMContentLoaded', () => {
     updateFloatingDateLabel();
     
     const entryPassword = document.getElementById('entry-password');
-    entryPassword.addEventListener('keypress', (event) => {
+    const confirmPassword = document.getElementById('entry-confirm-password');
+
+    const handleEnter = (event) => {
         if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent default form submission
             handleEntry(); // Trigger submit on ENTER key
         }
-    });
+    };
+
+    if (entryPassword) {
+        entryPassword.addEventListener('keyup', handleEnter);
+    }
+    
+    if (confirmPassword) {
+        confirmPassword.addEventListener('keyup', handleEnter);
+    }
     
     // Add language select change listener
     const languageSelect = document.getElementById('languageSelect');
