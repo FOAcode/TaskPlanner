@@ -2451,13 +2451,7 @@ function showTasksPopup(person, dateStr, event) {
     allTaskElements.forEach(el => {
         if (el.getAttribute('data-date') === dateStr && el.getAttribute('data-assigned-to') === person) {
             const descElement = el.querySelector('.description');
-            const text = descElement.innerHTML
-                .replace(/<br\s*\/?>/gi, '\n')
-                .replace(/<[^>]*>/g, '')
-                .replace(/&lt;/g, '<')
-                .replace(/&gt;/g, '>')
-                .replace(/&amp;/g, '&');
-            matchingTasks.push({ text: text.trim() }); // .trim() removes extra spaces from the source
+            matchingTasks.push({ text: descElement.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]*>/g, '').trim() });
         }
     });
 
@@ -2471,22 +2465,22 @@ function showTasksPopup(person, dateStr, event) {
     popup.style.position = 'fixed';
     popup.style.zIndex = '10003';
     
-    const dateObj = new Date(dateStr);
-    const dateFormatted = dateObj.toLocaleDateString();
+    const dateFormatted = new Date(dateStr).toLocaleDateString();
 
-    // CRITICAL: We keep the <div> on one line or avoid spaces before the bullet
     popup.innerHTML = `
-        <div style="padding: 20px; position: relative; display: flex; flex-direction: column; height: 100%; box-sizing: border-box;">
-            <button id="copy-popup-content" title="Copy to clipboard" 
-                style="position: absolute; top: 15px; right: 15px; background: none; border: none; cursor: pointer; color: #666; padding: 5px;">
+        <div class="resizer top"></div><div class="resizer bottom"></div>
+        <div class="resizer left"></div><div class="resizer right"></div>
+        <div class="resizer top-left"></div><div class="resizer top-right"></div>
+        <div class="resizer bottom-left"></div><div class="resizer bottom-right"></div>
+
+        <div style="padding: 20px; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; pointer-events: auto;">
+            <button id="copy-popup-content" style="position: absolute; top: 15px; right: 15px; background: none; border: none; cursor: pointer; color: #666; padding: 5px; z-index: 10;">
                 <span class="material-icons" style="font-size: 22px;">content_copy</span>
             </button>
-
-            <strong style="display:block; margin-bottom:5px; padding-right: 35px; flex-shrink: 0; font-size: 1.3em;">${person}</strong>
-            <small style="color: #666; flex-shrink: 0; font-size: 1.05em;">${dateFormatted}</small>
-            <hr style="border:0; border-top:1px solid #eee; margin:15px 0; flex-shrink: 0;">
-            
-            <div style="flex-grow: 1; overflow-y: auto; padding-right: 8px;">
+            <strong style="display:block; margin-bottom:5px; font-size: 1.3em;">${person}</strong>
+            <small style="color: #666; font-size: 1.05em;">${dateFormatted}</small>
+            <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
+            <div style="flex-grow: 1; overflow-y: auto;">
                 ${matchingTasks.map(t => `<div style="margin-bottom: 12px; font-size: 1.15em; line-height:1.5; white-space: pre-wrap; word-wrap: break-word;">• ${t.text}</div>`).join('')}
             </div>
         </div>
@@ -2494,30 +2488,91 @@ function showTasksPopup(person, dateStr, event) {
 
     document.body.appendChild(popup);
 
-    document.getElementById('copy-popup-content').addEventListener('click', (e) => {
-        e.stopPropagation();
-        copyPopupToClipboard(person, dateFormatted, matchingTasks);
+    // Initial Positioning
+    const initialW = 450; const initialH = 350;
+    let x = Math.max(10, Math.min(event.clientX - (initialW / 2), window.innerWidth - initialW - 10));
+    let y = Math.max(10, Math.min(event.clientY + 10, window.innerHeight - initialH - 10));
+    popup.style.left = x + 'px'; popup.style.top = y + 'px';
+
+    // --- UPDATED RESIZE LOGIC ---
+    const resizers = popup.querySelectorAll('.resizer');
+    let currentResizer;
+    
+    // We explicitly tell JS about the minimum boundaries set in your CSS
+    const minW = 250; 
+    const minH = 150;
+
+    resizers.forEach(resizer => {
+        resizer.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            currentResizer = e.target;
+            
+            let prevX = e.clientX;
+            let prevY = e.clientY;
+
+            const mouseMove = (e) => {
+                const rect = popup.getBoundingClientRect();
+                const diffX = e.clientX - prevX;
+                const diffY = e.clientY - prevY;
+
+                let newWidth, newHeight, actualDiffX, actualDiffY;
+
+                if (currentResizer.classList.contains('right')) {
+                    popup.style.width = Math.max(minW, rect.width + diffX) + 'px';
+                } else if (currentResizer.classList.contains('left')) {
+                    newWidth = Math.max(minW, rect.width - diffX);
+                    actualDiffX = rect.width - newWidth; // Calculates exactly how much it actually shrank
+                    popup.style.width = newWidth + 'px';
+                    popup.style.left = rect.left + actualDiffX + 'px';
+                } else if (currentResizer.classList.contains('bottom')) {
+                    popup.style.height = Math.max(minH, rect.height + diffY) + 'px';
+                } else if (currentResizer.classList.contains('top')) {
+                    newHeight = Math.max(minH, rect.height - diffY);
+                    actualDiffY = rect.height - newHeight;
+                    popup.style.height = newHeight + 'px';
+                    popup.style.top = rect.top + actualDiffY + 'px';
+                } else if (currentResizer.classList.contains('top-left')) {
+                    newWidth = Math.max(minW, rect.width - diffX);
+                    actualDiffX = rect.width - newWidth;
+                    newHeight = Math.max(minH, rect.height - diffY);
+                    actualDiffY = rect.height - newHeight;
+                    popup.style.width = newWidth + 'px';
+                    popup.style.left = rect.left + actualDiffX + 'px';
+                    popup.style.height = newHeight + 'px';
+                    popup.style.top = rect.top + actualDiffY + 'px';
+                } else if (currentResizer.classList.contains('top-right')) {
+                    popup.style.width = Math.max(minW, rect.width + diffX) + 'px';
+                    newHeight = Math.max(minH, rect.height - diffY);
+                    actualDiffY = rect.height - newHeight;
+                    popup.style.height = newHeight + 'px';
+                    popup.style.top = rect.top + actualDiffY + 'px';
+                } else if (currentResizer.classList.contains('bottom-left')) {
+                    newWidth = Math.max(minW, rect.width - diffX);
+                    actualDiffX = rect.width - newWidth;
+                    popup.style.width = newWidth + 'px';
+                    popup.style.left = rect.left + actualDiffX + 'px';
+                    popup.style.height = Math.max(minH, rect.height + diffY) + 'px';
+                } else if (currentResizer.classList.contains('bottom-right')) {
+                    popup.style.width = Math.max(minW, rect.width + diffX) + 'px';
+                    popup.style.height = Math.max(minH, rect.height + diffY) + 'px';
+                }
+
+                prevX = e.clientX;
+                prevY = e.clientY;
+            };
+
+            const mouseUp = () => {
+                window.removeEventListener('mousemove', mouseMove);
+                window.removeEventListener('mouseup', mouseUp);
+            };
+
+            window.addEventListener('mousemove', mouseMove);
+            window.addEventListener('mouseup', mouseUp);
+        });
     });
 
-    // Positioning
-    const popupWidth = 450; 
-    const popupHeight = 350; 
-    const padding = 15;
-    const offset = 10; 
-
-    let x = event.clientX - (popupWidth / 2);
-    x = Math.max(padding, Math.min(x, window.innerWidth - popupWidth - padding));
-
-    let y = event.clientY + offset;
-    if (y + popupHeight > window.innerHeight - padding) {
-        y = event.clientY - popupHeight - offset;
-    }
-    y = Math.max(padding, y);
-
-    popup.style.left = x + 'px';
-    popup.style.top = y + 'px';
-
-    // Drag-resistant close logic
+    // --- CLOSE LOGIC ---
     let startedInside = false;
     const onMouseDown = (e) => { startedInside = popup.contains(e.target); };
     const onMouseUp = (e) => {
@@ -2528,11 +2583,16 @@ function showTasksPopup(person, dateStr, event) {
         }
         startedInside = false;
     };
-
     setTimeout(() => {
         document.addEventListener('mousedown', onMouseDown);
         document.addEventListener('mouseup', onMouseUp);
     }, 50);
+
+    // Copy listener
+    document.getElementById('copy-popup-content').onclick = (e) => {
+        e.stopPropagation();
+        copyPopupToClipboard(person, dateFormatted, matchingTasks);
+    };
 }
 
 // Function to copy the popup content to clipboard in a formatted way
