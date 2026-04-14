@@ -2441,10 +2441,8 @@ function updateWorkloadMatrix() {
     });
 }
 
-// Function to show a popup with the list of tasks for a specific person and date
+// This function shows a popup with the list of tasks assigned to a specific person on a specific date when a cell in the workload matrix is clicked. It gathers the relevant tasks from the UI, formats their descriptions, and displays them in a styled popup. The popup also includes a button to copy the task details to the clipboard in a formatted way.
 function showTasksPopup(person, dateStr, event) {
-    // PULL DESCRIPTIONS FROM THE UI
-    // Only include tasks from To Do and In Progress columns, exclude Done column
     const todoColumn = document.getElementById('todo-column');
     const inProgressColumn = document.getElementById('in-progress-column');
     const allTaskElements = [...todoColumn.querySelectorAll('.task'), ...inProgressColumn.querySelectorAll('.task')];
@@ -2453,16 +2451,13 @@ function showTasksPopup(person, dateStr, event) {
     allTaskElements.forEach(el => {
         if (el.getAttribute('data-date') === dateStr && el.getAttribute('data-assigned-to') === person) {
             const descElement = el.querySelector('.description');
-            // Get the inner HTML to preserve formatting including line breaks
             const text = descElement.innerHTML
                 .replace(/<br\s*\/?>/gi, '\n')
                 .replace(/<[^>]*>/g, '')
                 .replace(/&lt;/g, '<')
                 .replace(/&gt;/g, '>')
                 .replace(/&amp;/g, '&');
-            matchingTasks.push({
-                text: text
-            });
+            matchingTasks.push({ text: text.trim() }); // .trim() removes extra spaces from the source
         }
     });
 
@@ -2479,24 +2474,24 @@ function showTasksPopup(person, dateStr, event) {
     const dateObj = new Date(dateStr);
     const dateFormatted = dateObj.toLocaleDateString();
 
-    // ... inside showTasksPopup ...
+    // CRITICAL: We keep the <div> on one line or avoid spaces before the bullet
     popup.innerHTML = `
-        <div style="padding: 15px; position: relative;">
+        <div style="padding: 20px; position: relative; display: flex; flex-direction: column; height: 100%; box-sizing: border-box;">
             <button id="copy-popup-content" title="Copy to clipboard" 
-                style="position: absolute; top: 10px; right: 10px; background: none; border: none; cursor: pointer; color: #666; padding: 5px;">
-                <span class="material-icons" style="font-size: 18px;">content_copy</span>
+                style="position: absolute; top: 15px; right: 15px; background: none; border: none; cursor: pointer; color: #666; padding: 5px;">
+                <span class="material-icons" style="font-size: 22px;">content_copy</span>
             </button>
 
-            <strong style="display:block; margin-bottom:5px; padding-right: 25px;">${person}</strong>
-            <small style="color: #666;">${dateFormatted}</small>
-            <hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
-            <div style="max-height: 200px; overflow-y: auto;">
-                ${matchingTasks.map(t => `<div style="margin-bottom: 8px; font-size: 0.9em; line-height:1.4; white-space: pre-wrap; word-wrap: break-word;">• ${t.text}</div>`).join('')}
+            <strong style="display:block; margin-bottom:5px; padding-right: 35px; flex-shrink: 0; font-size: 1.3em;">${person}</strong>
+            <small style="color: #666; flex-shrink: 0; font-size: 1.05em;">${dateFormatted}</small>
+            <hr style="border:0; border-top:1px solid #eee; margin:15px 0; flex-shrink: 0;">
+            
+            <div style="flex-grow: 1; overflow-y: auto; padding-right: 8px;">
+                ${matchingTasks.map(t => `<div style="margin-bottom: 12px; font-size: 1.15em; line-height:1.5; white-space: pre-wrap; word-wrap: break-word;">• ${t.text}</div>`).join('')}
             </div>
         </div>
     `;
 
-    // Attach the copy event listener immediately after adding the popup to the body
     document.body.appendChild(popup);
 
     document.getElementById('copy-popup-content').addEventListener('click', (e) => {
@@ -2504,31 +2499,40 @@ function showTasksPopup(person, dateStr, event) {
         copyPopupToClipboard(person, dateFormatted, matchingTasks);
     });
 
-    // --- POSITIONING ---
-    const popupWidth = 350; 
-    const popupHeight = popup.offsetHeight;
-    const padding = 10;
+    // Positioning
+    const popupWidth = 450; 
+    const popupHeight = 350; 
+    const padding = 15;
     const offset = 10; 
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
 
     let x = event.clientX - (popupWidth / 2);
-    x = Math.max(padding, Math.min(x, screenWidth - popupWidth - padding));
+    x = Math.max(padding, Math.min(x, window.innerWidth - popupWidth - padding));
 
     let y = event.clientY + offset;
-    if (y + popupHeight > screenHeight - padding) {
+    if (y + popupHeight > window.innerHeight - padding) {
         y = event.clientY - popupHeight - offset;
     }
     y = Math.max(padding, y);
 
     popup.style.left = x + 'px';
     popup.style.top = y + 'px';
-    popup.style.display = 'block';
 
-    const closePopup = () => { if (popup.parentElement) popup.remove(); };
+    // Drag-resistant close logic
+    let startedInside = false;
+    const onMouseDown = (e) => { startedInside = popup.contains(e.target); };
+    const onMouseUp = (e) => {
+        if (!startedInside && !popup.contains(e.target)) {
+            popup.remove();
+            document.removeEventListener('mousedown', onMouseDown);
+            document.removeEventListener('mouseup', onMouseUp);
+        }
+        startedInside = false;
+    };
+
     setTimeout(() => {
-        document.addEventListener('click', closePopup, { once: true });
-    }, 100);
+        document.addEventListener('mousedown', onMouseDown);
+        document.addEventListener('mouseup', onMouseUp);
+    }, 50);
 }
 
 // Function to copy the popup content to clipboard in a formatted way
