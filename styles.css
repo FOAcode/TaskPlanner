@@ -876,13 +876,13 @@ input:checked + .slider:before { transform: translateX(14px); }
     border: 2px solid #007bff; 
     border-radius: 8px; 
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2); 
-    width: 450px; 
-    height: 350px; 
     min-width: 250px;
     min-height: 150px;
+    max-width: 95vw; /* Failsafe to prevent pushing off-screen on tiny devices */
+    max-height: 95vh;
     box-sizing: border-box; 
     padding: 0; 
-    overflow: hidden; /* Changed from auto to hide handles overflowing */
+    overflow: hidden; 
     display: flex;
     flex-direction: column;
 }
@@ -893,17 +893,17 @@ input:checked + .slider:before { transform: translateX(14px); }
     background: transparent;
 }
 
-/* Corners */
-.resizer.top-left { width: 15px; height: 15px; left: -5px; top: -5px; cursor: nwse-resize; z-index: 2; }
-.resizer.top-right { width: 15px; height: 15px; right: -5px; top: -5px; cursor: nesw-resize; z-index: 2; }
-.resizer.bottom-left { width: 15px; height: 15px; left: -5px; bottom: -5px; cursor: nesw-resize; z-index: 2; }
-.resizer.bottom-right { width: 15px; height: 15px; right: -5px; bottom: -5px; cursor: nwse-resize; z-index: 2; }
+/* Corners (Increased from 15px to 24px and centered over the border) */
+.resizer.top-left { width: 24px; height: 24px; left: -10px; top: -10px; cursor: nwse-resize; z-index: 2; }
+.resizer.top-right { width: 24px; height: 24px; right: -10px; top: -10px; cursor: nesw-resize; z-index: 2; }
+.resizer.bottom-left { width: 24px; height: 24px; left: -10px; bottom: -10px; cursor: nesw-resize; z-index: 2; }
+.resizer.bottom-right { width: 24px; height: 24px; right: -10px; bottom: -10px; cursor: nwse-resize; z-index: 2; }
 
-/* Edges */
-.resizer.top { width: 100%; height: 5px; top: -3px; left: 0; cursor: ns-resize; }
-.resizer.bottom { width: 100%; height: 5px; bottom: -3px; left: 0; cursor: ns-resize; }
-.resizer.left { width: 5px; height: 100%; left: -3px; top: 0; cursor: ew-resize; }
-.resizer.right { width: 5px; height: 100%; right: -3px; top: 0; cursor: ew-resize; }
+/* Edges (Increased from 5px to 12px and centered over the border) */
+.resizer.top { width: 100%; height: 12px; top: -6px; left: 0; cursor: ns-resize; }
+.resizer.bottom { width: 100%; height: 12px; bottom: -6px; left: 0; cursor: ns-resize; }
+.resizer.left { width: 12px; height: 100%; left: -6px; top: 0; cursor: ew-resize; }
+.resizer.right { width: 12px; height: 100%; right: -6px; top: 0; cursor: ew-resize; }
 
 .dark-mode .tasks-details-popup { background: #2c2c2c; border-color: #0056b3; color: #fff; }
 .matrix-cell { 

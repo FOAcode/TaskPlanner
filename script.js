@@ -2441,7 +2441,7 @@ function updateWorkloadMatrix() {
     });
 }
 
-// This function shows a popup with the list of tasks assigned to a specific person on a specific date when a cell in the workload matrix is clicked. It gathers the relevant tasks from the UI, formats their descriptions, and displays them in a styled popup. The popup also includes a button to copy the task details to the clipboard in a formatted way.
+// This function shows a popup with the list of tasks assigned to a specific person on a specific date when a cell in the workload matrix is clicked.
 function showTasksPopup(person, dateStr, event) {
     const todoColumn = document.getElementById('todo-column');
     const inProgressColumn = document.getElementById('in-progress-column');
@@ -2489,25 +2489,33 @@ function showTasksPopup(person, dateStr, event) {
     document.body.appendChild(popup);
 
     // Initial Positioning
-    const initialW = 450; const initialH = 350;
+    const initialW = Math.min(450, window.innerWidth * 0.9); 
+    const initialH = Math.min(350, window.innerHeight * 0.9);
+    
     let x = Math.max(10, Math.min(event.clientX - (initialW / 2), window.innerWidth - initialW - 10));
     let y = Math.max(10, Math.min(event.clientY + 10, window.innerHeight - initialH - 10));
-    popup.style.left = x + 'px'; popup.style.top = y + 'px';
-
-    // --- UPDATED RESIZE LOGIC ---
-    const resizers = popup.querySelectorAll('.resizer');
-    let currentResizer;
     
-    // We explicitly tell JS about the minimum boundaries set in your CSS
+    popup.style.width = initialW + 'px';
+    popup.style.height = initialH + 'px';
+    popup.style.left = x + 'px'; 
+    popup.style.top = y + 'px';
+
+    // --- RESIZE LOGIC ---
+    const resizers = popup.querySelectorAll('.resizer');
+    let isResizing = false; // Track if we are currently resizing
+    
     const minW = 250; 
     const minH = 150;
+    const maxW = Math.min(initialW * 2, window.innerWidth * 0.95); 
+    const maxH = Math.min(initialH * 2, window.innerHeight * 0.95);
 
     resizers.forEach(resizer => {
         resizer.addEventListener('mousedown', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            currentResizer = e.target;
+            isResizing = true; // Set flag
             
+            const currentResizer = e.target;
             let prevX = e.clientX;
             let prevY = e.clientY;
 
@@ -2519,43 +2527,43 @@ function showTasksPopup(person, dateStr, event) {
                 let newWidth, newHeight, actualDiffX, actualDiffY;
 
                 if (currentResizer.classList.contains('right')) {
-                    popup.style.width = Math.max(minW, rect.width + diffX) + 'px';
+                    popup.style.width = Math.min(maxW, Math.max(minW, rect.width + diffX)) + 'px';
                 } else if (currentResizer.classList.contains('left')) {
-                    newWidth = Math.max(minW, rect.width - diffX);
-                    actualDiffX = rect.width - newWidth; // Calculates exactly how much it actually shrank
+                    newWidth = Math.min(maxW, Math.max(minW, rect.width - diffX));
+                    actualDiffX = rect.width - newWidth;
                     popup.style.width = newWidth + 'px';
                     popup.style.left = rect.left + actualDiffX + 'px';
                 } else if (currentResizer.classList.contains('bottom')) {
-                    popup.style.height = Math.max(minH, rect.height + diffY) + 'px';
+                    popup.style.height = Math.min(maxH, Math.max(minH, rect.height + diffY)) + 'px';
                 } else if (currentResizer.classList.contains('top')) {
-                    newHeight = Math.max(minH, rect.height - diffY);
+                    newHeight = Math.min(maxH, Math.max(minH, rect.height - diffY));
                     actualDiffY = rect.height - newHeight;
                     popup.style.height = newHeight + 'px';
                     popup.style.top = rect.top + actualDiffY + 'px';
                 } else if (currentResizer.classList.contains('top-left')) {
-                    newWidth = Math.max(minW, rect.width - diffX);
+                    newWidth = Math.min(maxW, Math.max(minW, rect.width - diffX));
                     actualDiffX = rect.width - newWidth;
-                    newHeight = Math.max(minH, rect.height - diffY);
+                    newHeight = Math.min(maxH, Math.max(minH, rect.height - diffY));
                     actualDiffY = rect.height - newHeight;
                     popup.style.width = newWidth + 'px';
                     popup.style.left = rect.left + actualDiffX + 'px';
                     popup.style.height = newHeight + 'px';
                     popup.style.top = rect.top + actualDiffY + 'px';
                 } else if (currentResizer.classList.contains('top-right')) {
-                    popup.style.width = Math.max(minW, rect.width + diffX) + 'px';
-                    newHeight = Math.max(minH, rect.height - diffY);
+                    popup.style.width = Math.min(maxW, Math.max(minW, rect.width + diffX)) + 'px';
+                    newHeight = Math.min(maxH, Math.max(minH, rect.height - diffY));
                     actualDiffY = rect.height - newHeight;
                     popup.style.height = newHeight + 'px';
                     popup.style.top = rect.top + actualDiffY + 'px';
                 } else if (currentResizer.classList.contains('bottom-left')) {
-                    newWidth = Math.max(minW, rect.width - diffX);
+                    newWidth = Math.min(maxW, Math.max(minW, rect.width - diffX));
                     actualDiffX = rect.width - newWidth;
                     popup.style.width = newWidth + 'px';
                     popup.style.left = rect.left + actualDiffX + 'px';
-                    popup.style.height = Math.max(minH, rect.height + diffY) + 'px';
+                    popup.style.height = Math.min(maxH, Math.max(minH, rect.height + diffY)) + 'px';
                 } else if (currentResizer.classList.contains('bottom-right')) {
-                    popup.style.width = Math.max(minW, rect.width + diffX) + 'px';
-                    popup.style.height = Math.max(minH, rect.height + diffY) + 'px';
+                    popup.style.width = Math.min(maxW, Math.max(minW, rect.width + diffX)) + 'px';
+                    popup.style.height = Math.min(maxH, Math.max(minH, rect.height + diffY)) + 'px';
                 }
 
                 prevX = e.clientX;
@@ -2563,6 +2571,9 @@ function showTasksPopup(person, dateStr, event) {
             };
 
             const mouseUp = () => {
+                // Use a tiny timeout to ensure the flag stays true 
+                // until after the document-level mouseup listener fires
+                setTimeout(() => { isResizing = false; }, 50);
                 window.removeEventListener('mousemove', mouseMove);
                 window.removeEventListener('mouseup', mouseUp);
             };
@@ -2572,17 +2583,22 @@ function showTasksPopup(person, dateStr, event) {
         });
     });
 
-    // --- CLOSE LOGIC ---
+    // --- CLOSE LOGIC (Updated to respect isResizing) ---
     let startedInside = false;
-    const onMouseDown = (e) => { startedInside = popup.contains(e.target); };
+    const onMouseDown = (e) => { 
+        startedInside = popup.contains(e.target); 
+    };
+    
     const onMouseUp = (e) => {
-        if (!startedInside && !popup.contains(e.target)) {
+        // Only close if we didn't start inside, didn't end inside, AND aren't resizing
+        if (!startedInside && !popup.contains(e.target) && !isResizing) {
             popup.remove();
             document.removeEventListener('mousedown', onMouseDown);
             document.removeEventListener('mouseup', onMouseUp);
         }
         startedInside = false;
     };
+
     setTimeout(() => {
         document.addEventListener('mousedown', onMouseDown);
         document.addEventListener('mouseup', onMouseUp);
