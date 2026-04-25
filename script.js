@@ -25,521 +25,282 @@ const translations = {
     en: {
         languageName: "English",
         languages: {
-            en: "English",
-            it: "Italian",
-            es: "Spanish",
-            de: "German",
-            fr: "French",
-            ro: "Romanian",
-            pt: "Portuguese",
-            zh: "Chinese"
+            en: "English", it: "Italian", es: "Spanish", de: "German",
+            fr: "French", ro: "Romanian", pt: "Portuguese", zh: "Chinese"
         },
-        task: "Task",
-        due: "Due",
-        assignedTo: "Assigned to",
-        addEditTask: "Add / Edit Task",
-        delete: "Delete",
-        save: "Save",
-        toDo: "To Do",
-        inProgress: "In Progress",
-        done: "Done",
-        filterTasks: "Filter Tasks",
-        menu: "Menu",
-        file: "File",
-        load: "Load",
-        export: "Export",
-        settings: "Settings",
-        darkMode: "Dark Mode",
-        fontStyle: "Font Style",
-        fontFamily: "Font Family",
-        language: "Language",
-        about: "About",
-        reorderTasks: "Reorder Tasks",
-        workloadMatrix: "Workload Matrix",
-        filterList: "Filter List",
-        filterListAlt: "Filter List Alt",
+        task: "Task", due: "Due", assignedTo: "Assigned to",
+        addEditTask: "Add / Edit Task", delete: "Delete", save: "Save",
+        toDo: "To Do", inProgress: "In Progress", done: "Done",
+        filterTasks: "Filter Tasks", menu: "Menu", file: "File",
+        load: "Load", export: "Export", settings: "Settings",
+        darkMode: "Dark Mode", fontStyle: "Font Style", fontFamily: "Font Family",
+        language: "Language", about: "About", reorderTasks: "Reorder Tasks",
+        workloadMatrix: "Workload Matrix", ganttChart: "Gantt Chart",
+        filterList: "Filter List", filterListAlt: "Filter List Alt",
         confirmDeleteDoneTasks: "Are you sure you want to delete all tasks in the Done column?",
         tasksCopied: "Tasks copied to clipboard!",
         tasksReordered: "Tasks reordered by due date!",
         weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        singleColorTasks: "Single Color Tasks",
-        oneColor: "One Color",
-        assignPriority: "Assign Priority",
-        removePriority: "Remove Priority",
-        copyTask: "Copy Task",
-        moveToToDo: "Move to <b>To Do</b>",
-        moveToInProgress: "Move to <b>In Progress</b>",
-        moveToDone: "Move to <b>Done</b>",
-        eliminate: "Eliminate",
-        fillMissingData: "Please fill in the missing data!",
-        setPassword: "Set Password",
-        password: "Password",
-        setPasswordPlaceholder: "Password",
-        enterPasswordPlaceholder: "Enter your password",
-        setPasswordButton: "Set Password",
-        submitButton: "Submit",
+        ganttDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        singleColorTasks: "Single Color Tasks", oneColor: "One Color",
+        assignPriority: "Assign Priority", removePriority: "Remove Priority",
+        copyTask: "Copy Task", moveToToDo: "Move to <b>To Do</b>",
+        moveToInProgress: "Move to <b>In Progress</b>", moveToDone: "Move to <b>Done</b>",
+        eliminate: "Eliminate", fillMissingData: "Please fill in the missing data!",
+        setPassword: "Set Password", password: "Password",
+        setPasswordPlaceholder: "Password", enterPasswordPlaceholder: "Enter your password",
+        setPasswordButton: "Set Password", submitButton: "Submit",
         tooManyAttempts: "Too many failed attempts. Please wait {time} seconds.",
         incorrectPassword: "Incorrect password. Please try again.",
         passwordCannotBeEmpty: "Password cannot be empty.",
         writeDownPassword: "Remember your password as it will be used to decrypt your data.",
         passwordsDoNotMatch: "Passwords do not match. Please try again.",
-        confirmation: "Confirmation",
-        date: "Date",
-        week: "Week",
+        confirmation: "Confirmation", date: "Date", week: "Week",
         selectWeeksLabel: "Select Weeks to Display (1-4):"
     },
     it: {
         languageName: "Italiano",
         languages: {
-            en: "Inglese",
-            it: "Italiano",
-            es: "Spagnolo",
-            de: "Tedesco",
-            fr: "Francese",
-            ro: "Rumeno",
-            pt: "Portoghese",
-            zh: "Cinese"
+            en: "Inglese", it: "Italiano", es: "Spagnolo", de: "Tedesco",
+            fr: "Francese", ro: "Rumeno", pt: "Portoghese", zh: "Cinese"
         },
-        task: "Compito",
-        due: "Scadenza",
-        assignedTo: "Assegnato a",
-        addEditTask: "Aggiungi / Modifica Compito",
-        delete: "Elimina",
-        save: "Salva",
-        toDo: "Da Fare",
-        inProgress: "In Corso",
-        done: "Fatto",
-        filterTasks: "Filtra Compiti",
-        menu: "Menu",
-        file: "File",
-        load: "Carica",
-        export: "Esporta",
-        settings: "Impostazioni",
-        darkMode: "Modalità Scura",
-        fontStyle: "Stile del Carattere",
-        fontFamily: "Famiglia del Carattere",
-        language: "Lingua",
-        about: "Informazioni",
-        reorderTasks: "Riordina Compiti",
-        workloadMatrix: "Matrice di Carico di Lavoro",
-        filterList: "Lista Filtri",
-        filterListAlt: "Lista Filtri Alternativa",
+        task: "Compito", due: "Scadenza", assignedTo: "Assegnato a",
+        addEditTask: "Aggiungi / Modifica Compito", delete: "Elimina", save: "Salva",
+        toDo: "Da Fare", inProgress: "In Corso", done: "Fatto",
+        filterTasks: "Filtra Compiti", menu: "Menu", file: "File",
+        load: "Carica", export: "Esporta", settings: "Impostazioni",
+        darkMode: "Modalità Scura", fontStyle: "Stile del Carattere", fontFamily: "Famiglia del Carattere",
+        language: "Lingua", about: "Informazioni", reorderTasks: "Riordina Compiti",
+        workloadMatrix: "Matrice di Carico di Lavoro", ganttChart: "Diagramma di Gantt",
+        filterList: "Lista Filtri", filterListAlt: "Lista Filtri Alternativa",
         confirmDeleteDoneTasks: "Sei sicuro di voler eliminare tutti i compiti nella colonna Fatto?",
         tasksCopied: "Compiti copiati negli appunti!",
         tasksReordered: "Compiti riordinati per data di scadenza!",
         weekdays: ["Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"],
-        singleColorTasks: "Compiti a Colore Unico",
-        oneColor: "Un Colore",
-        assignPriority: "Assegna Priorità",
-        removePriority: "Rimuovi Priorità",
-        copyTask: "Copia Compito",
-        moveToToDo: "Sposta in <b>Da Fare</b>",
-        moveToInProgress: "Sposta in <b>In Corso</b>",
-        moveToDone: "Sposta in <b>Fatto</b>",
-        eliminate: "Elimina",
-        fillMissingData: "Per favore compila i dati mancanti!",
-        setPassword: "Imposta Password",
-        password: "Password",
-        setPasswordPlaceholder: "Password",
-        enterPasswordPlaceholder: "Inserisci la tua password",
-        setPasswordButton: "Imposta Password",
-        submitButton: "Invia",
+        ganttDays: ["Dom", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab"],
+        singleColorTasks: "Compiti a Colore Unico", oneColor: "Un Colore",
+        assignPriority: "Assegna Priorità", removePriority: "Rimuovi Priorità",
+        copyTask: "Copia Compito", moveToToDo: "Sposta in <b>Da Fare</b>",
+        moveToInProgress: "Sposta in <b>In Corso</b>", moveToDone: "Sposta in <b>Fatto</b>",
+        eliminate: "Elimina", fillMissingData: "Per favore compila i dati mancanti!",
+        setPassword: "Imposta Password", password: "Password",
+        setPasswordPlaceholder: "Password", enterPasswordPlaceholder: "Inserisci la tua password",
+        setPasswordButton: "Imposta Password", submitButton: "Invia",
         tooManyAttempts: "Troppi tentativi falliti. Attendere {time} secondi.",
         incorrectPassword: "Password errata. Riprova.",
         passwordCannotBeEmpty: "La password non può essere vuota.",
         writeDownPassword: "Ricorda la tua password poiché verrà utilizzata per decrittografare i tuoi dati.",
-        confirmation: "Conferma",
-        date: "Data",
-        week: "Settimana",
+        confirmation: "Conferma", date: "Data", week: "Settimana",
         selectWeeksLabel: "Seleziona Settimane da Visualizzare (1-4):"
     },
     es: {
         languageName: "Español",
         languages: {
-            en: "Inglés",
-            it: "Italiano",
-            es: "Español",
-            de: "Alemán",
-            fr: "Francés",
-            ro: "Rumano",
-            pt: "Portugués",
-            zh: "Chino"
+            en: "Inglés", it: "Italiano", es: "Español", de: "Alemán",
+            fr: "Francés", ro: "Rumano", pt: "Portugués", zh: "Chino"
         },
-        task: "Tarea",
-        due: "Vence",
-        assignedTo: "Asignado a",
-        addEditTask: "Agregar / Editar Tarea",
-        delete: "Eliminar",
-        save: "Guardar",
-        toDo: "Por Hacer",
-        inProgress: "En Progreso",
-        done: "Hecho",
-        filterTasks: "Filtrar Tareas",
-        menu: "Menú",
-        file: "Archivo",
-        load: "Cargar",
-        export: "Exportar",
-        settings: "Configuraciones",
-        darkMode: "Modo Oscuro",
-        fontStyle: "Estilo de Fuente",
-        fontFamily: "Familia de Fuente",
-        language: "Idioma",
-        about: "Acerca de",
-        reorderTasks: "Reordenar Tareas",
-        workloadMatrix: "Matriz de Carga de Trabajo",
-        filterList: "Lista de Filtros",
-        filterListAlt: "Lista de Filtros Alternativa",
+        task: "Tarea", due: "Vence", assignedTo: "Asignado a",
+        addEditTask: "Agregar / Editar Tarea", delete: "Eliminar", save: "Guardar",
+        toDo: "Por Hacer", inProgress: "En Progreso", done: "Hecho",
+        filterTasks: "Filtrar Tareas", menu: "Menú", file: "Archivo",
+        load: "Cargar", export: "Exportar", settings: "Configuraciones",
+        darkMode: "Modo Oscuro", fontStyle: "Estilo de Fuente", fontFamily: "Famiglia de Fuente",
+        language: "Idioma", about: "Acerca de", reorderTasks: "Reordenar Tareas",
+        workloadMatrix: "Matriz de Carga de Trabajo", ganttChart: "Gráfico de Gantt",
+        filterList: "Lista de Filtros", filterListAlt: "Lista de Filtros Alternativa",
         confirmDeleteDoneTasks: "¿Estás seguro de que deseas eliminar todas las tareas en la columna Hecho?",
         tasksCopied: "¡Tareas copiadas al portapapeles!",
         tasksReordered: "¡Tareas reordenadas por fecha de vencimiento!",
         weekdays: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-        singleColorTasks: "Tareas de Color Único",
-        oneColor: "Un Color",
-        assignPriority: "Asignar Prioridad",
-        removePriority: "Quitar Prioridad",
-        copyTask: "Copiar Tarea",
-        moveToToDo: "Mover a <b>Por Hacer</b>",
-        moveToInProgress: "Mover a <b>En Progreso</b>",
-        moveToDone: "Mover a <b>Hecho</b>",
-        eliminate: "Eliminar",
-        fillMissingData: "¡Por favor completa los datos faltantes!",
-        setPassword: "Establecer Contraseña",
-        password: "Contraseña",
-        setPasswordPlaceholder: "Contraseña",
-        enterPasswordPlaceholder: "Introduce tu contraseña",
-        setPasswordButton: "Establecer Contraseña",
-        submitButton: "Enviar",
+        ganttDays: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+        singleColorTasks: "Tareas de Color Único", oneColor: "Un Color",
+        assignPriority: "Asignar Prioridad", removePriority: "Quitar Prioridad",
+        copyTask: "Copiar Tarea", moveToToDo: "Mover a <b>Por Hacer</b>",
+        moveToInProgress: "Mover a <b>En Progreso</b>", moveToDone: "Mover a <b>Hecho</b>",
+        eliminate: "Eliminar", fillMissingData: "¡Por favor completa los datos faltantes!",
+        setPassword: "Establecer Contraseña", password: "Contraseña",
+        setPasswordPlaceholder: "Contraseña", enterPasswordPlaceholder: "Introduce tu contraseña",
+        setPasswordButton: "Establecer Contraseña", submitButton: "Enviar",
         tooManyAttempts: "Demasiados intentos fallidos. Espere {time} segundos.",
         incorrectPassword: "Contraseña incorrecta. Inténtalo de nuevo.",
         passwordCannotBeEmpty: "La contraseña no puede estar vacía.",
         writeDownPassword: "Recuerda tu contraseña ya que se utilizará para descifrar tus datos.",
-        confirmation: "Confirmación",
-        date: "Fecha",
-        week: "Semana",
+        confirmation: "Confirmación", date: "Fecha", week: "Semana",
         selectWeeksLabel: "Selecciona Semanas a Mostrar (1-4):"
     },
     pt: {
         languageName: "Português",
         languages: {
-            en: "Inglês",
-            it: "Italiano",
-            es: "Espanhol",
-            de: "Alemão",
-            fr: "Francês",
-            ro: "Romeno",
-            pt: "Português",
-            zh: "Chinês"
+            en: "Inglês", it: "Italiano", es: "Espanhol", de: "Alemão",
+            fr: "Francês", ro: "Romeno", pt: "Português", zh: "Chinês"
         },
-        task: "Tarefa",
-        due: "Vence",
-        assignedTo: "Atribuído a",
-        addEditTask: "Adicionar / Editar Tarefa",
-        delete: "Excluir",
-        save: "Salvar",
-        toDo: "A Fazer",
-        inProgress: "Em Progresso",
-        done: "Feito",
-        filterTasks: "Filtrar Tarefas",
-        menu: "Menu",
-        file: "Arquivo",
-        load: "Carregar",
-        export: "Exportar",
-        settings: "Configurações",
-        darkMode: "Modo Escuro",
-        fontStyle: "Estilo da Fonte",
-        fontFamily: "Família da Fonte",
-        language: "Idioma",
-        about: "Sobre",
-        reorderTasks: "Reordenar Tarefas",
-        workloadMatrix: "Matriz de Carga de Trabalho",
-        filterList: "Lista de Filtros",
-        filterListAlt: "Lista de Filtros Alternativa",
+        task: "Tarefa", due: "Vence", assignedTo: "Atribuído a",
+        addEditTask: "Adicionar / Editar Tarefa", delete: "Excluir", save: "Salvar",
+        toDo: "A Fazer", inProgress: "Em Progresso", done: "Feito",
+        filterTasks: "Filtrar Tarefas", menu: "Menu", file: "Arquivo",
+        load: "Carregar", export: "Exportar", settings: "Configurações",
+        darkMode: "Modo Escuro", fontStyle: "Estilo da Fonte", fontFamily: "Família da Fonte",
+        language: "Idioma", about: "Sobre", reorderTasks: "Reordenar Tarefas",
+        workloadMatrix: "Matriz de Carga de Trabalho", ganttChart: "Gráfico de Gantt",
+        filterList: "Lista de Filtros", filterListAlt: "Lista de Filtros Alternativa",
         confirmDeleteDoneTasks: "Tem certeza de que deseja excluir todas as tarefas na coluna Feito?",
         tasksCopied: "Tarefas copiadas para a área de transferência!",
         tasksReordered: "Tarefas reordenadas por data de vencimento!",
         weekdays: ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"],
-        singleColorTasks: "Tarefas de Cor Única",
-        oneColor: "Uma Cor",
-        assignPriority: "Atribuir Prioridade",
-        removePriority: "Remover Prioridade",
-        copyTask: "Copiar Tarefa",
-        moveToToDo: "Mover para <b>A Fazer</b>",
-        moveToInProgress: "Mover para <b>Em Progresso</b>",
-        moveToDone: "Mover para <b>Feito</b>",
-        eliminate: "Eliminar",
-        fillMissingData: "Por favor, preencha os dados ausentes!",
-        setPassword: "Definir Senha",
-        password: "Senha",
-        setPasswordPlaceholder: "Senha",
-        enterPasswordPlaceholder: "Digite sua senha",
-        setPasswordButton: "Definir Senha",
-        submitButton: "Enviar",
+        ganttDays: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"],
+        singleColorTasks: "Tarefas de Cor Única", oneColor: "Uma Cor",
+        assignPriority: "Atribuir Prioridade", removePriority: "Remover Prioridade",
+        copyTask: "Copiar Tarefa", moveToToDo: "Mover para <b>A Fazer</b>",
+        moveToInProgress: "Mover para <b>Em Progresso</b>", moveToDone: "Mover para <b>Feito</b>",
+        eliminate: "Eliminar", fillMissingData: "Por favor, preencha os dados ausentes!",
+        setPassword: "Definir Senha", password: "Senha",
+        setPasswordPlaceholder: "Senha", enterPasswordPlaceholder: "Digite sua senha",
+        setPasswordButton: "Definir Senha", submitButton: "Enviar",
         tooManyAttempts: "Muitas tentativas falharam. Aguarde {time} segundos.",
         incorrectPassword: "Senha incorreta. Tente novamente.",
         passwordCannotBeEmpty: "A senha não pode estar vazia.",
         writeDownPassword: "Lembre-se da sua senha, pois ela será usada para descriptografar seus dados.",
-        confirmation: "Confirmação",
-        date: "Data",
-        week: "Semana",
+        confirmation: "Confirmação", date: "Data", week: "Semana",
         selectWeeksLabel: "Selecione Semanas para Exibir (1-4):"
     },
     ro: {
         languageName: "Română",
         languages: {
-            en: "Engleză",
-            it: "Italiană",
-            es: "Spaniolă",
-            de: "Germană",
-            fr: "Franceză",
-            ro: "Română",
-            pt: "Portugheză",
-            zh: "Chineză"
+            en: "Engleză", it: "Italiană", es: "Spaniolă", de: "Germană",
+            fr: "Franceză", ro: "Română", pt: "Portugheză", zh: "Chineză"
         },
-        task: "Sarcină",
-        due: "Termen",
-        assignedTo: "Atribuit lui",
-        addEditTask: "Adaugă / Editează Sarcină",
-        delete: "Șterge",
-        save: "Salvează",
-        toDo: "De Făcut",
-        inProgress: "În Progres",
-        done: "Terminat",
-        filterTasks: "Filtrează Sarcini",
-        menu: "Meniu",
-        file: "Fișier",
-        load: "Încarcă",
-        export: "Exportă",
-        settings: "Setări",
-        darkMode: "Mod Întunecat",
-        fontStyle: "Stilul Fontului",
-        fontFamily: "Familia Fontului",
-        language: "Limbă",
-        about: "Despre",
-        reorderTasks: "Reordonează Sarcini",
-        workloadMatrix: "Matrice de Sarcină",
-        filterList: "Listă de Filtre",
-        filterListAlt: "Listă de Filtre Alternativă",
+        task: "Sarcină", due: "Termen", assignedTo: "Atribuit lui",
+        addEditTask: "Adaugă / Editează Sarcină", delete: "Șterge", save: "Salvează",
+        toDo: "De Făcut", inProgress: "În Progres", done: "Terminat",
+        filterTasks: "Filtrează Sarcini", menu: "Meniu", file: "Fișier",
+        load: "Încarcă", export: "Exportă", settings: "Setări",
+        darkMode: "Mod Întunecat", fontStyle: "Stilul Fontului", fontFamily: "Familia Fontului",
+        language: "Limbă", about: "Despre", reorderTasks: "Reordonează Sarcini",
+        workloadMatrix: "Matrice de Sarcină", ganttChart: "Diagramă Gantt",
+        filterList: "Listă de Filtre", filterListAlt: "Listă de Filtre Alternativă",
         confirmDeleteDoneTasks: "Ești sigur că vrei să ștergi toate sarcinile din coloana Terminat?",
         tasksCopied: "Sarcinile au fost copiate în clipboard!",
         tasksReordered: "Sarcinile au fost reordonate după data termenului!",
         weekdays: ["Duminică", "Luni", "Marți", "Miercuri", "Joi", "Vineri", "Sâmbătă"],
-        singleColorTasks: "Sarcini de Culoare Unică",
-        oneColor: "O Culoare",
-        assignPriority: "Atribuie Prioritate",
-        removePriority: "Elimină Prioritate",
-        copyTask: "Copiere Sarcină",
-        moveToToDo: "Mută în <b>De Făcut</b>",
-        moveToInProgress: "Mută în <b>Progres</b>",
-        moveToDone: "Mută în <b>Terminat</b>",
-        eliminate: "Șterge",
-        fillMissingData: "Vă rugăm completați datele lipsă!",
-        setPassword: "Setează Parola",
-        password: "Parola",
-        setPasswordPlaceholder: "Parolă",
-        enterPasswordPlaceholder: "Introdu parola",
-        setPasswordButton: "Setează Parola",
-        submitButton: "Trimite",
+        ganttDays: ["Dum", "Lun", "Mar", "Mie", "Joi", "Vin", "Sâm"],
+        singleColorTasks: "Sarcini de Culoare Unică", oneColor: "O Culoare",
+        assignPriority: "Atribuie Prioritate", removePriority: "Elimină Prioritate",
+        copyTask: "Copiere Sarcină", moveToToDo: "Mută în <b>De Făcut</b>",
+        moveToInProgress: "Mută în <b>Progres</b>", moveToDone: "Mută în <b>Terminat</b>",
+        eliminate: "Șterge", fillMissingData: "Vă rugăm completați datele lipsă!",
+        setPassword: "Setează Parola", password: "Parola",
+        setPasswordPlaceholder: "Parolă", enterPasswordPlaceholder: "Introdu parola",
+        setPasswordButton: "Setează Parola", submitButton: "Trimite",
         tooManyAttempts: "Prea multe tentative eșuate. Așteptați {time} secunde.",
         incorrectPassword: "Parolă incorectă. Încercați din nou.",
         passwordCannotBeEmpty: "Parola nu poate fi goală.",
         writeDownPassword: "Ține minte parola ta, deoarece va fi folosită pentru a decripta datele tale.",
-        confirmation: "Confirmare",
-        date: "Data",
-        week: "Săptămâna",
+        confirmation: "Confirmare", date: "Data", week: "Săptămâna",
         selectWeeksLabel: "Selectează Săptămânile de Afișat (1-4):"
     },
     de: {
         languageName: "Deutsch",
         languages: {
-            en: "Englisch",
-            it: "Italienisch",
-            es: "Spanisch",
-            de: "Deutsch",
-            fr: "Französisch",
-            ro: "Rumänisch",
-            pt: "Portugiesisch",
-            zh: "Chinesisch"
+            en: "Englisch", it: "Italienisch", es: "Spanisch", de: "Deutsch",
+            fr: "Französisch", ro: "Rumänisch", pt: "Portugiesisch", zh: "Chinesisch"
         },
-        task: "Aufgabe",
-        due: "Fällig",
-        assignedTo: "Zugewiesen an",
-        addEditTask: "Aufgabe Hinzufügen / Bearbeiten",
-        delete: "Löschen",
-        save: "Speichern",
-        toDo: "Zu Erledigen",
-        inProgress: "In Bearbeitung",
-        done: "Erledigt",
-        filterTasks: "Aufgaben Filtern",
-        menu: "Menü",
-        file: "Datei",
-        load: "Laden",
-        export: "Exportieren",
-        settings: "Einstellungen",
-        darkMode: "Dunkelmodus",
-        fontStyle: "Schriftstil",
-        fontFamily: "Schriftfamilie",
-        language: "Sprache",
-        about: "Über",
-        reorderTasks: "Aufgaben Neu Ordnen",
-        workloadMatrix: "Arbeitsauslastungsmatrix",
-        filterList: "Filterliste",
-        filterListAlt: "Alternative Filterliste",
+        task: "Aufgabe", due: "Fällig", assignedTo: "Zugewiesen an",
+        addEditTask: "Aufgabe Hinzufügen / Bearbeiten", delete: "Löschen", save: "Speichern",
+        toDo: "Zu Erledigen", inProgress: "In Bearbeitung", done: "Erledigt",
+        filterTasks: "Aufgaben Filtern", menu: "Menü", file: "Datei",
+        load: "Laden", export: "Exportieren", settings: "Einstellungen",
+        darkMode: "Dunkelmodus", fontStyle: "Schriftstil", fontFamily: "Schriftfamilie",
+        language: "Sprache", about: "Über", reorderTasks: "Aufgaben Neu Ordnen",
+        workloadMatrix: "Arbeitsauslastungsmatrix", ganttChart: "Gantt-Diagramm",
+        filterList: "Filterliste", filterListAlt: "Alternative Filterliste",
         confirmDeleteDoneTasks: "Sind Sie sicher, dass Sie alle Aufgaben in der Spalte Erledigt löschen möchten?",
         tasksCopied: "Aufgaben in die Zwischenablage kopiert!",
         tasksReordered: "Aufgaben nach Fälligkeitsdatum neu geordnet!",
         weekdays: ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"],
-        singleColorTasks: "Einfarbige Aufgaben",
-        oneColor: "Eine Farbe",
-        assignPriority: "Priorität Zuweisen",
-        removePriority: "Priorität Entfernen",
-        copyTask: "Aufgabe Kopieren",
-        moveToToDo: "Zu <b>Aufgaben</b> Verschieben",
-        moveToInProgress: "Zu <b>In Bearbeitung</b> Verschieben",
-        moveToDone: "Zu <b>Erledigt</b> Verschieben",
-        eliminate: "Löschen",
-        fillMissingData: "Bitte füllen Sie die fehlenden Daten aus!",
-        setPassword: "Passwort Festlegen",
-        password: "Passwort",
-        setPasswordPlaceholder: "Passwort",
-        enterPasswordPlaceholder: "Geben Sie Ihr Passwort ein",
-        setPasswordButton: "Passwort Festlegen",
-        submitButton: "Einreichen",
+        ganttDays: ["Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam"],
+        singleColorTasks: "Einfarbige Aufgaben", oneColor: "Eine Farbe",
+        assignPriority: "Priorität Zuweisen", removePriority: "Priorität Entfernen",
+        copyTask: "Aufgabe Kopieren", moveToToDo: "Zu <b>Aufgaben</b> Verschieben",
+        moveToInProgress: "Zu <b>In Bearbeitung</b> Verschieben", moveToDone: "Zu <b>Erledigt</b> Verschieben",
+        eliminate: "Löschen", fillMissingData: "Bitte füllen Sie die fehlenden Daten aus!",
+        setPassword: "Passwort Festlegen", password: "Passwort",
+        setPasswordPlaceholder: "Passwort", enterPasswordPlaceholder: "Geben Sie Ihr Passwort ein",
+        setPasswordButton: "Passwort Festlegen", submitButton: "Einreichen",
         tooManyAttempts: "Zu viele fehlgeschlagene Versuche. Bitte warten Sie {time} Sekunden.",
         incorrectPassword: "Falsches Passwort. Bitte versuchen Sie es erneut.",
         passwordCannotBeEmpty: "Das Passwort darf nicht leer sein.",
         writeDownPassword: "Merken Sie sich Ihr Passwort, da es zur Entschlüsselung Ihrer Daten verwendet wird.",
-        confirmation: "Bestätigung",
-        date: "Datum",
-        week: "Woche",
+        confirmation: "Bestätigung", date: "Datum", week: "Woche",
         selectWeeksLabel: "Wählen Sie Wochen zur Anzeige (1-4):"
     },
     zh: {
         languageName: "中文",
         languages: {
-            en: "英文",
-            it: "意大利文",
-            es: "西班牙文",
-            de: "德文",
-            fr: "法文",
-            ro: "罗马尼亚文",
-            pt: "葡萄牙文",
-            zh: "中文"
+            en: "英文", it: "意大利文", es: "西班牙文", de: "德文",
+            fr: "法文", ro: "罗马尼亚文", pt: "葡萄牙文", zh: "中文"
         },
-        task: "任务",
-        due: "截止日期",
-        assignedTo: "分配给",
-        addEditTask: "添加 / 编辑任务",
-        delete: "删除",
-        save: "保存",
-        toDo: "待办",
-        inProgress: "进行中",
-        done: "已完成",
-        filterTasks: "筛选任务",
-        menu: "菜单",
-        file: "文件",
-        load: "加载",
-        export: "导出",
-        settings: "设置",
-        darkMode: "深色模式",
-        fontStyle: "字体样式",
-        fontFamily: "字体家族",
-        language: "语言",
-        about: "关于",
-        reorderTasks: "重新排序任务",
-        workloadMatrix: "工作负荷矩阵",
-        filterList: "筛选列表",
-        filterListAlt: "筛选列表（替代）",
+        task: "任务", due: "截止日期", assignedTo: "分配给",
+        addEditTask: "添加 / 编辑任务", delete: "删除", save: "保存",
+        toDo: "待办", inProgress: "进行中", done: "已完成",
+        filterTasks: "筛选任务", menu: "菜单", file: "文件",
+        load: "加载", export: "导出", settings: "设置",
+        darkMode: "深色模式", fontStyle: "字体样式", fontFamily: "字体家族",
+        language: "语言", about: "关于", reorderTasks: "重新排序任务",
+        workloadMatrix: "工作负荷矩阵", ganttChart: "甘特图",
+        filterList: "筛选列表", filterListAlt: "筛选列表（替代）",
         confirmDeleteDoneTasks: "确定要删除“已完成”列中的所有任务吗？",
         tasksCopied: "任务已复制到剪贴板！",
         tasksReordered: "任务已按截止日期重新排序！",
         weekdays: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
-        singleColorTasks: "单色任务",
-        oneColor: "单色",
-        assignPriority: "分配优先级",
-        removePriority: "移除优先级",
-        copyTask: "复制任务",
-        moveToToDo: "移至<b>待做</b>",
-        moveToInProgress: "移至<b>进行中</b>",
-        moveToDone: "移至<b>已完成</b>",
-        eliminate: "删除",
-        fillMissingData: "请填写缺失的数据！",
-        setPasswordButton: "设置密码",
-        submitButton: "提交",
+        ganttDays: ["日", "一", "二", "三", "四", "五", "六"],
+        singleColorTasks: "单色任务", oneColor: "单色",
+        assignPriority: "分配优先级", removePriority: "移除优先级",
+        copyTask: "复制任务", moveToToDo: "移至<b>待做</b>",
+        moveToInProgress: "移至<b>进行中</b>", moveToDone: "移至<b>已完成</b>",
+        eliminate: "删除", fillMissingData: "请填写缺失的数据！",
+        setPasswordButton: "设置密码", submitButton: "提交",
         tooManyAttempts: "尝试次数过多。请等待 {time} 秒。",
         incorrectPassword: "密码错误。请再试一次。",
         passwordCannotBeEmpty: "密码不能为空。",
         writeDownPassword: "记住您的密码，因为它将用于解密您的数据。",
-        confirmation: "确认",
-        date: "日期",
-        week: "周",
+        confirmation: "确认", date: "日期", week: "周",
         selectWeeksLabel: "选择要显示的周数 (1-4):"
     },
     fr: {
         languageName: "Français",
         languages: {
-            en: "Anglais",
-            it: "Italien",
-            es: "Espagnol",
-            de: "Allemand",
-            fr: "Français",
-            ro: "Roumain",
-            pt: "Portugais",
-            zh: "Chinois"
+            en: "Anglais", it: "Italien", es: "Espagnol", de: "Allemand",
+            fr: "Français", ro: "Roumain", pt: "Portugais", zh: "Chinois"
         },
-        task: "Tâche",
-        due: "Échéance",
-        assignedTo: "Assigné à",
-        addEditTask: "Ajouter / Modifier une Tâche",
-        delete: "Supprimer",
-        save: "Enregistrer",
-        toDo: "À Faire",
-        inProgress: "En Cours",
-        done: "Terminé",
-        filterTasks: "Filtrer les Tâches",
-        menu: "Menu",
-        file: "Fichier",
-        load: "Charger",
-        export: "Exporter",
-        settings: "Paramètres",
-        darkMode: "Mode Sombre",
-        fontStyle: "Style de Police",
-        fontFamily: "Famille de Police",
-        language: "Langue",
-        about: "À Propos",
-        reorderTasks: "Réorganiser les Tâches",
-        workloadMatrix: "Matrice de Charge de Travail",
-        filterList: "Liste des Filtres",
-        filterListAlt: "Liste des Filtres Alt",
+        task: "Tâche", due: "Échéance", assignedTo: "Assigné à",
+        addEditTask: "Ajouter / Modifier une Tâche", delete: "Supprimer", save: "Enregistrer",
+        toDo: "À Faire", inProgress: "En Cours", done: "Terminé",
+        filterTasks: "Filtrer les Tâches", menu: "Menu", file: "Fichier",
+        load: "Charger", export: "Exporter", settings: "Paramètres",
+        darkMode: "Mode Sombre", fontStyle: "Style de Police", fontFamily: "Famille de Police",
+        language: "Langue", about: "À Propos", reorderTasks: "Réorganiser les Tâches",
+        workloadMatrix: "Matrice de Charge de Travail", ganttChart: "Diagramme de Gantt",
+        filterList: "Liste des Filtres", filterListAlt: "Liste des Filtres Alt",
         confirmDeleteDoneTasks: "Êtes-vous sûr de vouloir supprimer toutes les tâches dans la colonne Terminé ?",
         tasksCopied: "Tâches copiées dans le presse-papiers !",
         tasksReordered: "Tâches réorganisées par date d'échéance !",
         weekdays: ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"],
-        singleColorTasks: "Tâches Monochromes",
-        oneColor: "Une Couleur",
-        assignPriority: "Assigner la Priorité",
-        removePriority: "Supprimer la Priorité",
-        copyTask: "Copier la Tâche",
-        moveToToDo: "Déplacer en <b>À Faire</b>",
-        moveToInProgress: "Déplacer en <b>Cours</b>",
-        moveToDone: "Déplacer en <b>Terminé</b>",
-        eliminate: "Supprimer",
-        fillMissingData: "Veuillez remplir les données manquantes !",
-        setPassword: "Définir le Mot de Passe",
-        password: "Mot de Passe",
-        setPasswordPlaceholder: "Mot de Passe",
-        enterPasswordPlaceholder: "Entrez votre mot de passe",
-        setPasswordButton: "Définir le Mot de Passe",
-        submitButton: "Soumettre",
+        ganttDays: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"],
+        singleColorTasks: "Tâches Monochromes", oneColor: "Une Couleur",
+        assignPriority: "Assigner la Priorité", removePriority: "Supprimer la Priorité",
+        copyTask: "Copier la Tâche", moveToToDo: "Déplacer en <b>À Faire</b>",
+        moveToInProgress: "Déplacer en <b>Cours</b>", moveToDone: "Déplacer en <b>Terminé</b>",
+        eliminate: "Supprimer", fillMissingData: "Veuillez remplir les données manquantes !",
+        setPassword: "Définir le Mot de Passe", password: "Mot de Passe",
+        setPasswordPlaceholder: "Mot de Passe", enterPasswordPlaceholder: "Entrez votre mot de passe",
+        setPasswordButton: "Définir le Mot de Passe", submitButton: "Soumettre",
         tooManyAttempts: "Trop de tentatives échouées. Veuillez attendre {time} secondes.",
         incorrectPassword: "Mot de passe incorrect. Veuillez réessayer.",
         passwordCannotBeEmpty: "Le mot de passe ne peut pas être vide.",
         writeDownPassword: "Mémorisez votre mot de passe car il sera utilisé pour décrypter vos données.",
-        confirmation: "Confirmation",
-        date: "Date",
-        week: "Semaine",
+        confirmation: "Confirmation", date: "Date", week: "Semaine",
         selectWeeksLabel: "Sélectionnez les Semaines à Afficher (1-4):"
     }
-    // Add more languages as needed
 };
 
 // Function to get the day of the week for a given date and language
@@ -679,6 +440,20 @@ function applyTranslations(language) {
     updateTodayDate(); // Update the initial column date
     console.log('About to call updateFloatingPopupLabels...');
     updateFloatingPopupLabels(language); // Update floating popup labels
+    
+    // If the Gantt chart popup is currently open, refresh it with the new language
+    const ganttPopup = document.getElementById('gantt-chart-popup');
+    if (ganttPopup && ganttPopup.classList.contains('show')) {
+        console.log('Gantt chart is open, updating with new language...');
+        updateGanttChart(language);
+    }
+    
+    // If the Workload Matrix popup is currently open, refresh it with the new language
+    const workloadPopup = document.getElementById('workload-matrix-popup');
+    if (workloadPopup && workloadPopup.classList.contains('show')) {
+        console.log('Workload Matrix is open, updating with new language...');
+        updateWorkloadMatrix(language);
+    }
     
     console.log('applyTranslations() completed successfully for language:', language);
 }
@@ -2180,6 +1955,9 @@ function updateFloatingPopupLabels(language = null) {
     const workloadMatrixLabel = document.getElementById('workloadMatrixLabel');
     if (workloadMatrixLabel) workloadMatrixLabel.textContent = translations[lang].workloadMatrix;
     
+    const ganttChartLabel = document.getElementById('ganttChartLabel');
+    if (ganttChartLabel) ganttChartLabel.textContent = translations[lang].ganttChart;
+    
     const reorderTasksLabel = document.getElementById('reorderTasksLabel');
     if (reorderTasksLabel) reorderTasksLabel.textContent = translations[lang].reorderTasks;
     
@@ -2259,6 +2037,9 @@ function openWorkloadMatrix() {
     const workloadOverlay = document.getElementById('workload-overlay');
     const workloadPopup = document.getElementById('workload-matrix-popup');
     
+    // Get current language BEFORE rendering
+    const language = localStorage.getItem('language') || 'en';
+    
     // 1. FORCE THE BOARD TO REDRAW FIRST
     // This ensures all .task elements on the screen have the updated 
     // data-date and data-assigned-to attributes from your latest edits.
@@ -2266,9 +2047,9 @@ function openWorkloadMatrix() {
         renderTasks(); 
     }
     
-    // 2. NOW REFRESH THE MATRIX DATA
+    // 2. NOW REFRESH THE MATRIX DATA with the correct language
     // This function will now find the freshly rendered .task elements.
-    updateWorkloadMatrix(); 
+    updateWorkloadMatrix(language); 
     
     // 3. SHOW THE MATRIX UI
     workloadOverlay.classList.add('show');
@@ -2276,8 +2057,6 @@ function openWorkloadMatrix() {
     document.body.classList.add('workload-matrix-open');
     
     // 4. UPDATE LABELS & TRANSLATIONS
-    const language = localStorage.getItem('language') || 'en';
-    
     // Set the Title
     const titleElement = document.getElementById('workloadMatrixTitle');
     if (titleElement) {
@@ -2316,6 +2095,264 @@ function closeWorkloadMatrix() {
     document.body.classList.remove('workload-matrix-open');
 }
 
+// Gantt Chart Functions
+function openGanttChart() {
+    hideFloatingPopup();
+    
+    const ganttOverlay = document.getElementById('gantt-overlay');
+    const ganttPopup = document.getElementById('gantt-chart-popup');
+    
+    // Get current language BEFORE rendering
+    const language = localStorage.getItem('language') || 'en';
+    
+    updateGanttChart(language);
+    
+    ganttOverlay.classList.add('show');
+    ganttPopup.classList.add('show');
+    document.body.classList.add('gantt-chart-open');
+    
+    const titleElement = document.getElementById('ganttChartTitle');
+    if (titleElement) {
+        titleElement.textContent = translations[language].ganttChart || 'Gantt Chart';
+    }
+}
+
+function closeGanttChart() {
+    const ganttOverlay = document.getElementById('gantt-overlay');
+    const ganttPopup = document.getElementById('gantt-chart-popup');
+    
+    ganttOverlay.classList.remove('show');
+    ganttPopup.classList.remove('show');
+    document.body.classList.remove('gantt-chart-open');
+}
+
+function updateGanttChart(languageOverride = null) {
+    const container = document.getElementById('gantt-chart-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    // Use provided language or retrieve from localStorage
+    const langCode = languageOverride || localStorage.getItem('language') || 'en';
+    const lang = (typeof translations !== 'undefined' && translations[langCode]) ? translations[langCode] : translations['en'];
+    
+    const tasks = [];
+    document.querySelectorAll('.task').forEach(task => {
+        const descEl = task.querySelector('.description');
+        const description = descEl ? descEl.innerText.split('\n')[0] : 'Unnamed Task';
+        const dateAttr = task.getAttribute('data-date') || '';
+        const assignedTo = task.getAttribute('data-assigned-to') || 'Unassigned';
+        const columnId = task.parentElement ? task.parentElement.id : '';
+        
+        let status = 'todo';
+        if (columnId === 'in-progress-column') status = 'in-progress';
+        if (columnId === 'done-column') status = 'done';
+        
+        if (dateAttr) {
+            tasks.push({ description, date: dateAttr, assignedTo, status });
+        }
+    });
+    
+    if (tasks.length === 0) {
+        container.innerHTML = '<div style="padding: 20px;">No tasks with due dates found.</div>';
+        return;
+    }
+
+    const DAY_WIDTH = 80;
+    const TASK_HEIGHT = 32;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const allDates = tasks.map(t => {
+        const [y, m, d] = t.date.split('-').map(Number);
+        return new Date(y, m - 1, d);
+    });
+    const minDate = new Date(Math.min(...allDates, today));
+    const maxDate = new Date(Math.max(...allDates, today));
+
+    // Start 1 week before the earliest task (or today) and end 2 weeks after the last task
+    const displayStartDate = new Date(minDate);
+    displayStartDate.setDate(displayStartDate.getDate() - 7);
+    displayStartDate.setHours(0, 0, 0, 0);
+    
+    const displayEndDate = new Date(maxDate);
+    displayEndDate.setDate(displayEndDate.getDate() + 14); 
+    
+    const daysInRange = Math.ceil((displayEndDate - displayStartDate) / (1000 * 60 * 60 * 24)) + 1;
+    const todayIndex = Math.floor((today - displayStartDate) / (1000 * 60 * 60 * 24));
+
+    // --- Header ---
+    const headerRow = document.createElement('div');
+    headerRow.className = 'gantt-row header-row';
+    
+    const headerSpacer = document.createElement('div');
+    headerSpacer.className = 'gantt-assignee-label';
+    headerSpacer.textContent = lang.assignedTo || "Assigned to"; 
+    headerRow.appendChild(headerSpacer);
+    
+    const headerTimeline = document.createElement('div');
+    headerTimeline.className = 'gantt-timeline';
+    headerTimeline.style.width = (daysInRange * DAY_WIDTH) + 'px';
+
+    for (let i = 0; i < daysInRange; i++) {
+        const cellDate = new Date(displayStartDate);
+        cellDate.setDate(cellDate.getDate() + i);
+        const headerCell = document.createElement('div');
+        headerCell.className = 'gantt-date-header-cell';
+        headerCell.style.left = (i * DAY_WIDTH) + 'px';
+        headerCell.style.width = DAY_WIDTH + 'px';
+        
+        // Usa i nomi dei giorni tradotti
+        const dayName = (lang.ganttDays && lang.ganttDays[cellDate.getDay()]) ? lang.ganttDays[cellDate.getDay()] : cellDate.toLocaleDateString(langCode, {weekday: 'short'});
+        headerCell.textContent = `${dayName} ${cellDate.getDate()}`;
+        headerTimeline.appendChild(headerCell);
+    }
+
+    const headerTodayHighlight = document.createElement('div');
+    headerTodayHighlight.className = 'gantt-today-highlight';
+    headerTodayHighlight.style.left = (todayIndex * DAY_WIDTH) + 'px';
+    headerTodayHighlight.style.width = DAY_WIDTH + 'px';
+    headerTimeline.appendChild(headerTodayHighlight);
+
+    headerRow.appendChild(headerTimeline);
+    container.appendChild(headerRow);
+
+    // --- Setup Drag-to-Scroll ---
+    setupGanttDragScroll(container);
+
+    // --- Process Rows ---
+    const groupedByAssignee = {};
+    tasks.forEach(task => {
+        if (!groupedByAssignee[task.assignedTo]) groupedByAssignee[task.assignedTo] = [];
+        groupedByAssignee[task.assignedTo].push(task);
+    });
+
+    Object.keys(groupedByAssignee).sort().forEach(assignee => {
+        const row = document.createElement('div');
+        row.className = 'gantt-row';
+        
+        const label = document.createElement('div');
+        label.className = 'gantt-assignee-label';
+        label.textContent = assignee;
+        
+        const timeline = document.createElement('div');
+        timeline.className = 'gantt-timeline';
+        timeline.style.width = (daysInRange * DAY_WIDTH) + 'px';
+
+        const rowTodayHighlight = document.createElement('div');
+        rowTodayHighlight.className = 'gantt-today-highlight';
+        rowTodayHighlight.style.left = (todayIndex * DAY_WIDTH) + 'px';
+        rowTodayHighlight.style.width = DAY_WIDTH + 'px';
+        timeline.appendChild(rowTodayHighlight);
+
+        const assigneeTasks = groupedByAssignee[assignee]
+            .filter(t => new Date(t.date) >= displayStartDate)
+            .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        const daySlots = {}; 
+        let maxRowSlot = 0;
+
+        assigneeTasks.forEach(task => {
+            const taskDueDate = new Date(task.date);
+            taskDueDate.setHours(0,0,0,0);
+            const dayIndex = Math.floor((taskDueDate - displayStartDate) / (1000 * 60 * 60 * 24));
+            
+            const startRange = (task.status === 'in-progress') ? Math.min(todayIndex, dayIndex) : dayIndex;
+            const endRange = (task.status === 'in-progress') ? Math.max(todayIndex, dayIndex) : dayIndex;
+
+            let slot = 0;
+            while (true) {
+                let isSlotFree = true;
+                for (let i = startRange; i <= endRange; i++) {
+                    if (!daySlots[i]) daySlots[i] = [];
+                    if (daySlots[i][slot]) {
+                        isSlotFree = false;
+                        break;
+                    }
+                }
+                if (isSlotFree) break;
+                slot++;
+            }
+
+            for (let i = startRange; i <= endRange; i++) {
+                if (!daySlots[i]) daySlots[i] = [];
+                daySlots[i][slot] = true;
+            }
+            maxRowSlot = Math.max(maxRowSlot, slot);
+
+            const taskBar = document.createElement('div');
+            taskBar.className = `gantt-task-bar ${task.status}`;
+            
+            if (task.status === 'in-progress') {
+                const barStart = Math.min(todayIndex, dayIndex);
+                const barDays = Math.abs(dayIndex - todayIndex) + 1;
+                taskBar.style.left = (barStart * DAY_WIDTH + 4) + 'px'; 
+                taskBar.style.width = (barDays * DAY_WIDTH - 8) + 'px';
+            } else {
+                taskBar.style.left = (dayIndex * DAY_WIDTH + 4) + 'px';
+                taskBar.style.width = (DAY_WIDTH - 8) + 'px';
+            }
+
+            taskBar.style.top = (slot * TASK_HEIGHT + 10) + 'px'; 
+            taskBar.innerHTML = `
+                <span class="gantt-task-label">${task.description}</span>
+                <div class="gantt-task-detail">${task.description}</div>
+            `;
+            
+            timeline.appendChild(taskBar);
+        });
+
+        row.style.height = ((maxRowSlot + 1) * TASK_HEIGHT + 20) + 'px';
+        row.appendChild(label);
+        row.appendChild(timeline);
+        container.appendChild(row);
+    });
+
+    // Align scroll so Today is the first date visible on the left
+    setTimeout(() => {
+        container.scrollLeft = todayIndex * DAY_WIDTH;
+    }, 10);
+}
+
+// Setup drag-to-scroll functionality for Gantt chart
+function setupGanttDragScroll(container) {
+    // Prevent multiple initializations on the same container
+    if (container.dataset.dragScrollInitialized) return;
+    container.dataset.dragScrollInitialized = "true";
+
+    let isDown = false;
+    let startX, startY;
+    let scrollLeft, scrollTop;
+
+    container.addEventListener('mousedown', (e) => {
+        isDown = true;
+        container.classList.add('dragging');
+        startX = e.pageX - container.offsetLeft;
+        startY = e.pageY - container.offsetTop;
+        scrollLeft = container.scrollLeft;
+        scrollTop = container.scrollTop;
+    });
+
+    // Use window for mouseup and mousemove to handle dragging outside the container area
+    window.addEventListener('mouseup', () => {
+        if (!isDown) return;
+        isDown = false;
+        container.classList.remove('dragging');
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const y = e.pageY - container.offsetTop;
+        const walkX = (x - startX);
+        const walkY = (y - startY);
+        
+        container.scrollLeft = scrollLeft - walkX;
+        container.scrollTop = scrollTop - walkY;
+    });
+}
+
 // Helper function to get the ISO week number for a given date
 function getISOWeek(date) {
     const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
@@ -2326,9 +2363,12 @@ function getISOWeek(date) {
 }
 
 // This function gathers task data from the UI, organizes it by person and date, and generates an HTML matrix to display workload distribution over the next 4 weeks.
-function updateWorkloadMatrix() {
+function updateWorkloadMatrix(languageOverride = null) {
     const weeks = 4;
     const container = document.getElementById('workload-matrix-container');
+    
+    // Use provided language or retrieve from localStorage
+    const langCode = languageOverride || localStorage.getItem('language') || 'en';
     
     // PULL DATA FROM THE UI ELEMENTS (since they aren't in a JSON array yet)
     // Only include tasks from To Do and In Progress columns, exclude Done column

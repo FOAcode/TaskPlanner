@@ -8,7 +8,7 @@
     <link rel="icon" type="image/x-icon" href="/TaskPlanner/192x192.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
     <link rel="manifest" href="/TaskPlanner/manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -221,6 +221,10 @@
                 <span class="material-icons">grid_on</span>
                 <span id="workloadMatrixLabel"></span>
             </li>
+            <li onclick="openGanttChart()">
+                <span class="material-icons">timeline</span>
+                <span id="ganttChartLabel"></span>
+            </li>
             <li onclick="reorderTasks()">
                 <span class="material-icons">reorder</span>
                 <span id="reorderTasksLabel"></span>
@@ -245,6 +249,15 @@
         </div>
         <div class="workload-matrix-container" id="workload-matrix-container">
             <!-- Matrix will be generated here -->
+        </div>
+    </div>
+
+    <div class="overlay" id="gantt-overlay" onclick="closeGanttChart()"></div>
+    <div class="gantt-chart-popup" id="gantt-chart-popup">
+        <button class="close-button" onclick="closeGanttChart()">✕</button>
+        <h2 id="ganttChartTitle" style="margin-top: 0; margin-left: 20px;">Gantt Chart</h2>
+        <div class="gantt-chart-container" id="gantt-chart-container">
+            <!-- Gantt chart will be generated here -->
         </div>
     </div>
 
