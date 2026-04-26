@@ -2322,7 +2322,9 @@ function updateGanttChart(languageOverride = null) {
 
     // Align scroll so Today is the first date visible on the left
     setTimeout(() => {
-        container.scrollLeft = todayIndex * DAY_WIDTH;
+        container.scrollTo({
+            left: todayIndex * DAY_WIDTH
+        });
     }, 10);
 }
 
