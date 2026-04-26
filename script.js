@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿// Register the Service Worker
+﻿﻿﻿﻿﻿﻿﻿﻿// Register the Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/TaskPlanner/service-worker.js')
         .then(() => console.log('Service Worker registered successfully.'))
@@ -2466,10 +2466,12 @@ function updateWorkloadMatrix(languageOverride = null) {
                         const d = new Date(dateStr);
                         const isToday = dateStr === todayStr;
                         const rowClass = isToday ? 'matrix-day-row today-row' : 'matrix-day-row';
-                        const displayDate = d.toLocaleDateString(langCode, { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '');
+                        const dayName = d.toLocaleDateString(langCode, { weekday: 'short' });
+                        const dayNum = d.toLocaleDateString(langCode, { day: 'numeric' });
+                        const monthName = d.toLocaleDateString(langCode, { month: 'short' });
                         return `
                             <tr class="${rowClass}">
-                                <td class="matrix-day-label"><strong>${displayDate}</strong></td>
+                                <td class="matrix-day-label"><strong>${dayName} ${dayNum}</strong><br>${monthName}</td>
                                 ${filterOptions.map(person => {
                                     const count = (tasksByPerson[person] && tasksByPerson[person][dateStr]) || 0;
                                     let intensity = count >= 5 ? '5+' : count;
