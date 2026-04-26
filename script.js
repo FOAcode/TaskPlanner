@@ -1,4 +1,4 @@
-﻿// Register the Service Worker
+﻿﻿﻿﻿// Register the Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/TaskPlanner/service-worker.js')
         .then(() => console.log('Service Worker registered successfully.'))
@@ -2281,7 +2281,8 @@ function updateGanttChart(languageOverride = null) {
             maxRowSlot = Math.max(maxRowSlot, slot);
 
             const taskBar = document.createElement('div');
-            taskBar.className = `gantt-task-bar ${task.status}`;
+            const isOverdue = (task.status === 'in-progress' && taskDueDate < today);
+            taskBar.className = `gantt-task-bar ${task.status}${isOverdue ? ' overdue' : ''}`;
             
             if (task.status === 'in-progress') {
                 const barStart = Math.min(todayIndex, dayIndex);
@@ -2451,10 +2452,11 @@ function updateWorkloadMatrix(languageOverride = null) {
                     ${weekDates.map(dateStr => {
                         const d = new Date(dateStr);
                         const isToday = dateStr === todayStr;
-                        const cellClass = isToday ? 'matrix-day-label current-day' : 'matrix-day-label';
+                        const rowClass = isToday ? 'matrix-day-row today-row' : 'matrix-day-row';
+                        const displayDate = d.toLocaleDateString(langCode, { weekday: 'short', day: 'numeric', month: 'short' }).replace(',', '');
                         return `
-                            <tr class="matrix-day-row">
-                                <td class="${cellClass}"><strong>${weekdays[d.getDay()].substring(0, 3)}<br>${d.getDate()}</strong></td>
+                            <tr class="${rowClass}">
+                                <td class="matrix-day-label"><strong>${displayDate}</strong></td>
                                 ${filterOptions.map(person => {
                                     const count = (tasksByPerson[person] && tasksByPerson[person][dateStr]) || 0;
                                     let intensity = count >= 5 ? '5+' : count;
@@ -2556,58 +2558,55 @@ function showTasksPopup(person, dateStr, event) {
             isResizing = true; // Set flag
             
             const currentResizer = e.target;
-            let prevX = e.clientX;
-            let prevY = e.clientY;
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startRect = popup.getBoundingClientRect();
+            const startWidth = startRect.width;
+            const startHeight = startRect.height;
+            const startLeft = startRect.left;
+            const startTop = startRect.top;
 
             const mouseMove = (e) => {
-                const rect = popup.getBoundingClientRect();
-                const diffX = e.clientX - prevX;
-                const diffY = e.clientY - prevY;
-
-                let newWidth, newHeight, actualDiffX, actualDiffY;
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
 
                 if (currentResizer.classList.contains('right')) {
-                    popup.style.width = Math.min(maxW, Math.max(minW, rect.width + diffX)) + 'px';
+                    popup.style.width = Math.min(maxW, Math.max(minW, startWidth + deltaX)) + 'px';
                 } else if (currentResizer.classList.contains('left')) {
-                    newWidth = Math.min(maxW, Math.max(minW, rect.width - diffX));
-                    actualDiffX = rect.width - newWidth;
+                    const newWidth = Math.min(maxW, Math.max(minW, startWidth - deltaX));
                     popup.style.width = newWidth + 'px';
-                    popup.style.left = rect.left + actualDiffX + 'px';
+                    popup.style.left = (startLeft + (startWidth - newWidth)) + 'px';
                 } else if (currentResizer.classList.contains('bottom')) {
-                    popup.style.height = Math.min(maxH, Math.max(minH, rect.height + diffY)) + 'px';
+                    popup.style.height = Math.min(maxH, Math.max(minH, startHeight + deltaY)) + 'px';
                 } else if (currentResizer.classList.contains('top')) {
-                    newHeight = Math.min(maxH, Math.max(minH, rect.height - diffY));
-                    actualDiffY = rect.height - newHeight;
+                    const newHeight = Math.min(maxH, Math.max(minH, startHeight - deltaY));
                     popup.style.height = newHeight + 'px';
-                    popup.style.top = rect.top + actualDiffY + 'px';
+                    popup.style.top = (startTop + (startHeight - newHeight)) + 'px';
                 } else if (currentResizer.classList.contains('top-left')) {
-                    newWidth = Math.min(maxW, Math.max(minW, rect.width - diffX));
-                    actualDiffX = rect.width - newWidth;
-                    newHeight = Math.min(maxH, Math.max(minH, rect.height - diffY));
-                    actualDiffY = rect.height - newHeight;
+                    const newWidth = Math.min(maxW, Math.max(minW, startWidth - deltaX));
+                    const newHeight = Math.min(maxH, Math.max(minH, startHeight - deltaY));
                     popup.style.width = newWidth + 'px';
-                    popup.style.left = rect.left + actualDiffX + 'px';
+                    popup.style.left = (startLeft + (startWidth - newWidth)) + 'px';
                     popup.style.height = newHeight + 'px';
-                    popup.style.top = rect.top + actualDiffY + 'px';
+                    popup.style.top = (startTop + (startHeight - newHeight)) + 'px';
                 } else if (currentResizer.classList.contains('top-right')) {
-                    popup.style.width = Math.min(maxW, Math.max(minW, rect.width + diffX)) + 'px';
-                    newHeight = Math.min(maxH, Math.max(minH, rect.height - diffY));
-                    actualDiffY = rect.height - newHeight;
-                    popup.style.height = newHeight + 'px';
-                    popup.style.top = rect.top + actualDiffY + 'px';
-                } else if (currentResizer.classList.contains('bottom-left')) {
-                    newWidth = Math.min(maxW, Math.max(minW, rect.width - diffX));
-                    actualDiffX = rect.width - newWidth;
+                    const newWidth = Math.min(maxW, Math.max(minW, startWidth + deltaX));
+                    const newHeight = Math.min(maxH, Math.max(minH, startHeight - deltaY));
                     popup.style.width = newWidth + 'px';
-                    popup.style.left = rect.left + actualDiffX + 'px';
-                    popup.style.height = Math.min(maxH, Math.max(minH, rect.height + diffY)) + 'px';
+                    popup.style.height = newHeight + 'px';
+                    popup.style.top = (startTop + (startHeight - newHeight)) + 'px';
+                } else if (currentResizer.classList.contains('bottom-left')) {
+                    const newWidth = Math.min(maxW, Math.max(minW, startWidth - deltaX));
+                    const newHeight = Math.min(maxH, Math.max(minH, startHeight + deltaY));
+                    popup.style.width = newWidth + 'px';
+                    popup.style.left = (startLeft + (startWidth - newWidth)) + 'px';
+                    popup.style.height = newHeight + 'px';
                 } else if (currentResizer.classList.contains('bottom-right')) {
-                    popup.style.width = Math.min(maxW, Math.max(minW, rect.width + diffX)) + 'px';
-                    popup.style.height = Math.min(maxH, Math.max(minH, rect.height + diffY)) + 'px';
+                    const newWidth = Math.min(maxW, Math.max(minW, startWidth + deltaX));
+                    const newHeight = Math.min(maxH, Math.max(minH, startHeight + deltaY));
+                    popup.style.width = newWidth + 'px';
+                    popup.style.height = newHeight + 'px';
                 }
-
-                prevX = e.clientX;
-                prevY = e.clientY;
             };
 
             const mouseUp = () => {

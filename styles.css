@@ -845,48 +845,22 @@ input:checked + .slider:before { transform: translateX(14px); }
 .workload-controls label { font-weight: bold; }
 .workload-controls input { width: 60px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
 .dark-mode .workload-controls input { background: #333; color: #fff; border-color: #555; }
-.workload-matrix-container { overflow-x: auto; display: flex; flex-direction: column; gap: 30px; padding-bottom: 20px; margin: 0 20px; padding: 0 20px; }
-.matrix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-.matrix-week-section { width: 100%; margin-bottom: 20px; }
-.matrix-week-header { text-align: center; font-size: 16px; margin: 15px 0 10px 0; color: inherit; font-weight: bold; }
-.matrix-table, .matrix-table-vertical { border-collapse: collapse; width: 100%; max-width: 100%; margin: 0 auto; }
-.matrix-table th, .matrix-table td, .matrix-table-vertical th, .matrix-table-vertical td { border: 1px solid #ddd; padding: 8px 4px; text-align: center; font-size: 13px; }
+.workload-matrix-container { overflow-x: auto; display: flex; flex-direction: column; margin: 0 auto; padding: 20px; }
+.matrix-grid { display: flex; flex-direction: column; gap: 40px; align-items: center; width: 100%; }
+.matrix-table-vertical { border-collapse: collapse; width: 100%; }
+.matrix-table th, .matrix-table td, .matrix-table-vertical th, .matrix-table-vertical td { border: 1px solid #ddd; padding: 9px 4px; text-align: center; font-size: 11px; }
 .dark-mode .matrix-table th, .dark-mode .matrix-table td, .dark-mode .matrix-table-vertical th, .dark-mode .matrix-table-vertical td { border-color: #555; }
+.matrix-table th, .matrix-table-vertical th { background: #f0f0f0; font-weight: bold; padding: 9px 4px; cursor: pointer; }
 .dark-mode .matrix-table th, .dark-mode .matrix-table-vertical th { background: #333; }
-.matrix-table th, .matrix-table-vertical th {
-    background: #f0f0f0;
-    font-weight: bold;
-    padding: 8px 4px;
-    cursor: pointer;
-}
 .matrix-table td, .matrix-table-vertical td { background: #fff; }
 .dark-mode .matrix-table td, .dark-mode .matrix-table-vertical td { background: #2a2a2a; }
-.matrix-table td:first-child, .matrix-table-vertical td:first-child { text-align: center; font-weight: bold; width: 65px; min-width: 65px; max-width: 65px; flex-shrink: 0; }
-.matrix-person-header td { background: #f0f0f0; font-weight: bold; padding: 8px 4px; border: 1px solid #ddd; word-wrap: break-word; overflow-wrap: break-word; }
+.matrix-table td:first-child, .matrix-table-vertical td:first-child { text-align: center; font-weight: bold; width: 95px; min-width: 95px; max-width: 95px; flex-shrink: 0; }
+.matrix-person-header td { background: #f0f0f0; font-weight: bold; padding: 9px 4px; border: 1px solid #ddd; word-wrap: break-word; overflow-wrap: break-word; }
 .dark-mode .matrix-person-header td { background: #333; border-color: #555; }
-.matrix-day-label { font-weight: bold; text-align: center; width: 65px; min-width: 65px; max-width: 65px; flex-shrink: 0; cursor: pointer;}
-.matrix-day-label.current-day {background-color: rgba(0, 123, 255, 0.7);}
-.dark-mode .matrix-day-label.current-day {background-color: rgba(255, 127, 0, 0.7);}
-.matrix-day-row:hover { opacity: 1; }
-.matrix-day-row.matrix-day-today { background-color: rgba(255, 255, 100, 0.1); }
-.dark-mode .matrix-day-row.matrix-day-today { background-color: rgba(200, 200, 100, 0.2); }
-.matrix-day-row.matrix-day-past { background-color: rgba(180, 180, 180, 0.1); opacity: 0.8; }
-.dark-mode .matrix-day-row.matrix-day-past { background-color: rgba(120, 120, 120, 0.2); }
-.tasks-details-popup { 
-    background: white; 
-    border: 2px solid #007bff; 
-    border-radius: 8px; 
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2); 
-    min-width: 250px;
-    min-height: 150px;
-    max-width: 95vw; /* Failsafe to prevent pushing off-screen on tiny devices */
-    max-height: 95vh;
-    box-sizing: border-box; 
-    padding: 0; 
-    overflow: hidden; 
-    display: flex;
-    flex-direction: column;
-}
+.matrix-day-label { font-weight: bold; text-align: center; width: 95px; min-width: 95px; max-width: 95px; flex-shrink: 0; }
+.matrix-day-row.today-row td { border-top: 2px solid orange !important; border-bottom: 2px solid orange !important; box-shadow: none !important; }
+.matrix-day-row.today-row td:first-child { border-left: 2px solid orange !important; }
+.matrix-day-row.today-row td:last-child { border-right: 2px solid orange !important; }
 
 /* Resize Handles Styling */
 .resizer {
@@ -907,6 +881,14 @@ input:checked + .slider:before { transform: translateX(14px); }
 .resizer.right { width: 12px; height: 100%; right: -6px; top: 0; cursor: ew-resize; }
 
 .dark-mode .tasks-details-popup { background: #2c2c2c; border-color: #0056b3; color: #fff; }
+.tasks-details-popup { 
+    background: white; 
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2); 
+    box-sizing: border-box;
+}
+.dark-mode .tasks-details-popup { background: #2c2c2c; border: 1px solid #555; color: #fff; }
 .matrix-cell { 
     position: relative;
     cursor: pointer; 
@@ -969,7 +951,7 @@ input:checked + .slider:before { transform: translateX(14px); }
     display: block; 
     width: 100%;
     height: calc(100% - 60px); /* Leave room for title */
-    padding: 20px;
+    padding: 0;
     box-sizing: border-box;
     overflow: auto;
     cursor: grab;
@@ -995,6 +977,10 @@ input:checked + .slider:before { transform: translateX(14px); }
     border-bottom: 2px solid #007BFF;
 }
 .dark-mode .gantt-row.header-row { background: #222; }
+
+.gantt-row.header-row .gantt-assignee-label {
+    z-index: 110; /* Ensure the top-left corner covers both row and column headers */
+}
 
 .gantt-assignee-label { 
     width: 150px; 
@@ -1058,7 +1044,9 @@ input:checked + .slider:before { transform: translateX(14px); }
 .dark-mode .gantt-task-bar.todo { background: #b71c1c; color: #ffcdd2; }
 
 /* In Progress: Blue */
-.gantt-task-bar.in-progress { background: linear-gradient(135deg, #00c3ff, #4DA3FF); }
+.gantt-task-bar.in-progress { background: linear-gradient(135deg, #00c3ff7c, #4DA3FF); }
+.gantt-task-bar.in-progress.overdue { background: rgba(255, 0, 0, 0.5); color: #fff; }
+.dark-mode .gantt-task-bar.in-progress.overdue { background: rgba(255, 0, 0, 0.5); color: #fff; }
 
 /* Done: Light Green */
 .gantt-task-bar.done { background: #c8e6c9; color: #2e7d32; }
