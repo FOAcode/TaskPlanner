@@ -255,7 +255,8 @@
     <div class="overlay" id="gantt-overlay" onclick="closeGanttChart()"></div>
     <div class="gantt-chart-popup" id="gantt-chart-popup">
         <button class="close-button" onclick="closeGanttChart()">✕</button>
-        <h2 id="ganttChartTitle" style="margin-top: 0; margin-left: 20px;">Gantt Chart</h2>
+        <h2 id="ganttChartTitle">Gantt Chart</h2>
+        <button id="ganttTodayButton" class="gantt-today-button" onclick="updateGanttChart()"></button>
         <div class="gantt-chart-container" id="gantt-chart-container">
             <!-- Gantt chart will be generated here -->
         </div>

@@ -1,4 +1,4 @@
-﻿﻿﻿﻿// Register the Service Worker
+﻿﻿﻿﻿﻿﻿// Register the Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/TaskPlanner/service-worker.js')
         .then(() => console.log('Service Worker registered successfully.'))
@@ -2135,6 +2135,17 @@ function updateGanttChart(languageOverride = null) {
     // Use provided language or retrieve from localStorage
     const langCode = languageOverride || localStorage.getItem('language') || 'en';
     const lang = (typeof translations !== 'undefined' && translations[langCode]) ? translations[langCode] : translations['en'];
+
+    // Update the today button label with the current date formatted for the language
+    const todayButton = document.getElementById('ganttTodayButton');
+    if (todayButton) {
+        const todayDateObj = new Date();
+        const dayOfWeek = lang.weekdays[todayDateObj.getDay()];
+        const dd = String(todayDateObj.getDate()).padStart(2, '0');
+        const mm = String(todayDateObj.getMonth() + 1).padStart(2, '0');
+        const yyyy = todayDateObj.getFullYear();
+        todayButton.innerText = `${dayOfWeek}, ${dd}/${mm}/${yyyy}`;
+    }
     
     const tasks = [];
     document.querySelectorAll('.task').forEach(task => {

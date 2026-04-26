@@ -927,6 +927,39 @@ input:checked + .slider:before { transform: translateX(14px); }
 
 .gantt-chart-popup.show { display: block; }
 
+#ganttChartTitle {
+    display: inline-block;
+    margin: 10px 0 10px 20px;
+    vertical-align: middle;
+}
+
+.gantt-today-button {
+    display: inline-block;
+    margin-left: 20px;
+    margin-top: 10px;
+    padding: 6px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.gantt-today-button:hover { background-color: #0056b3; }
+.gantt-today-button:active { transform: scale(0.95); }
+
+.dark-mode .gantt-today-button {
+    background-color: #FF7F00;
+}
+.dark-mode .gantt-today-button:hover {
+    background-color: #CC6600;
+}
+
 /* Exit Button - Matrix Style */
 .gantt-chart-popup .close-button {
     position: absolute;
