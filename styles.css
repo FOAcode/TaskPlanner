@@ -845,7 +845,7 @@ input:checked + .slider:before { transform: translateX(14px); }
 .workload-controls label { font-weight: bold; }
 .workload-controls input { width: 60px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
 .dark-mode .workload-controls input { background: #333; color: #fff; border-color: #555; }
-.workload-matrix-container { overflow-x: auto; display: flex; flex-direction: column; margin: 0 auto; padding: 20px; min-width:80vw, max-width:1400px, width:100% }
+.workload-matrix-container { overflow-x: auto; display: flex; flex-direction: column; margin: 0 auto; padding: 20px; min-width:90vw; max-width:1400px; width:90%; }
 .matrix-grid { display: flex; flex-direction: column; gap: 20px; align-items: stretch; width: 100%; }
 .matrix-week-header { margin: 10px 0; }
 .matrix-table-vertical { border-collapse: collapse; width: 100%; }
