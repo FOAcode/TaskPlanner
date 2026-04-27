@@ -2150,7 +2150,7 @@ function updateGanttChart(languageOverride = null) {
     const tasks = [];
     document.querySelectorAll('.task').forEach(task => {
         const descEl = task.querySelector('.description');
-        const description = descEl ? descEl.innerText.split('\n')[0] : 'Unnamed Task';
+        const description = descEl ? descEl.innerHTML.replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]*>/g, '').trim() : 'Unnamed Task';
         const dateAttr = task.getAttribute('data-date') || '';
         const assignedTo = task.getAttribute('data-assigned-to') || 'Unassigned';
         const columnId = task.parentElement ? task.parentElement.id : '';
@@ -2306,10 +2306,48 @@ function updateGanttChart(languageOverride = null) {
             }
 
             taskBar.style.top = (slot * TASK_HEIGHT + 10) + 'px'; 
-            taskBar.innerHTML = `
-                <span class="gantt-task-label">${task.description}</span>
-                <div class="gantt-task-detail">${task.description}</div>
-            `;
+            
+            // Create label and detail elements separately to handle multi-line content
+            // task.description is already processed with <br> converted to \n and HTML stripped
+            const label = document.createElement('span');
+            label.className = 'gantt-task-label';
+            label.textContent = task.description;
+            
+            const detail = document.createElement('div');
+            detail.className = 'gantt-task-detail';
+            detail.textContent = task.description;
+            
+            taskBar.appendChild(label);
+            taskBar.appendChild(detail);
+            
+            // Position popup at the task label's top-left corner on hover with viewport boundary check
+            taskBar.addEventListener('mouseenter', function() {
+                const labelElem = this.querySelector('.gantt-task-label');
+                const detailElem = this.querySelector('.gantt-task-detail');
+                const labelRect = labelElem.getBoundingClientRect();
+                
+                // Position popup at the label's top-left corner
+                detailElem.style.position = 'fixed';
+                detailElem.style.left = labelRect.left + 'px';
+                
+                // Calculate if popup would overflow the bottom of viewport
+                let top = labelRect.top;
+                detailElem.style.top = top + 'px';
+                
+                // Give browser a moment to render so we can check actual size
+                setTimeout(() => {
+                    const detailRect = detailElem.getBoundingClientRect();
+                    const bottomOverflow = detailRect.bottom - window.innerHeight;
+                    
+                    if (bottomOverflow > 0) {
+                        // Reposition above the label if it overflows
+                        top = labelRect.top - detailRect.height - 10;
+                        // Ensure it doesn't go above viewport
+                        top = Math.max(10, top);
+                        detailElem.style.top = top + 'px';
+                    }
+                }, 0);
+            });
             
             timeline.appendChild(taskBar);
         });
