@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿﻿﻿// Register the Service Worker
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿// Register the Service Worker
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/TaskPlanner/service-worker.js')
         .then(() => console.log('Service Worker registered successfully.'))
@@ -2193,6 +2193,47 @@ function updateGanttChart(languageOverride = null) {
     const todayIndex = Math.floor((today - displayStartDate) / (1000 * 60 * 60 * 24));
 
     // --- Header ---
+    const headerContainer = document.createElement('div');
+    headerContainer.className = 'gantt-header-container';
+
+    // --- Month Header Row ---
+    const monthRow = document.createElement('div');
+    monthRow.className = 'gantt-row month-header-row';
+    
+    const monthSpacer = document.createElement('div');
+    monthSpacer.className = 'gantt-assignee-label';
+    monthRow.appendChild(monthSpacer);
+    
+    const monthTimeline = document.createElement('div');
+    monthTimeline.className = 'gantt-timeline';
+    monthTimeline.style.width = (daysInRange * DAY_WIDTH) + 'px';
+
+    let currentMonth = -1;
+    let monthStartIdx = 0;
+    for (let i = 0; i <= daysInRange; i++) {
+        let month = -1;
+        if (i < daysInRange) {
+            const date = new Date(displayStartDate.getTime());
+            date.setDate(date.getDate() + i);
+            month = date.getMonth();
+        }
+        if (i === daysInRange || (currentMonth !== -1 && month !== currentMonth)) {
+            const monthCell = document.createElement('div');
+            monthCell.className = 'gantt-month-header-cell';
+            monthCell.style.left = (monthStartIdx * DAY_WIDTH) + 'px';
+            monthCell.style.width = ((i - monthStartIdx) * DAY_WIDTH) + 'px';
+            
+            const labelDate = new Date(displayStartDate.getTime());
+            labelDate.setDate(labelDate.getDate() + monthStartIdx);
+            monthCell.textContent = labelDate.toLocaleDateString(langCode, { month: 'long', year: 'numeric' });
+            monthTimeline.appendChild(monthCell);
+            monthStartIdx = i;
+        }
+        currentMonth = month;
+    }
+    monthRow.appendChild(monthTimeline);
+    headerContainer.appendChild(monthRow);
+
     const headerRow = document.createElement('div');
     headerRow.className = 'gantt-row header-row';
     
@@ -2212,6 +2253,11 @@ function updateGanttChart(languageOverride = null) {
         headerCell.className = 'gantt-date-header-cell';
         headerCell.style.left = (i * DAY_WIDTH) + 'px';
         headerCell.style.width = DAY_WIDTH + 'px';
+
+        // Add ticker delimiter class if it's the first day of a month
+        if (cellDate.getDate() === 1 && i !== 0) {
+            headerCell.classList.add('month-start-cell');
+        }
         
         // Usa i nomi dei giorni tradotti
         const dayName = (lang.ganttDays && lang.ganttDays[cellDate.getDay()]) ? lang.ganttDays[cellDate.getDay()] : cellDate.toLocaleDateString(langCode, {weekday: 'short'});
@@ -2226,7 +2272,8 @@ function updateGanttChart(languageOverride = null) {
     headerTimeline.appendChild(headerTodayHighlight);
 
     headerRow.appendChild(headerTimeline);
-    container.appendChild(headerRow);
+    headerContainer.appendChild(headerRow);
+    container.appendChild(headerContainer);
 
     // --- Setup Drag-to-Scroll ---
     setupGanttDragScroll(container);
@@ -2352,7 +2399,7 @@ function updateGanttChart(languageOverride = null) {
             timeline.appendChild(taskBar);
         });
 
-        row.style.height = ((maxRowSlot + 1) * TASK_HEIGHT + 20) + 'px';
+        row.style.minHeight = ((maxRowSlot + 1) * TASK_HEIGHT + 20) + 'px';
         row.appendChild(label);
         row.appendChild(timeline);
         container.appendChild(row);
