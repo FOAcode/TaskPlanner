@@ -835,7 +835,7 @@ input:checked + .slider:before { transform: translateX(14px); }
    ========================================================================== */
 
 .workload-matrix-open { overflow: hidden; }
-.workload-matrix-popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 10001; overflow: auto; display: none; box-sizing: border-box; }
+.workload-matrix-popup { position: fixed; top: 0; left: 0; width: 100vw; height: 100%; background: white; z-index: 10001; overflow: auto; display: none; box-sizing: border-box; }
 .workload-matrix-popup.show { display: block; }
 .dark-mode .workload-matrix-popup { background: #222; color: #fff; }
 .workload-matrix-popup h2 { margin-top: 0; margin-left: 0; margin-right: 20px; text-align: left; margin-bottom: 20px; font-size: 1.2em; }
@@ -846,7 +846,7 @@ input:checked + .slider:before { transform: translateX(14px); }
 .workload-controls input { width: 60px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
 .dark-mode .workload-controls input { background: #333; color: #fff; border-color: #555; }
 .workload-matrix-container { overflow-x: auto; display: flex; flex-direction: column; margin: 0 auto; padding: 20px; min-width:80vw, width:100% }
-.matrix-grid { display: flex; flex-direction: column; gap: 20px; align-items: center; width: 100%; }
+.matrix-grid { display: flex; flex-direction: column; gap: 20px; align-items: stretch; width: 100%; }
 .matrix-week-header { margin: 10px 0; }
 .matrix-table-vertical { border-collapse: collapse; width: 100%; }
 .matrix-table th, .matrix-table td, .matrix-table-vertical th, .matrix-table-vertical td { border: 1px solid #ddd; padding: 11px 5px; text-align: center; font-size: 14px; }
