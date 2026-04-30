@@ -2136,14 +2136,17 @@ function updateGanttChart(languageOverride = null) {
     const langCode = languageOverride || localStorage.getItem('language') || 'en';
     const lang = (typeof translations !== 'undefined' && translations[langCode]) ? translations[langCode] : translations['en'];
 
+    // Create today's date once at the start to ensure consistency throughout the function
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     // Update the today button label with the current date formatted for the language
     const todayButton = document.getElementById('ganttTodayButton');
     if (todayButton) {
-        const todayDateObj = new Date();
-        const dayOfWeek = lang.weekdays[todayDateObj.getDay()];
-        const dd = String(todayDateObj.getDate()).padStart(2, '0');
-        const mm = String(todayDateObj.getMonth() + 1).padStart(2, '0');
-        const yyyy = todayDateObj.getFullYear();
+        const dayOfWeek = lang.weekdays[today.getDay()];
+        const dd = String(today.getDate()).padStart(2, '0');
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const yyyy = today.getFullYear();
         todayButton.innerText = `${dayOfWeek}, ${dd}/${mm}/${yyyy}`;
     }
     
@@ -2171,8 +2174,6 @@ function updateGanttChart(languageOverride = null) {
 
     const DAY_WIDTH = 80;
     const TASK_HEIGHT = 32;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
 
     const allDates = tasks.map(t => {
         const [y, m, d] = t.date.split('-').map(Number);
