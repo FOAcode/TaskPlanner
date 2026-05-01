@@ -2179,20 +2179,21 @@ function updateGanttChart(languageOverride = null) {
         const [y, m, d] = t.date.split('-').map(Number);
         return new Date(y, m - 1, d);
     });
-    const minDate = new Date(Math.min(...allDates, today));
-    const maxDate = new Date(Math.max(...allDates, today));
+    const minDateObj = new Date(Math.min(...allDates, today));
+    const minDate = new Date(minDateObj.getFullYear(), minDateObj.getMonth(), minDateObj.getDate());
+    
+    const maxDateObj = new Date(Math.max(...allDates, today));
+    const maxDate = new Date(maxDateObj.getFullYear(), maxDateObj.getMonth(), maxDateObj.getDate());
 
     // Start 1 week before the earliest task (or today) and end 2 weeks after the last task
     const displayStartDate = new Date(minDate);
     displayStartDate.setDate(displayStartDate.getDate() - 7);
-    displayStartDate.setHours(0, 0, 0, 0);
     
     const displayEndDate = new Date(maxDate);
-    displayEndDate.setDate(displayEndDate.getDate() + 14);
-    displayEndDate.setHours(0, 0, 0, 0); 
+    displayEndDate.setDate(displayEndDate.getDate() + 14); 
     
     const daysInRange = Math.ceil((displayEndDate - displayStartDate) / (1000 * 60 * 60 * 24)) + 1;
-    const todayIndex = Math.floor((today - displayStartDate) / (1000 * 60 * 60 * 24));
+    const todayIndex = Math.round((today - displayStartDate) / (1000 * 60 * 60 * 24));
 
     // --- Header ---
     const headerContainer = document.createElement('div');
@@ -2306,16 +2307,23 @@ function updateGanttChart(languageOverride = null) {
         timeline.appendChild(rowTodayHighlight);
 
         const assigneeTasks = groupedByAssignee[assignee]
-            .filter(t => new Date(t.date) >= displayStartDate)
-            .sort((a, b) => new Date(a.date) - new Date(b.date));
+            .filter(t => {
+                const [y, m, d] = t.date.split('-').map(Number);
+                return new Date(y, m - 1, d) >= displayStartDate;
+            })
+            .sort((a, b) => {
+                const aDate = (() => { const [y, m, d] = a.date.split('-').map(Number); return new Date(y, m - 1, d); })();
+                const bDate = (() => { const [y, m, d] = b.date.split('-').map(Number); return new Date(y, m - 1, d); })();
+                return aDate - bDate;
+            });
 
         const daySlots = {}; 
         let maxRowSlot = 0;
 
         assigneeTasks.forEach(task => {
-            const taskDueDate = new Date(task.date);
-            taskDueDate.setHours(0,0,0,0);
-            const dayIndex = Math.floor((taskDueDate - displayStartDate) / (1000 * 60 * 60 * 24));
+            const [y, m, d] = task.date.split('-').map(Number);
+            const taskDueDate = new Date(y, m - 1, d);
+            const dayIndex = Math.round((taskDueDate - displayStartDate) / (1000 * 60 * 60 * 24));
             
             const startRange = (task.status === 'in-progress') ? Math.min(todayIndex, dayIndex) : dayIndex;
             const endRange = (task.status === 'in-progress') ? Math.max(todayIndex, dayIndex) : dayIndex;
