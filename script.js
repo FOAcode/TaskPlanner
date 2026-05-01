@@ -2137,8 +2137,8 @@ function updateGanttChart(languageOverride = null) {
     const lang = (typeof translations !== 'undefined' && translations[langCode]) ? translations[langCode] : translations['en'];
 
     // Create today's date once at the start to ensure consistency throughout the function
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const todayObj = new Date();
+    const today = new Date(todayObj.getFullYear(), todayObj.getMonth(), todayObj.getDate());
 
     // Update the today button label with the current date formatted for the language
     const todayButton = document.getElementById('ganttTodayButton');
@@ -2188,7 +2188,8 @@ function updateGanttChart(languageOverride = null) {
     displayStartDate.setHours(0, 0, 0, 0);
     
     const displayEndDate = new Date(maxDate);
-    displayEndDate.setDate(displayEndDate.getDate() + 14); 
+    displayEndDate.setDate(displayEndDate.getDate() + 14);
+    displayEndDate.setHours(0, 0, 0, 0); 
     
     const daysInRange = Math.ceil((displayEndDate - displayStartDate) / (1000 * 60 * 60 * 24)) + 1;
     const todayIndex = Math.floor((today - displayStartDate) / (1000 * 60 * 60 * 24));
